@@ -1,11 +1,15 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Sudipta Roy | Android Developer Portfolio</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Space+Grotesk:wght@500;600;700&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="assets/style.css">
     <style>
         :root {
             --primary: #6366f1;
@@ -25,499 +29,1469 @@
             --gradient-card: linear-gradient(145deg, #1e293b, #0f172a);
         }
 
-        /* All existing CSS styles remain unchanged */
-        /* ... (keeping all your existing CSS here) ... */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
 
-        /* New styles for screenshot modal */
-        .screenshots-modal {
-            display: none;
+        body {
+            font-family: 'Inter', sans-serif;
+            line-height: 1.6;
+            color: var(--light);
+            background: var(--gradient-bg);
+            overflow-x: hidden;
+            position: relative;
+        }
+
+        body::before {
+            content: '';
             position: fixed;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
-            background-color: rgba(0, 0, 0, 0.92);
-            z-index: 2000;
-            justify-content: center;
-            align-items: center;
-            opacity: 0;
-            transition: opacity 0.3s ease;
-            padding: 20px;
+            background:
+                radial-gradient(circle at 10% 20%, rgba(99, 102, 241, 0.05) 0%, transparent 20%),
+                radial-gradient(circle at 90% 80%, rgba(139, 92, 246, 0.05) 0%, transparent 20%);
+            z-index: -1;
         }
 
-        .screenshots-modal.active {
-            display: flex;
-            opacity: 1;
+        .container {
+            width: 90%;
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 15px;
         }
 
-        .modal-content {
-            position: relative;
-            max-width: 90%;
-            max-height: 90vh;
+        /* Header & Navigation */
+        header {
+            background: rgba(15, 23, 42, 0.85);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            padding: 1.2rem 0;
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 1000;
+            border-bottom: 1px solid rgba(99, 102, 241, 0.2);
         }
 
-        .modal-header {
-            position: absolute;
-            top: -60px;
-            left: 0;
-            right: 0;
+        .header-container {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            color: white;
-            z-index: 10;
         }
 
-        .modal-title {
+        .logo {
             font-family: 'Space Grotesk', sans-serif;
-            font-size: 1.5rem;
-            font-weight: 600;
+            font-size: 1.8rem;
+            font-weight: 700;
             color: white;
-        }
-
-        .close-modal {
-            background: rgba(30, 41, 59, 0.7);
-            color: white;
-            border: none;
-            width: 45px;
-            height: 45px;
-            border-radius: 50%;
-            font-size: 1.5rem;
-            cursor: pointer;
+            text-decoration: none;
             display: flex;
             align-items: center;
-            justify-content: center;
-            transition: var(--transition);
+            gap: 0.5rem;
         }
 
-        .close-modal:hover {
-            background: var(--primary);
-            transform: rotate(90deg);
-        }
-
-        .modal-screenshot {
-            max-width: 100%;
-            max-height: 80vh;
-            border-radius: 12px;
-            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5);
-            border: 2px solid var(--primary);
-            cursor: pointer;
-        }
-
-        .modal-navigation {
-            position: absolute;
-            top: 50%;
-            width: 100%;
-            display: flex;
-            justify-content: space-between;
-            padding: 0 30px;
-            transform: translateY(-50%);
-        }
-
-        .nav-btn {
-            background: rgba(30, 41, 59, 0.7);
-            color: white;
-            border: none;
-            width: 60px;
-            height: 60px;
-            border-radius: 50%;
-            font-size: 1.5rem;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            transition: var(--transition);
-            z-index: 10;
-        }
-
-        .nav-btn:hover {
-            background: var(--primary);
-            transform: scale(1.1);
-        }
-
-        .modal-counter {
-            position: absolute;
-            bottom: -50px;
-            left: 50%;
-            transform: translateX(-50%);
-            color: rgba(255, 255, 255, 0.8);
-            font-size: 1.1rem;
-            font-weight: 500;
-        }
-
-        .screenshot-thumbnails {
-            display: flex;
-            gap: 10px;
-            margin-top: 20px;
-            overflow-x: auto;
-            padding: 10px 0;
-            max-width: 100%;
-        }
-
-        .thumbnail {
-            width: 80px;
-            height: 140px;
-            border-radius: 8px;
-            cursor: pointer;
-            opacity: 0.6;
-            transition: var(--transition);
-            border: 2px solid transparent;
-        }
-
-        .thumbnail:hover {
-            opacity: 1;
-            transform: scale(1.05);
-        }
-
-        .thumbnail.active {
-            opacity: 1;
-            border-color: var(--primary);
-            transform: scale(1.1);
-        }
-
-        .screenshot-image {
-            width: 100%;
-            height: auto;
-            border-radius: 12px;
-            aspect-ratio: 9/16;
-            object-fit: cover;
-            border: 1px solid rgba(99, 102, 241, 0.2);
-            transition: var(--transition);
-            cursor: pointer;
-        }
-
-        .screenshot-image:hover {
-            transform: scale(1.03);
-            border-color: var(--primary);
-            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.2);
-        }
-
-        .view-all {
+        .logo-icon {
             color: var(--primary);
+            font-size: 2rem;
+        }
+
+        nav ul {
+            display: flex;
+            list-style: none;
+            gap: 2.5rem;
+        }
+
+        nav a {
+            color: rgba(255, 255, 255, 0.85);
             text-decoration: none;
             font-weight: 500;
-            cursor: pointer;
+            font-size: 1.05rem;
+            transition: var(--transition);
+            position: relative;
+            padding: 0.5rem 0;
+        }
+
+        nav a:hover,
+        nav a.active {
+            color: white;
+        }
+
+        nav a::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: var(--primary);
             transition: var(--transition);
         }
 
-        .view-all:hover {
+        nav a:hover::after,
+        nav a.active::after {
+            width: 100%;
+        }
+
+        .mobile-toggle {
+            display: none;
+            background: none;
+            border: none;
+            color: white;
+            font-size: 1.8rem;
+            cursor: pointer;
+            z-index: 2000;
+        }
+
+        /* Hero Section */
+        .hero {
+            padding: 10rem 0 6rem;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero-content {
+            max-width: 850px;
+            margin: 0 auto;
+            position: relative;
+            z-index: 2;
+        }
+
+        .role-badge {
+            display: inline-block;
+            background: rgba(99, 102, 241, 0.15);
+            color: var(--primary);
+            padding: 0.4rem 1.2rem;
+            border-radius: 50px;
+            font-weight: 600;
+            margin-bottom: 1.8rem;
+            backdrop-filter: blur(4px);
+            border: 1px solid rgba(99, 102, 241, 0.2);
+            font-size: 1.05rem;
+        }
+
+        .hero h1 {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 4.2rem;
+            font-weight: 800;
+            margin-bottom: 1.5rem;
+            background: linear-gradient(to right, #fff, #cbd5e1);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            line-height: 1.1;
+            text-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .hero p {
+            font-size: 1.4rem;
+            color: rgba(255, 255, 255, 0.85);
+            margin-bottom: 2.8rem;
+            max-width: 750px;
+            margin-left: auto;
+            margin-right: auto;
+            line-height: 1.7;
+        }
+
+        .cta-container {
+            display: flex;
+            justify-content: center;
+            gap: 1.5rem;
+            flex-wrap: wrap;
+        }
+
+        .cta-button {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.8rem;
+            background: var(--primary);
+            color: white;
+            padding: 1rem 2.5rem;
+            border-radius: 50px;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 1.15rem;
+            transition: var(--transition);
+            border: 2px solid var(--primary);
+            box-shadow: 0 4px 20px rgba(99, 102, 241, 0.45);
+        }
+
+        .cta-button:hover {
+            background: transparent;
+            transform: translateY(-4px);
+            box-shadow: 0 8px 25px rgba(99, 102, 241, 0.6);
+        }
+
+        .cta-button.secondary {
+            background: transparent;
+            color: white;
+            border: 2px solid rgba(255, 255, 255, 0.3);
+        }
+
+        .cta-button.secondary:hover {
+            background: rgba(255, 255, 255, 0.1);
+            border-color: white;
+        }
+
+        .hero-shape {
+            position: absolute;
+            bottom: -50px;
+            left: 0;
+            width: 100%;
+            height: 100px;
+            background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1440 320'%3E%3Cpath fill='%231e293b' fill-opacity='1' d='M0,128L48,144C96,160,192,192,288,186.7C384,181,480,139,576,138.7C672,139,768,181,864,208C960,235,1056,245,1152,229.3C1248,213,1344,171,1392,149.3L1440,128L1440,320L1392,320C1344,320,1248,320,1152,320C1056,320,960,320,864,320C768,320,672,320,576,320C480,320,384,320,288,320C192,320,96,320,48,320L0,320Z'%3E%3C/path%3E%3C/svg%3E");
+            background-size: cover;
+        }
+
+        /* Section Styling */
+        section {
+            padding: 6rem 0;
+        }
+
+        .section-header {
+            text-align: center;
+            margin-bottom: 4rem;
+            position: relative;
+        }
+
+        .section-header::after {
+            content: '';
+            position: absolute;
+            bottom: -20px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 80px;
+            height: 4px;
+            background: var(--primary);
+            border-radius: 2px;
+        }
+
+        .section-header h2 {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 2.8rem;
+            color: white;
+            margin-bottom: 1.2rem;
+            position: relative;
+            display: inline-block;
+        }
+
+        .section-header h2::after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 60%;
+            height: 3px;
+            background: var(--accent);
+            border-radius: 3px;
+        }
+
+        .section-header p {
+            color: rgba(255, 255, 255, 0.7);
+            max-width: 750px;
+            margin: 1.5rem auto 0;
+            font-size: 1.2rem;
+            font-weight: 300;
+        }
+
+        /* Bio Section */
+        .bio-container {
+            background: var(--gradient-card);
+            border-radius: var(--border-radius);
+            padding: 3rem;
+            box-shadow: var(--box-shadow);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(99, 102, 241, 0.15);
+            margin-bottom: 3rem;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .bio-container::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(99, 102, 241, 0.08) 0%, transparent 70%);
+            z-index: 0;
+        }
+
+        .bio-container p {
+            font-size: 1.2rem;
+            line-height: 1.8;
+            color: rgba(255, 255, 255, 0.85);
+            position: relative;
+            z-index: 1;
+        }
+
+        .bio-container p em {
+            font-style: normal;
+            color: var(--primary);
+            font-weight: 600;
+        }
+
+        /* Projects Section */
+        .projects-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(380px, 1fr));
+            gap: 2.8rem;
+            margin-top: 2rem;
+        }
+
+        .project-card {
+            background: var(--gradient-card);
+            border-radius: var(--border-radius);
+            overflow: hidden;
+            box-shadow: var(--box-shadow);
+            transition: var(--transition);
+            border: 1px solid rgba(99, 102, 241, 0.15);
+            backdrop-filter: blur(8px);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .project-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 4px;
+            background: linear-gradient(90deg, var(--primary), var(--secondary), var(--accent));
+        }
+
+        .project-card:hover {
+            transform: translateY(-12px);
+            box-shadow: 0 25px 30px -10px rgba(0, 0, 0, 0.3);
+            border-color: rgba(99, 102, 241, 0.3);
+        }
+
+        .project-header {
+            padding: 2rem;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .project-header::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(99, 102, 241, 0.15) 0%, transparent 70%);
+            z-index: 0;
+        }
+
+        .project-header h3 {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 2rem;
+            margin-bottom: 0.5rem;
+            position: relative;
+            z-index: 1;
+        }
+
+        .project-header .subtitle {
+            font-size: 1.25rem;
+            opacity: 0.9;
+            font-weight: 300;
+            color: rgba(255, 255, 255, 0.85);
+            position: relative;
+            z-index: 1;
+        }
+
+        .project-number {
+            position: absolute;
+            top: 15px;
+            right: 20px;
+            font-size: 5rem;
+            font-weight: 800;
+            color: rgba(99, 102, 241, 0.1);
+            z-index: 0;
+            font-family: 'Space Grotesk', sans-serif;
+            line-height: 1;
+        }
+
+        .project-content {
+            padding: 2rem;
+            position: relative;
+            z-index: 1;
+        }
+
+        .project-content h4 {
+            font-family: 'Space Grotesk', sans-serif;
+            color: var(--primary);
+            margin: 1.8rem 0 1rem;
+            font-size: 1.4rem;
+            display: flex;
+            align-items: center;
+            gap: 0.8rem;
+        }
+
+        .project-content h4 i {
             color: var(--accent);
-            text-decoration: underline;
+            font-size: 1.2rem;
+        }
+
+        .project-content p {
+            margin-bottom: 1.2rem;
+            color: rgba(255, 255, 255, 0.85);
+            line-height: 1.7;
+        }
+
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+            gap: 1.2rem;
+            margin: 1.5rem 0;
+        }
+
+        .feature-item {
+            background: rgba(30, 41, 59, 0.6);
+            padding: 1rem;
+            border-radius: 12px;
+            font-size: 0.95rem;
+            text-align: center;
+            transition: var(--transition);
+            border: 1px solid rgba(99, 102, 241, 0.2);
+        }
+
+        .feature-item:hover {
+            background: rgba(99, 102, 241, 0.15);
+            transform: translateY(-3px);
+            border-color: rgba(99, 102, 241, 0.4);
+        }
+
+        .tech-stack {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.8rem;
+            margin: 1.5rem 0;
+        }
+
+        .tech-tag {
+            background: rgba(30, 41, 59, 0.7);
+            padding: 0.5rem 1.1rem;
+            border-radius: 50px;
+            font-size: 0.95rem;
+            font-weight: 500;
+            border: 1px solid rgba(99, 102, 241, 0.3);
+            transition: var(--transition);
+        }
+
+        .tech-tag:hover {
+            background: rgba(99, 102, 241, 0.15);
+            border-color: var(--primary);
+        }
+
+        .tech-tag.primary {
+            background: rgba(99, 102, 241, 0.2);
+            color: var(--primary);
+            border-color: rgba(99, 102, 241, 0.5);
+        }
+
+        .screenshots-container {
+            margin: 2rem 0;
+        }
+
+        .screenshots-title {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.2rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 1px solid rgba(99, 102, 241, 0.3);
+        }
+
+        .screenshots-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(110px, 1fr));
+            gap: 12px;
+            margin-top: 1rem;
+        }
+
+        .screenshot-placeholder {
+            background: linear-gradient(135deg, rgba(30, 41, 59, 0.8) 0%, rgba(15, 23, 42, 0.9) 100%);
+            border: 1px solid rgba(99, 102, 241, 0.2);
+            border-radius: 12px;
+            aspect-ratio: 9/16;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            color: var(--primary);
+            font-weight: 500;
+            font-size: 0.8rem;
+            text-align: center;
+            padding: 0.5rem;
+            transition: var(--transition);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .screenshot-placeholder::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 3px;
+            background: linear-gradient(90deg, var(--primary), var(--secondary));
+        }
+
+        .screenshot-placeholder:hover {
+            transform: scale(1.05);
+            border-color: var(--primary);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        .screenshot-placeholder i {
+            font-size: 1.8rem;
+            margin-bottom: 0.5rem;
+            opacity: 0.7;
+        }
+
+        .highlight-box {
+            background: rgba(30, 41, 59, 0.7);
+            border-left: 3px solid var(--accent);
+            padding: 1.5rem;
+            border-radius: 0 var(--border-radius) var(--border-radius) 0;
+            margin: 2rem 0;
+            position: relative;
+            overflow: hidden;
+            border: 1px solid rgba(236, 72, 153, 0.2);
+        }
+
+        .highlight-box::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 4px;
+            height: 100%;
+            background: linear-gradient(to bottom, var(--accent), var(--primary));
+        }
+
+        .highlight-box code {
+            background: rgba(15, 23, 42, 0.7);
+            padding: 0.2rem 0.5rem;
+            border-radius: 4px;
+            font-family: monospace;
+            color: var(--primary);
+        }
+
+        .future-improvements {
+            background: rgba(30, 41, 59, 0.6);
+            border-radius: var(--border-radius);
+            padding: 1.5rem;
+            margin-top: 1.5rem;
+            border: 1px solid rgba(16, 185, 129, 0.2);
+        }
+
+        .future-improvements ul {
+            padding-left: 1.8rem;
+            margin-top: 0.8rem;
+        }
+
+        .future-improvements li {
+            margin-bottom: 0.6rem;
+            color: rgba(255, 255, 255, 0.85);
+        }
+
+        .future-improvements li::marker {
+            color: var(--success);
+            font-weight: bold;
+        }
+
+        /* Skills Section */
+        .skills-container {
+            background: var(--gradient-card);
+            border-radius: var(--border-radius);
+            padding: 3rem;
+            box-shadow: var(--box-shadow);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(99, 102, 241, 0.15);
+        }
+
+        .skills-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+
+        .skill-category {
+            margin-bottom: 1.8rem;
+        }
+
+        .skill-category h4 {
+            font-family: 'Space Grotesk', sans-serif;
+            color: var(--primary);
+            margin-bottom: 1.2rem;
+            font-size: 1.4rem;
+            display: flex;
+            align-items: center;
+            gap: 0.8rem;
+        }
+
+        .skill-category h4 i {
+            color: var(--accent);
+            font-size: 1.3rem;
+        }
+
+        .skill-list {
+            list-style: none;
+        }
+
+        .skill-list li {
+            padding: 0.9rem 0;
+            border-bottom: 1px dashed rgba(99, 102, 241, 0.2);
+            display: flex;
+            align-items: flex-start;
+            gap: 0.8rem;
+        }
+
+        .skill-list li:last-child {
+            border-bottom: none;
+        }
+
+        .skill-list li i {
+            color: var(--success);
+            font-size: 1.1rem;
+            min-width: 20px;
+            margin-top: 4px;
+        }
+
+        /* Contact Section */
+        .contact-container {
+            background: var(--gradient-card);
+            border-radius: var(--border-radius);
+            padding: 3.5rem;
+            text-align: center;
+            box-shadow: var(--box-shadow);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(99, 102, 241, 0.15);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .contact-container::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(139, 92, 246, 0.1) 0%, transparent 70%);
+            z-index: 0;
+        }
+
+        .contact-container h2 {
+            font-family: 'Space Grotesk', sans-serif;
+            margin-bottom: 1.5rem;
+            font-size: 2.5rem;
+            position: relative;
+            z-index: 1;
+        }
+
+        .contact-container p {
+            font-size: 1.3rem;
+            max-width: 850px;
+            margin: 0 auto 2.5rem;
+            opacity: 0.85;
+            line-height: 1.8;
+            position: relative;
+            z-index: 1;
+        }
+
+        .contact-details {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 2rem;
+            margin: 2.5rem 0;
+            position: relative;
+            z-index: 1;
+        }
+
+        .contact-item {
+            background: rgba(15, 23, 42, 0.7);
+            border-radius: 16px;
+            padding: 1.8rem;
+            transition: var(--transition);
+            border: 1px solid rgba(99, 102, 241, 0.2);
+            text-align: left;
+        }
+
+        .contact-item:hover {
+            transform: translateY(-5px);
+            border-color: var(--primary);
+            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.2);
+        }
+
+        .contact-item i {
+            font-size: 2.2rem;
+            color: var(--primary);
+            margin-bottom: 1.2rem;
+            display: block;
+        }
+
+        .contact-item h3 {
+            font-size: 1.4rem;
+            margin-bottom: 0.8rem;
+            color: white;
+        }
+
+        .contact-item a,
+        .contact-item p {
+            color: rgba(255, 255, 255, 0.85);
+            text-decoration: none;
+            font-size: 1.1rem;
+            transition: var(--transition);
+            display: block;
+            margin: 0.3rem 0;
+        }
+
+        .contact-item a:hover {
+            color: var(--primary);
+            transform: translateX(3px);
+        }
+
+        .contact-options {
+            display: flex;
+            justify-content: center;
+            gap: 1.8rem;
+            flex-wrap: wrap;
+            margin-top: 2.5rem;
+            position: relative;
+            z-index: 1;
+        }
+
+        .contact-option {
+            background: rgba(15, 23, 42, 0.7);
+            border-radius: 16px;
+            padding: 2rem;
+            min-width: 280px;
+            transition: var(--transition);
+            border: 1px solid rgba(99, 102, 241, 0.2);
+            text-align: center;
+            backdrop-filter: blur(8px);
+        }
+
+        .contact-option:hover {
+            background: rgba(99, 102, 241, 0.1);
+            transform: translateY(-7px);
+            border-color: var(--primary);
+            box-shadow: 0 15px 30px -5px rgba(0, 0, 0, 0.25);
+        }
+
+        .contact-option i {
+            font-size: 3rem;
+            color: var(--primary);
+            margin-bottom: 1.2rem;
+            display: block;
+        }
+
+        .contact-option h3 {
+            font-size: 1.5rem;
+            margin-bottom: 0.8rem;
+            color: white;
+        }
+
+        .contact-option p {
+            color: rgba(255, 255, 255, 0.85);
+            font-size: 1.05rem;
+            line-height: 1.6;
+        }
+
+        /* Footer */
+        footer {
+            background: rgba(7, 11, 21, 0.95);
+            backdrop-filter: blur(12px);
+            color: rgba(255, 255, 255, 0.7);
+            text-align: center;
+            padding: 2.5rem 0;
+            margin-top: 2rem;
+            border-top: 1px solid rgba(99, 102, 241, 0.2);
+        }
+
+        .social-links {
+            display: flex;
+            justify-content: center;
+            gap: 1.8rem;
+            margin: 1.8rem 0;
+        }
+
+        .social-link {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 60px;
+            height: 60px;
+            background: rgba(30, 41, 59, 0.7);
+            border-radius: 50%;
+            color: white;
+            font-size: 1.6rem;
+            transition: var(--transition);
+            border: 1px solid rgba(99, 102, 241, 0.3);
+        }
+
+        .social-link:hover {
+            background: var(--primary);
+            transform: translateY(-5px) scale(1.1);
+            box-shadow: 0 10px 25px rgba(99, 102, 241, 0.4);
+            border-color: transparent;
+        }
+
+        .copyright {
+            font-size: 1.05rem;
+            opacity: 0.8;
+            margin-top: 0.8rem;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 1100px) {
+            .hero h1 {
+                font-size: 3.5rem;
+            }
+
+            .screenshots-grid {
+                grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+            }
+        }
+
+        @media (max-width: 992px) {
+            .hero h1 {
+                font-size: 3rem;
+            }
+
+            .hero p {
+                font-size: 1.25rem;
+            }
+
+            nav ul {
+                gap: 1.8rem;
+            }
+
+            .projects-grid {
+                grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            }
+        }
+
+        @media (max-width: 768px) {
+            .mobile-toggle {
+                display: block;
+            }
+
+            nav ul {
+                position: fixed;
+                top: 75px;
+                right: -100%;
+                flex-direction: column;
+                background: var(--dark);
+                width: 85%;
+                height: calc(100vh - 75px);
+                padding: 2.5rem;
+                transition: var(--transition);
+                box-shadow: -5px 0 25px rgba(0, 0, 0, 0.2);
+                backdrop-filter: blur(12px);
+                border-left: 1px solid rgba(99, 102, 241, 0.3);
+            }
+
+            nav ul.active {
+                right: 0;
+            }
+
+            nav ul li {
+                margin: 1.2rem 0;
+            }
+
+            nav a {
+                font-size: 1.3rem;
+                display: block;
+                padding: 0.8rem 0;
+            }
+
+            .hero {
+                padding: 8rem 0 5rem;
+            }
+
+            .hero h1 {
+                font-size: 2.6rem;
+            }
+
+            .hero p {
+                font-size: 1.15rem;
+            }
+
+            .cta-container {
+                flex-direction: column;
+                align-items: center;
+            }
+
+            .cta-button {
+                width: 100%;
+                max-width: 350px;
+                justify-content: center;
+            }
+
+            .projects-grid {
+                grid-template-columns: 1fr;
+            }
+
+            section {
+                padding: 4.5rem 0;
+            }
+
+            .section-header h2 {
+                font-size: 2.3rem;
+            }
+
+            .contact-details,
+            .contact-options {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .hero h1 {
+                font-size: 2.2rem;
+            }
+
+            .section-header h2 {
+                font-size: 2rem;
+            }
+
+            .project-header h3 {
+                font-size: 1.7rem;
+            }
+
+            .screenshots-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .screenshots-title {
+                flex-direction: column;
+                gap: 1rem;
+            }
+
+            .screenshots-title .view-all {
+                align-self: flex-start;
+            }
+
+            .contact-item,
+            .contact-option {
+                min-width: auto;
+            }
+
+            .social-links {
+                gap: 1.2rem;
+            }
+
+            .social-link {
+                width: 50px;
+                height: 50px;
+                font-size: 1.3rem;
+            }
         }
     </style>
 </head>
+
 <body>
-    <!-- All existing HTML content remains unchanged until we get to the screenshots sections -->
-    
-    <!-- Project 1: Notes App -->
-    <div class="project-card">
-        <div class="project-header">
-            <div class="project-number">01</div>
-            <h3>Notes App</h3>
-            <div class="subtitle">Simple, reliable note-taking with offline access</div>
+    <!-- Header -->
+    <header>
+        <div class="container header-container">
+            <a href="#" class="logo">
+                <i class="fas fa-mobile-alt logo-icon"></i>
+                Sudipta<span>Roy</span>
+            </a>
+            <button class="mobile-toggle" id="mobileToggle">
+                <i class="fas fa-bars"></i>
+            </button>
+            <nav>
+                <ul id="navMenu">
+                    <li><a href="#bio" class="active">Bio</a></li>
+                    <li><a href="#projects">Projects</a></li>
+                    <li><a href="#skills">Skills</a></li>
+                    <li><a href="#contact">Contact</a></li>
+                </ul>
+            </nav>
         </div>
-        <div class="project-content">
-            <!-- ... existing content ... -->
-            
-            <div class="screenshots-container">
-                <div class="screenshots-title">
-                    <h4><i class="fas fa-images"></i> App Screenshots (7)</h4>
-                    <a class="view-all" data-project="notes-app">View all</a>
-                </div>
-                <div class="screenshots-grid">
-                    <img src="assets/screenshots/notes-app/note1.jpg" alt="Notes App Home Screen" class="screenshot-image" data-index="0" data-project="notes-app">
-                    <img src="assets/screenshots/notes-app/note2.jpg" alt="Notes App Create Note" class="screenshot-image" data-index="1" data-project="notes-app">
-                    <img src="assets/screenshots/notes-app/note3.jpg" alt="Notes App Image Picker" class="screenshot-image" data-index="2" data-project="notes-app">
-                    <img src="assets/screenshots/notes-app/note4.jpg" alt="Notes App Long Press Menu" class="screenshot-image" data-index="3" data-project="notes-app">
-                    <img src="assets/screenshots/notes-app/note5.jpg" alt="Notes App Timer Notification" class="screenshot-image" data-index="4" data-project="notes-app">
-                    <img src="assets/screenshots/notes-app/note6.jpg" alt="Notes App Login Screen" class="screenshot-image" data-index="5" data-project="notes-app">
-                    <img src="assets/screenshots/notes-app/note7.jpg" alt="Notes App Settings" class="screenshot-image" data-index="6" data-project="notes-app">
-                </div>
-            </div>
-            
-            <!-- ... rest of project content ... -->
-        </div>
-    </div>
-    
-    <!-- Project 2: XChat -->
-    <div class="project-card">
-        <div class="project-header">
-            <div class="project-number">02</div>
-            <h3>XChat</h3>
-            <div class="subtitle">Secure peer chat + AI assistant</div>
-        </div>
-        <div class="project-content">
-            <!-- ... existing content ... -->
-            
-            <div class="screenshots-container">
-                <div class="screenshots-title">
-                    <h4><i class="fas fa-images"></i> App Screenshots (9)</h4>
-                    <a class="view-all" data-project="xchat">View all</a>
-                </div>
-                <div class="screenshots-grid">
-                    <img src="assets/screenshots/xchat/x1.jpg" alt="Profile Setup" class="screenshot-image" data-index="0" data-project="xchat">
-                    <img src="assets/screenshots/xchat/x2.jpg" alt="User Search" class="screenshot-image" data-index="1" data-project="xchat">
-                    <img src="assets/screenshots/xchat/x3.jpg" alt="Chat Screen" class="screenshot-image" data-index="2" data-project="xchat">
-                    <img src="assets/screenshots/xchat/x4.jpg" alt="Media Sharing" class="screenshot-image" data-index="3" data-project="xchat">
-                    <img src="assets/screenshots/xchat/x5.jpg" alt="Video Call" class="screenshot-image" data-index="4" data-project="xchat">
-                    <img src="assets/screenshots/xchat/x6.jpg" alt="Voice Call" class="screenshot-image" data-index="5" data-project="xchat">
-                    <img src="assets/screenshots/xchat/x7.jpg" alt="AI Assistant" class="screenshot-image" data-index="6" data-project="xchat">
-                    <img src="assets/screenshots/xchat/x8.jpg" alt="Call Logs" class="screenshot-image" data-index="7" data-project="xchat">
-                    <img src="assets/screenshots/xchat/x9.jpg" alt="Settings" class="screenshot-image" data-index="8" data-project="xchat">
-                </div>
-            </div>
-            
-            <!-- ... rest of project content ... -->
-        </div>
-    </div>
-    
-    <!-- Project 3: HelpHive -->
-    <div class="project-card">
-        <div class="project-header">
-            <div class="project-number">03</div>
-            <h3>HelpHive</h3>
-            <div class="subtitle">Community mental health & help network</div>
-        </div>
-        <div class="project-content">
-            <!-- ... existing content ... -->
-            
-            <div class="screenshots-container">
-                <div class="screenshots-title">
-                    <h4><i class="fas fa-images"></i> App Screenshots (15)</h4>
-                    <a class="view-all" data-project="helphive">View all</a>
-                </div>
-                <div class="screenshots-grid">
-                    <img src="assets/screenshots/helphive/h1.jpg" alt="Home Screen" class="screenshot-image" data-index="0" data-project="helphive">
-                    <img src="assets/screenshots/helphive/h2.jpg" alt="Mood Tracking" class="screenshot-image" data-index="1" data-project="helphive">
-                    <img src="assets/screenshots/helphive/h3.jpg" alt="Mood Statistics" class="screenshot-image" data-index="2" data-project="helphive">
-                    <img src="assets/screenshots/helphive/h4.jpg" alt="Kindness Log" class="screenshot-image" data-index="3" data-project="helphive">
-                    <img src="assets/screenshots/helphive/h5.jpg" alt="Help Requests" class="screenshot-image" data-index="4" data-project="helphive">
-                    <img src="assets/screenshots/helphive/h6.jpg" alt="Chat Interface" class="screenshot-image" data-index="5" data-project="helphive">
-                    <img src="assets/screenshots/helphive/h7.jpg" alt="AI Messages" class="screenshot-image" data-index="6" data-project="helphive">
-                    <img src="assets/screenshots/helphive/h8.jpg" alt="Profile Setup" class="screenshot-image" data-index="7" data-project="helphive">
-                    <img src="assets/screenshots/helphive/h9.jpg" alt="Settings" class="screenshot-image" data-index="8" data-project="helphive">
-                    <img src="assets/screenshots/helphive/h10.jpg" alt="Analytics" class="screenshot-image" data-index="9" data-project="helphive">
-                    <img src="assets/screenshots/helphive/h11.jpg" alt="Notifications" class="screenshot-image" data-index="10" data-project="helphive">
-                    <img src="assets/screenshots/helphive/h12.jpg" alt="Community Feed" class="screenshot-image" data-index="11" data-project="helphive">
-                    <img src="assets/screenshots/helphive/h13.jpg" alt="Privacy Settings" class="screenshot-image" data-index="12" data-project="helphive">
-                    <img src="assets/screenshots/helphive/h14.jpg" alt="Offline Mode" class="screenshot-image" data-index="13" data-project="helphive">
-                    <img src="assets/screenshots/helphive/h15.jpg" alt="Theme Customization" class="screenshot-image" data-index="14" data-project="helphive">
-                </div>
-            </div>
-            
-            <!-- ... rest of project content ... -->
-        </div>
-    </div>
+    </header>
 
-    <!-- Screenshots Modal -->
-    <div class="screenshots-modal" id="screenshotsModal">
-        <div class="modal-content">
-            <div class="modal-header">
-                <div class="modal-title" id="modalProjectTitle">Project Screenshots</div>
-                <button class="close-modal" id="closeModal">&times;</button>
-            </div>
-            <img src="" alt="" class="modal-screenshot" id="modalScreenshot">
-            <div class="modal-navigation">
-                <button class="nav-btn" id="prevBtn">
-                    <i class="fas fa-chevron-left"></i>
-                </button>
-                <button class="nav-btn" id="nextBtn">
-                    <i class="fas fa-chevron-right"></i>
-                </button>
-            </div>
-            <div class="modal-counter" id="modalCounter">1 of 7</div>
-            <div class="screenshot-thumbnails" id="thumbnailsContainer">
-                <!-- Thumbnails will be added dynamically -->
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="container hero-content">
+            <div class="role-badge">Android Developer (Java & Kotlin)</div>
+            <h1>Building Mobile Experiences That Matter</h1>
+            <p>Creating secure, intuitive Android applications with clean architecture, Firebase backend, AI
+                integration, and offline-first design</p>
+            <div class="cta-container">
+                <a href="#projects" class="cta-button">
+                    <i class="fas fa-briefcase"></i> View My Projects
+                </a>
+                <a href="#contact" class="cta-button secondary">
+                    <i class="fas fa-paper-plane"></i> Get In Touch
+                </a>
             </div>
         </div>
-    </div>
+        <div class="hero-shape"></div>
+    </section>
 
-    <!-- All your existing script tags remain here -->
+    <!-- Bio Section -->
+    <section id="bio" class="bio-section">
+        <div class="container">
+            <div class="section-header">
+                <h2>About Me</h2>
+                <p>Mobile developer specializing in Android applications with a focus on user experience, security, and
+                    performance</p>
+            </div>
+            <div class="bio-container">
+                <p>I build practical, user-focused Android apps with clean architecture, Firebase backend, AI features
+                    and offline support. I have built several apps. Below are three polished projects i made: <em>Notes
+                        App</em>, <em>XChat</em>, and <em>HelpHive</em> — each includes a short elevator pitch, feature
+                    list, tech stack and demo .</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Projects Section -->
+    <section id="projects" class="projects-section">
+        <div class="container">
+            <div class="section-header">
+                <h2>Featured Projects</h2>
+                <p>Three polished Android applications demonstrating architecture, security, and user experience design
+                </p>
+            </div>
+
+            <div class="projects-grid">
+                <!-- Project 1: Notes App -->
+                <div class="project-card">
+                    <div class="project-header">
+                        <div class="project-number">01</div>
+                        <h3>Notes App</h3>
+                        <div class="subtitle">Simple, reliable note-taking with offline access</div>
+                    </div>
+                    <div class="project-content">
+                        <h4><i class="fas fa-bolt"></i> Elevator Pitch</h4>
+                        <p>A lightweight, secure note app (Java) with image attachments, reminders, offline read access
+                            and Firebase sync — perfect to show end-to-end auth, storage and background notifications.
+                        </p>
+
+                        <h4><i class="fas fa-star"></i> Key Features</h4>
+                        <div class="features-grid">
+                            <div class="feature-item">Email/Password Auth</div>
+                            <div class="feature-item">Image Attachments</div>
+                            <div class="feature-item">Timer Reminders</div>
+                            <div class="feature-item">Offline Access</div>
+                            <div class="feature-item">Email Verification</div>
+                            <div class="feature-item">Firestore Sync</div>
+                        </div>
+
+                        <h4><i class="fas fa-code"></i> Tech Stack</h4>
+                        <div class="tech-stack">
+                            <span class="tech-tag primary">Java</span>
+                            <span class="tech-tag">Firebase Auth</span>
+                            <span class="tech-tag">Firestore</span>
+                            <span class="tech-tag">Firebase Storage</span>
+                            <span class="tech-tag">Picasso</span>
+                            <span class="tech-tag">WorkManager</span>
+                        </div>
+
+                        <div class="screenshots-grid">
+                            <img src="assets/screenshots/notes-app/note1.jpg" alt="Notes App Home Screen"
+                                class="screenshot-image">
+                            <img src="assets/screenshots/notes-app/note2.jpg" alt="Notes App Create Note"
+                                class="screenshot-image">
+                            <img src="assets/screenshots/notes-app/note3.jpg" alt="Notes App Image Picker"
+                                class="screenshot-image">
+                            <img src="assets/screenshots/notes-app/note4.jpg" alt="Notes App Long Press Menu"
+                                class="screenshot-image">
+                            <img src="assets/screenshots/notes-app/note5.jpg" alt="Notes App Timer Notification"
+                                class="screenshot-image">
+                            <img src="assets/screenshots/notes-app/note6.jpg" alt="Notes App Login Screen"
+                                class="screenshot-image">
+                            <img src="assets/screenshots/notes-app/note7.jpg" alt="Notes App Settings"
+                                class="screenshot-image">
+                        </div>
+
+                        <div class="highlight-box">
+                            <strong>Implementation Highlight:</strong> Optimized offline data sync with Firestore
+                            persistence, ensuring seamless user experience across connectivity states. Implemented
+                            secure timer scheduling using WorkManager that triggers notifications even when the app is
+                            closed.
+                        </div>
+
+                        <div class="future-improvements">
+                            <h4><i class="fas fa-rocket"></i> Future Improvements</h4>
+                            <ul>
+                                <li>Full-text search & tags & filters</li>
+                                <li>Export/import notes (JSON/backup)</li>
+                                <li>End-to-end encryption for sensitive notes</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Project 2: XChat -->
+                <div class="project-card">
+                    <div class="project-header">
+                        <div class="project-number">02</div>
+                        <h3>XChat</h3>
+                        <div class="subtitle">Secure peer chat + AI assistant</div>
+                    </div>
+                    <div class="project-content">
+                        <h4><i class="fas fa-bolt"></i> Elevator Pitch</h4>
+                        <p>An end-to-end encrypted one-to-one chat app with WebRTC calling and an integrated AI
+                            assistant. Great to show realtime features, E2EE, and media/call integration.</p>
+
+                        <h4><i class="fas fa-star"></i> Key Features</h4>
+                        <div class="features-grid">
+                            <div class="feature-item">E2E Encryption</div>
+                            <div class="feature-item">WebRTC Calling</div>
+                            <div class="feature-item">Gemini AI Assistant</div>
+                            <div class="feature-item">Friend Requests</div>
+                            <div class="feature-item">Image Sharing</div>
+                            <div class="feature-item">Call Logs</div>
+                            <div class="feature-item">Profile Management</div>
+                        </div>
+
+                        <h4><i class="fas fa-code"></i> Tech Stack</h4>
+                        <div class="tech-stack">
+                            <span class="tech-tag primary">Kotlin</span>
+                            <span class="tech-tag">WebRTC</span>
+                            <span class="tech-tag">Firebase</span>
+                            <span class="tech-tag">Gemini AI</span>
+                            <span class="tech-tag">Glide</span>
+                            <span class="tech-tag">Socket.IO</span>
+                        </div>
+
+                        <div class="screenshots-container">
+                            <div class="screenshots-title">
+                            
+                                
+                            </div>
+                            <div class="screenshots-grid">
+                                <img src="assets/screenshots/xchat/x1.jpg" alt="Profile Setup" class="screenshot-image">
+                                <img src="assets/screenshots/xchat/x2.jpg" alt="User Search" class="screenshot-image">
+                                <img src="assets/screenshots/xchat/x3.jpg" alt="Chat Screen" class="screenshot-image">
+                                <img src="assets/screenshots/xchat/x4.jpg" alt="Media Sharing" class="screenshot-image">
+                                <img src="assets/screenshots/xchat/x5.jpg" alt="Video Call" class="screenshot-image">
+                                <img src="assets/screenshots/xchat/x6.jpg" alt="Voice Call" class="screenshot-image">
+                                <img src="assets/screenshots/xchat/x7.jpg" alt="AI Assistant" class="screenshot-image">
+                                <img src="assets/screenshots/xchat/x8.jpg" alt="Call Logs" class="screenshot-image">
+                                <img src="assets/screenshots/xchat/x9.jpg" alt="Settings" class="screenshot-image">
+                            </div>
+                        </div>
+
+                        <div class="highlight-box">
+                            <strong>Implementation Highlight:</strong> Engineered WebRTC signaling server integration
+                            for low-latency audio calls. Secured data in transit/at rest using AES keys derived from
+                            user credentials. Implemented Gemini API with secure key management via
+                            <code>local.properties</code> to prevent API key exposure.
+                        </div>
+
+                        <div class="future-improvements">
+                            <h4><i class="fas fa-rocket"></i> Future Improvements</h4>
+                            <ul>
+                                <li>Group chat & group calls</li>
+                                <li>Stronger key management (Signal-protocol-like)</li>
+                                <li>Turn server deployment for better NAT traversal</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Project 3: HelpHive -->
+                <div class="project-card">
+                    <div class="project-header">
+                        <div class="project-number">03</div>
+                        <h3>HelpHive</h3>
+                        <div class="subtitle">Community mental health & help network</div>
+                    </div>
+                    <div class="project-content">
+                        <h4><i class="fas fa-bolt"></i> Elevator Pitch</h4>
+                        <p>A community-first app to track moods, log kind acts and request/offer help — combines
+                            analytics (mood histogram), AI-generated supportive messages, and conversational help
+                            requests. Built with clean architecture and offline caching.</p>
+
+                        <h4><i class="fas fa-star"></i> Key Features</h4>
+                        <div class="features-grid">
+                            <div class="feature-item">Mood Tracking</div>
+                            <div class="feature-item">AI Support Messages</div>
+                            <div class="feature-item">Kindness Log</div>
+                            <div class="feature-item">Help Requests</div>
+                            <div class="feature-item">Mood Statistics</div>
+                            <div class="feature-item">Offline Caching</div>
+                            <div class="feature-item">Community Feed</div>
+                        </div>
+
+                        <h4><i class="fas fa-code"></i> Tech Stack</h4>
+                        <div class="tech-stack">
+                            <span class="tech-tag primary">Kotlin</span>
+                            <span class="tech-tag">Clean Architecture</span>
+                            <span class="tech-tag">Room Database</span>
+                            <span class="tech-tag">MPAndroidChart</span>
+                            <span class="tech-tag">Hilt DI</span>
+                            <span class="tech-tag">Gemini AI</span>
+                        </div>
+
+                        <div class="screenshots-container">
+                            <div class="screenshots-title">
+                                
+                            </div>
+                            <div class="screenshots-grid">
+                                <img src="assets/screenshots/helphive/h1.jpg" alt="Home Screen"
+                                    class="screenshot-image">
+                                <img src="assets/screenshots/helphive/h2.jpg" alt="Mood Tracking"
+                                    class="screenshot-image">
+                                <img src="assets/screenshots/helphive/h3.jpg" alt="Mood Statistics"
+                                    class="screenshot-image">
+                                <img src="assets/screenshots/helphive/h4.jpg" alt="Kindness Log"
+                                    class="screenshot-image">
+                                <img src="assets/screenshots/helphive/h5.jpg" alt="Help Requests"
+                                    class="screenshot-image">
+                                <img src="assets/screenshots/helphive/h6.jpg" alt="Chat Interface"
+                                    class="screenshot-image">
+                                <img src="assets/screenshots/helphive/h7.jpg" alt="AI Messages"
+                                    class="screenshot-image">
+                                <img src="assets/screenshots/helphive/h8.jpg" alt="Profile Setup"
+                                    class="screenshot-image">
+                                <img src="assets/screenshots/helphive/h9.jpg" alt="Settings" class="screenshot-image">
+                                <img src="assets/screenshots/helphive/h10.jpg" alt="Analytics" class="screenshot-image">
+                                <img src="assets/screenshots/helphive/h11.jpg" alt="Notifications"
+                                    class="screenshot-image">
+                                <img src="assets/screenshots/helphive/h12.jpg" alt="Community Feed"
+                                    class="screenshot-image">
+                                <img src="assets/screenshots/helphive/h13.jpg" alt="Privacy Settings"
+                                    class="screenshot-image">
+                                <img src="assets/screenshots/helphive/h14.jpg" alt="Offline Mode"
+                                    class="screenshot-image">
+                                <img src="assets/screenshots/helphive/15.jpg" alt="Theme Customization"
+                                    class="screenshot-image">
+                            </div>
+                        </div>
+
+                        <div class="highlight-box">
+                            <strong>Implementation Highlight:</strong> Designed a layered repository pattern to
+                            seamlessly merge online (Firestore) and offline (Room) data. Integrated Gemini API for
+                            real-time emotional support while prioritizing user privacy through on-device data
+                            encryption and secure API key management.
+                        </div>
+
+                        <div class="future-improvements">
+                            <h4><i class="fas fa-rocket"></i> Future Improvements</h4>
+                            <ul>
+                                <li>Verified volunteers & moderation tools</li>
+                                <li>Anonymous mode for sensitive posts</li>
+                                <li>Richer analytics & export options</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Skills Section -->
+    <section id="skills" class="skills-section">
+        <div class="container">
+            <div class="section-header">
+                <h2>Technical Expertise</h2>
+                <p>Core competencies and technologies I work with daily</p>
+            </div>
+            <div class="skills-container">
+                <div class="skills-grid">
+                    <div class="skill-category">
+                        <h4><i class="fas fa-language"></i> Languages & Frameworks</h4>
+                        <ul class="skill-list">
+                            <li><i class="fas fa-check-circle"></i> Java (Android SDK)</li>
+                            <li><i class="fas fa-check-circle"></i> Kotlin (Coroutines, Flow)</li>
+                            <li><i class="fas fa-check-circle"></i> XML Layouts</li>
+                            <li><i class="fas fa-check-circle"></i> Jetpack Components</li>
+                            <li><i class="fas fa-check-circle"></i> Room Database</li>
+                        </ul>
+                    </div>
+
+                    <div class="skill-category">
+                        <h4><i class="fas fa-database"></i> Backend & APIs</h4>
+                        <ul class="skill-list">
+                            <li><i class="fas fa-check-circle"></i> Firebase (Auth/Firestore)</li>
+                            <li><i class="fas fa-check-circle"></i> Firebase Storage & Cloud Messaging</li>
+                            <li><i class="fas fa-check-circle"></i> WebRTC (Real-time communication)</li>
+                            <li><i class="fas fa-check-circle"></i> REST APIs (Retrofit)</li>
+                            <li><i class="fas fa-check-circle"></i> Socket.IO (Real-time updates)</li>
+                        </ul>
+                    </div>
+
+                    <div class="skill-category">
+                        <h4><i class="fas fa-shield-alt"></i> Security & Architecture</h4>
+                        <ul class="skill-list">
+                            <li><i class="fas fa-check-circle"></i> AES Encryption</li>
+                            <li><i class="fas fa-check-circle"></i> Clean Architecture</li>
+                            <li><i class="fas fa-check-circle"></i> Hilt Dependency Injection</li>
+                            <li><i class="fas fa-check-circle"></i> Offline-First Design</li>
+                            <li><i class="fas fa-check-circle"></i> Secure Key Management</li>
+                        </ul>
+                    </div>
+
+                    <div class="skill-category">
+                        <h4><i class="fas fa-brain"></i> AI & Specialized Tech</h4>
+                        <ul class="skill-list">
+                            <li><i class="fas fa-check-circle"></i> Generative AI (Gemini)</li>
+                            <li><i class="fas fa-check-circle"></i> MPAndroidChart (Data Visualization)</li>
+                            <li><i class="fas fa-check-circle"></i> WorkManager (Background Tasks)</li>
+                            <li><i class="fas fa-check-circle"></i> Glide/Picasso (Image Loading)</li>
+                            <li><i class="fas fa-check-circle"></i> CI/CD Pipelines</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section id="contact" class="contact-section">
+        <div class="container">
+            <div class="section-header">
+                <h2>Get In Touch</h2>
+                <p>Let's connect and discuss how I can contribute to your next Android project</p>
+            </div>
+            <div class="contact-container">
+                <h2>Let's Build Something Amazing</h2>
+
+                <div class="contact-details">
+                    <div class="contact-item">
+                        <i class="fas fa-phone-alt"></i>
+                        <h3>Phone</h3>
+                        <a href="tel:+8801928782828">+8801928782828</a>
+                    </div>
+                    <div class="contact-item">
+                        <i class="fas fa-envelope"></i>
+                        <h3>Email</h3>
+                        <a href="mailto:sudiptoroy7666@gmail.com">sudiptoroy7666@gmail.com</a>
+                    </div>
+                    <div class="contact-item">
+                        <i class="fas fa-map-marker-alt"></i>
+                        <h3>Location</h3>
+                        <p>Dholaipar, Dhaka 1204</p>
+                    </div>
+                    <div class="contact-item">
+                        <i class="fab fa-linkedin"></i>
+                        <h3>LinkedIn</h3>
+                        <a href="https://www.linkedin.com/in/sudipta-roy-3873512b4/"
+                            target="_blank">linkedin.com/in/sudipta-roy</a>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+        </div>
+        </div>
+    </section>
+
+
     <script>
-        // All your existing JavaScript code remains unchanged
-        // ... (keeping all your existing JavaScript here) ...
+        // Mobile menu toggle
+        document.getElementById('mobileToggle').addEventListener('click', function () {
+            const navMenu = document.getElementById('navMenu');
+            navMenu.classList.toggle('active');
+            this.innerHTML = navMenu.classList.contains('active') ?
+                '<i class="fas fa-times"></i>' : '<i class="fas fa-bars"></i>';
+        });
 
-        // New code for screenshot modal functionality
-        document.addEventListener('DOMContentLoaded', function() {
-            // Modal elements
-            const modal = document.getElementById('screenshotsModal');
-            const modalImg = document.getElementById('modalScreenshot');
-            const closeModal = document.getElementById('closeModal');
-            const prevBtn = document.getElementById('prevBtn');
-            const nextBtn = document.getElementById('nextBtn');
-            const modalCounter = document.getElementById('modalCounter');
-            const modalTitle = document.getElementById('modalProjectTitle');
-            const thumbnailsContainer = document.getElementById('thumbnailsContainer');
-            
-            // Data structures for screenshots
-            const screenshotsData = {
-                'notes-app': [
-                    { src: 'assets/screenshots/notes-app/note1.jpg', alt: 'Notes App Home Screen' },
-                    { src: 'assets/screenshots/notes-app/note2.jpg', alt: 'Notes App Create Note' },
-                    { src: 'assets/screenshots/notes-app/note3.jpg', alt: 'Notes App Image Picker' },
-                    { src: 'assets/screenshots/notes-app/note4.jpg', alt: 'Notes App Long Press Menu' },
-                    { src: 'assets/screenshots/notes-app/note5.jpg', alt: 'Notes App Timer Notification' },
-                    { src: 'assets/screenshots/notes-app/note6.jpg', alt: 'Notes App Login Screen' },
-                    { src: 'assets/screenshots/notes-app/note7.jpg', alt: 'Notes App Settings' }
-                ],
-                'xchat': [
-                    { src: 'assets/screenshots/xchat/x1.jpg', alt: 'Profile Setup' },
-                    { src: 'assets/screenshots/xchat/x2.jpg', alt: 'User Search' },
-                    { src: 'assets/screenshots/xchat/x3.jpg', alt: 'Chat Screen' },
-                    { src: 'assets/screenshots/xchat/x4.jpg', alt: 'Media Sharing' },
-                    { src: 'assets/screenshots/xchat/x5.jpg', alt: 'Video Call' },
-                    { src: 'assets/screenshots/xchat/x6.jpg', alt: 'Voice Call' },
-                    { src: 'assets/screenshots/xchat/x7.jpg', alt: 'AI Assistant' },
-                    { src: 'assets/screenshots/xchat/x8.jpg', alt: 'Call Logs' },
-                    { src: 'assets/screenshots/xchat/x9.jpg', alt: 'Settings' }
-                ],
-                'helphive': [
-                    { src: 'assets/screenshots/helphive/h1.jpg', alt: 'Home Screen' },
-                    { src: 'assets/screenshots/helphive/h2.jpg', alt: 'Mood Tracking' },
-                    { src: 'assets/screenshots/helphive/h3.jpg', alt: 'Mood Statistics' },
-                    { src: 'assets/screenshots/helphive/h4.jpg', alt: 'Kindness Log' },
-                    { src: 'assets/screenshots/helphive/h5.jpg', alt: 'Help Requests' },
-                    { src: 'assets/screenshots/helphive/h6.jpg', alt: 'Chat Interface' },
-                    { src: 'assets/screenshots/helphive/h7.jpg', alt: 'AI Messages' },
-                    { src: 'assets/screenshots/helphive/h8.jpg', alt: 'Profile Setup' },
-                    { src: 'assets/screenshots/helphive/h9.jpg', alt: 'Settings' },
-                    { src: 'assets/screenshots/helphive/h10.jpg', alt: 'Analytics' },
-                    { src: 'assets/screenshots/helphive/h11.jpg', alt: 'Notifications' },
-                    { src: 'assets/screenshots/helphive/h12.jpg', alt: 'Community Feed' },
-                    { src: 'assets/screenshots/helphive/h13.jpg', alt: 'Privacy Settings' },
-                    { src: 'assets/screenshots/helphive/h14.jpg', alt: 'Offline Mode' },
-                    { src: 'assets/screenshots/helphive/h15.jpg', alt: 'Theme Customization' }
-                ]
-            };
-            
-            // Current modal state
-            let currentProject = '';
-            let currentIndex = 0;
-            
-            // View all buttons
-            document.querySelectorAll('.view-all').forEach(button => {
-                button.addEventListener('click', function(e) {
-                    e.preventDefault();
-                    const project = this.getAttribute('data-project');
-                    openModal(project, 0);
-                });
-            });
-            
-            // Individual screenshot clicks
-            document.querySelectorAll('.screenshot-image').forEach(image => {
-                image.addEventListener('click', function() {
-                    const project = this.getAttribute('data-project');
-                    const index = parseInt(this.getAttribute('data-index'));
-                    openModal(project, index);
-                });
-            });
-            
-            // Modal controls
-            closeModal.addEventListener('click', closeModalHandler);
-            prevBtn.addEventListener('click', showPrevScreenshot);
-            nextBtn.addEventListener('click', showNextScreenshot);
-            
-            // Close modal when clicking outside content
-            modal.addEventListener('click', function(e) {
-                if (e.target === modal) {
-                    closeModalHandler();
+        // Smooth scrolling for navigation links
+        document.querySelectorAll('nav a').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+
+                // Close mobile menu if open
+                const navMenu = document.getElementById('navMenu');
+                if (navMenu.classList.contains('active')) {
+                    navMenu.classList.remove('active');
+                    document.getElementById('mobileToggle').innerHTML = '<i class="fas fa-bars"></i>';
                 }
-            });
-            
-            // Close modal with ESC key
-            document.addEventListener('keydown', function(e) {
-                if (e.key === 'Escape' && modal.classList.contains('active')) {
-                    closeModalHandler();
-                } else if (e.key === 'ArrowLeft' && modal.classList.contains('active')) {
-                    showPrevScreenshot();
-                } else if (e.key === 'ArrowRight' && modal.classList.contains('active')) {
-                    showNextScreenshot();
-                }
-            });
-            
-            // Functions
-            function openModal(project, index) {
-                currentProject = project;
-                currentIndex = index;
-                
-                // Update modal content
-                updateModalContent();
-                
-                // Show modal with animation
-                setTimeout(() => {
-                    modal.classList.add('active');
-                }, 10);
-                
-                // Prevent scrolling when modal is open
-                document.body.style.overflow = 'hidden';
-            }
-            
-            function closeModalHandler() {
-                modal.classList.remove('active');
-                setTimeout(() => {
-                    document.body.style.overflow = 'auto';
-                }, 300);
-            }
-            
-            function showPrevScreenshot() {
-                currentIndex = (currentIndex - 1 + screenshotsData[currentProject].length) % screenshotsData[currentProject].length;
-                updateModalContent();
-            }
-            
-            function showNextScreenshot() {
-                currentIndex = (currentIndex + 1) % screenshotsData[currentProject].length;
-                updateModalContent();
-            }
-            
-            function updateModalContent() {
-                if (!currentProject || !screenshotsData[currentProject]) return;
-                
-                const screenshot = screenshotsData[currentProject][currentIndex];
-                modalImg.src = screenshot.src;
-                modalImg.alt = screenshot.alt;
-                modalTitle.textContent = `${formatProjectName(currentProject)} Screenshots`;
-                modalCounter.textContent = `${currentIndex + 1} of ${screenshotsData[currentProject].length}`;
-                
-                // Update thumbnails
-                updateThumbnails();
-            }
-            
-            function updateThumbnails() {
-                thumbnailsContainer.innerHTML = '';
-                
-                screenshotsData[currentProject].forEach((screenshot, index) => {
-                    const thumbnail = document.createElement('img');
-                    thumbnail.src = screenshot.src;
-                    thumbnail.alt = screenshot.alt;
-                    thumbnail.className = `thumbnail ${index === currentIndex ? 'active' : ''}`;
-                    thumbnail.addEventListener('click', () => {
-                        currentIndex = index;
-                        updateModalContent();
+
+                const targetId = this.getAttribute('href');
+                const targetElement = document.querySelector(targetId);
+
+                if (targetElement) {
+                    window.scrollTo({
+                        top: targetElement.offsetTop - 80,
+                        behavior: 'smooth'
                     });
-                    
-                    thumbnailsContainer.appendChild(thumbnail);
+                }
+
+                // Update active navigation link
+                document.querySelectorAll('nav a').forEach(link => {
+                    link.classList.remove('active');
                 });
-            }
-            
-            function formatProjectName(projectKey) {
-                const names = {
-                    'notes-app': 'Notes App',
-                    'xchat': 'XChat',
-                    'helphive': 'HelpHive'
-                };
-                return names[projectKey] || projectKey;
-            }
-            
-            // Preload images for smoother transitions
-            function preloadImages() {
-                Object.values(screenshotsData).flat().forEach(screenshot => {
-                    const img = new Image();
-                    img.src = screenshot.src;
+                this.classList.add('active');
+            });
+        });
+
+        // Handle scrolling and active navigation
+        window.addEventListener('scroll', function () {
+            const sections = document.querySelectorAll('section');
+            const navLinks = document.querySelectorAll('nav a');
+            const scrollPosition = window.scrollY + 100; // Adjust for header height
+
+            let currentSection = '';
+
+            sections.forEach(section => {
+                const sectionTop = section.offsetTop;
+                const sectionBottom = sectionTop + section.offsetHeight;
+
+                if (scrollPosition >= sectionTop && scrollPosition < sectionBottom) {
+                    currentSection = section.getAttribute('id');
+                }
+            });
+
+            navLinks.forEach(link => {
+                link.classList.remove('active');
+                if (link.getAttribute('href').substring(1) === currentSection) {
+                    link.classList.add('active');
+                }
+            });
+        });
+
+        // Initialize with first section active
+        document.querySelector('nav a[href="#bio"]').classList.add('active');
+
+        // Add scroll animation to elements
+        document.addEventListener('DOMContentLoaded', function () {
+            const observerOptions = {
+                root: null,
+                rootMargin: '0px',
+                threshold: 0.1
+            };
+
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.style.opacity = 1;
+                        entry.target.style.transform = 'translateY(0)';
+                    }
                 });
-            }
-            
-            preloadImages();
+            }, observerOptions);
+
+            // Observe project cards and other elements
+            document.querySelectorAll('.project-card, .skill-category, .contact-item, .contact-option').forEach(element => {
+                element.style.opacity = 0;
+                element.style.transform = 'translateY(20px)';
+                element.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
+                observer.observe(element);
+            });
         });
     </script>
+    <script src="assets/imageview.js"></script>
 </body>
+
 </html>
