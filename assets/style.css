@@ -2,14 +2,15 @@
     width: 100%;
     height: auto;
     border-radius: 12px;
-    object-fit: cover;
+    object-fit: contain;
     aspect-ratio: 9/16;
     border: 1px solid rgba(99, 102, 241, 0.2);
     transition: var(--transition);
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
     cursor: pointer;
-    opacity: 1; /* was 0, causing dull/invisible images */
+    opacity: 1;
     display: block;
+    background: rgba(15, 23, 42, 0.8);
 }
 
 .screenshot-image:hover {
