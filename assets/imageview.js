@@ -46,8 +46,6 @@ document.querySelectorAll('.screenshot-image').forEach(img => {
         img.style.opacity = '1';
     } else {
         // Otherwise, hide and fade in
-        img.style.opacity = '0';
-        img.style.transition = 'opacity 0.4s ease';
 
         img.addEventListener('load', function () {
             this.style.opacity = '1';
