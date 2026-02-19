@@ -1055,9 +1055,9 @@
             </div>
             <div class="bio-container">
                 <p>I build practical, user-focused Android apps with clean architecture, Firebase backend, AI features
-                    and offline support. I have built several apps. Below are three polished projects i made: <em>Notes
-                        App</em>, <em>XChat</em>, and <em>HelpHive</em> — each includes a short elevator pitch, feature
-                    list, tech stack and demo .</p>
+                    and offline support. I have built several apps. Below are four polished projects i made: <em>Notes
+                        App</em>, <em>XChat</em>, <em>HelpHive</em>, and <em>WebNovel Summarizer</em> — each includes a short elevator pitch, feature
+                    list, tech stack and demo.</p>
             </div>
         </div>
     </section>
@@ -1067,8 +1067,7 @@
         <div class="container">
             <div class="section-header">
                 <h2>Featured Projects</h2>
-                <p>Three polished Android applications demonstrating architecture, security, and user experience design
-                </p>
+                <p>Four polished Android applications demonstrating architecture, security, AI integration, and user experience design</p>
             </div>
 
             <div class="projects-grid">
@@ -1175,8 +1174,6 @@
 
                         <div class="screenshots-container">
                             <div class="screenshots-title">
-                            
-                                
                             </div>
                             <div class="screenshots-grid">
                                 <img src="assets/screenshots/xchat/x1.jpg" alt="Profile Setup" class="screenshot-image">
@@ -1245,7 +1242,6 @@
 
                         <div class="screenshots-container">
                             <div class="screenshots-title">
-                                
                             </div>
                             <div class="screenshots-grid">
                                 <img src="assets/screenshots/helphive/h1.jpg" alt="Home Screen"
@@ -1296,6 +1292,74 @@
                         </div>
                     </div>
                 </div>
+
+                <!-- Project 4: WebNovel Summarizer -->
+                <div class="project-card">
+                    <div class="project-header">
+                        <div class="project-number">04</div>
+                        <h3>WebNovel Summarizer</h3>
+                        <div class="subtitle">AI-Powered Reading Assistant for Web Novel Enthusiasts</div>
+                    </div>
+                    <div class="project-content">
+                        <h4><i class="fas fa-bolt"></i> Elevator Pitch</h4>
+                        <p>A sophisticated Android app combining a smart web browser with AI-powered chapter summarization for web novel readers. Supports 8+ popular novel sites, offers three summary depth levels, and stores your entire library offline — all without an account or cloud sync.</p>
+
+                        <h4><i class="fas fa-star"></i> Key Features</h4>
+                        <div class="features-grid">
+                            <div class="feature-item">Smart WebView Browser</div>
+                            <div class="feature-item">AI Summarization</div>
+                            <div class="feature-item">3-Level Summaries</div>
+                            <div class="feature-item">Novel Library</div>
+                            <div class="feature-item">Browsing History</div>
+                            <div class="feature-item">Bookmarks</div>
+                            <div class="feature-item">Text-to-Speech</div>
+                            <div class="feature-item">Offline Access</div>
+                        </div>
+
+                        <h4><i class="fas fa-code"></i> Tech Stack</h4>
+                        <div class="tech-stack">
+                            <span class="tech-tag primary">Kotlin</span>
+                            <span class="tech-tag">MVVM</span>
+                            <span class="tech-tag">Room Database</span>
+                            <span class="tech-tag">Groq AI</span>
+                            <span class="tech-tag">Cerebras AI</span>
+                            <span class="tech-tag">Retrofit</span>
+                            <span class="tech-tag">Coroutines</span>
+                            <span class="tech-tag">WebView</span>
+                        </div>
+
+                        <div class="screenshots-container">
+                            <div class="screenshots-title"></div>
+                            <div class="screenshots-grid">
+                                <img src="assets/screenshots/webnovel/sum1.jpg" alt="Home Screen" class="screenshot-image">
+                                <img src="assets/screenshots/webnovel/sum2.jpg" alt="Browser View" class="screenshot-image">
+                                <img src="assets/screenshots/webnovel/sum3.jpg" alt="Novel Site Grid" class="screenshot-image">
+                                <img src="assets/screenshots/webnovel/sum4.jpg" alt="Summarize Button" class="screenshot-image">
+                                <img src="assets/screenshots/webnovel/sum5.jpg" alt="Summary Screen" class="screenshot-image">
+                                <img src="assets/screenshots/webnovel/sum6.jpg" alt="Summary Detail" class="screenshot-image">
+                                <img src="assets/screenshots/webnovel/sum7.jpg" alt="Library Screen" class="screenshot-image">
+                                <img src="assets/screenshots/webnovel/sum8.jpg" alt="Volume List" class="screenshot-image">
+                                <img src="assets/screenshots/webnovel/sum9.jpg" alt="Chapter List" class="screenshot-image">
+                                <img src="assets/screenshots/webnovel/sum10.jpg" alt="Bookmarks" class="screenshot-image">
+                                <img src="assets/screenshots/webnovel/sum11.jpg" alt="History" class="screenshot-image">
+                            </div>
+                        </div>
+
+                        <div class="highlight-box">
+                            <strong>Implementation Highlight:</strong> Built a multi-layer JavaScript content extraction engine that removes ads and navigation elements, tries multiple CSS selectors with a fallback to paragraph filtering, and supports a manual selector override for tricky sites. Used a <code>ContentHolder</code> singleton to safely pass large novel text between activities, avoiding Android's "Transaction too large" crash.
+                        </div>
+
+                        <div class="future-improvements">
+                            <h4><i class="fas fa-rocket"></i> Future Improvements</h4>
+                            <ul>
+                                <li>Batch summarization across multiple chapters</li>
+                                <li>Export library to PDF/EPUB</li>
+                                <li>Multi-model AI support (Claude, Gemini, etc.)</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
             </div>
         </div>
     </section>
@@ -1326,7 +1390,7 @@
                             <li><i class="fas fa-check-circle"></i> Firebase (Auth/Firestore)</li>
                             <li><i class="fas fa-check-circle"></i> Firebase Storage & Cloud Messaging</li>
                             <li><i class="fas fa-check-circle"></i> WebRTC (Real-time communication)</li>
-                            <li><i class="fas fa-check-circle"></i> REST APIs (Retrofit)</li>
+                            <li><i class="fas fa-check-circle"></i> REST APIs (Retrofit / OkHttp)</li>
                             <li><i class="fas fa-check-circle"></i> Socket.IO (Real-time updates)</li>
                         </ul>
                     </div>
@@ -1335,7 +1399,7 @@
                         <h4><i class="fas fa-shield-alt"></i> Security & Architecture</h4>
                         <ul class="skill-list">
                             <li><i class="fas fa-check-circle"></i> AES Encryption</li>
-                            <li><i class="fas fa-check-circle"></i> Clean Architecture</li>
+                            <li><i class="fas fa-check-circle"></i> Clean Architecture / MVVM</li>
                             <li><i class="fas fa-check-circle"></i> Hilt Dependency Injection</li>
                             <li><i class="fas fa-check-circle"></i> Offline-First Design</li>
                             <li><i class="fas fa-check-circle"></i> Secure Key Management</li>
@@ -1345,11 +1409,11 @@
                     <div class="skill-category">
                         <h4><i class="fas fa-brain"></i> AI & Specialized Tech</h4>
                         <ul class="skill-list">
-                            <li><i class="fas fa-check-circle"></i> Generative AI (Gemini)</li>
+                            <li><i class="fas fa-check-circle"></i> Generative AI (Gemini, Groq, Cerebras)</li>
+                            <li><i class="fas fa-check-circle"></i> WebView & JavaScript Injection</li>
                             <li><i class="fas fa-check-circle"></i> MPAndroidChart (Data Visualization)</li>
                             <li><i class="fas fa-check-circle"></i> WorkManager (Background Tasks)</li>
                             <li><i class="fas fa-check-circle"></i> Glide/Picasso (Image Loading)</li>
-                            <li><i class="fas fa-check-circle"></i> CI/CD Pipelines</li>
                         </ul>
                     </div>
                 </div>
@@ -1392,8 +1456,6 @@
                 </div>
 
             </div>
-        </div>
-        </div>
         </div>
     </section>
 
@@ -1441,7 +1503,7 @@
         window.addEventListener('scroll', function () {
             const sections = document.querySelectorAll('section');
             const navLinks = document.querySelectorAll('nav a');
-            const scrollPosition = window.scrollY + 100; // Adjust for header height
+            const scrollPosition = window.scrollY + 100;
 
             let currentSection = '';
 
@@ -1482,7 +1544,6 @@
                 });
             }, observerOptions);
 
-            // Observe project cards and other elements
             document.querySelectorAll('.project-card, .skill-category, .contact-item, .contact-option').forEach(element => {
                 element.style.opacity = 0;
                 element.style.transform = 'translateY(20px)';
