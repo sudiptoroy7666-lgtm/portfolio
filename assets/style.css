@@ -8,6 +8,8 @@
     transition: var(--transition);
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
     cursor: pointer;
+    opacity: 1; /* was 0, causing dull/invisible images */
+    display: block;
 }
 
 .screenshot-image:hover {
@@ -44,9 +46,12 @@
 }
 
 .modal-image {
+    display: block;
     width: auto;
-    max-width: 100%;
-    max-height: 80vh;
+    height: auto;
+    max-width: 90vw;
+    max-height: 85vh;
+    object-fit: contain; /* prevents cropping */
     border-radius: 8px;
     box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
 }
