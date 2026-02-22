@@ -6,9 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Sudipta Roy | Android Developer Portfolio</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link
-        href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Space+Grotesk:wght@500;600;700&display=swap"
-        rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="assets/style.css">
     <style>
         :root {
@@ -23,998 +21,135 @@
             --light-gray: #e2e8f0;
             --success: #10b981;
             --border-radius: 16px;
-            --box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1), 0 8px 10px -6px rgba(0, 0, 0, 0.1);
+            --box-shadow: 0 10px 25px -5px rgba(0,0,0,0.1), 0 8px 10px -6px rgba(0,0,0,0.1);
             --transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
             --gradient-bg: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
             --gradient-card: linear-gradient(145deg, #1e293b, #0f172a);
         }
-
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
-        body {
-            font-family: 'Inter', sans-serif;
-            line-height: 1.6;
-            color: var(--light);
-            background: var(--gradient-bg);
-            overflow-x: hidden;
-            position: relative;
-        }
-
-        body::before {
-            content: '';
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background:
-                radial-gradient(circle at 10% 20%, rgba(99, 102, 241, 0.05) 0%, transparent 20%),
-                radial-gradient(circle at 90% 80%, rgba(139, 92, 246, 0.05) 0%, transparent 20%);
-            z-index: -1;
-        }
-
-        .container {
-            width: 90%;
-            max-width: 1400px;
-            margin: 0 auto;
-            padding: 0 15px;
-        }
-
-        /* Header & Navigation */
-        header {
-            background: rgba(15, 23, 42, 0.85);
-            backdrop-filter: blur(12px);
-            -webkit-backdrop-filter: blur(12px);
-            padding: 1.2rem 0;
-            position: fixed;
-            width: 100%;
-            top: 0;
-            z-index: 1000;
-            border-bottom: 1px solid rgba(99, 102, 241, 0.2);
-        }
-
-        .header-container {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-
-        .logo {
-            font-family: 'Space Grotesk', sans-serif;
-            font-size: 1.8rem;
-            font-weight: 700;
-            color: white;
-            text-decoration: none;
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-        }
-
-        .logo-icon {
-            color: var(--primary);
-            font-size: 2rem;
-        }
-
-        nav ul {
-            display: flex;
-            list-style: none;
-            gap: 2.5rem;
-        }
-
-        nav a {
-            color: rgba(255, 255, 255, 0.85);
-            text-decoration: none;
-            font-weight: 500;
-            font-size: 1.05rem;
-            transition: var(--transition);
-            position: relative;
-            padding: 0.5rem 0;
-        }
-
-        nav a:hover,
-        nav a.active {
-            color: white;
-        }
-
-        nav a::after {
-            content: '';
-            position: absolute;
-            bottom: 0;
-            left: 0;
-            width: 0;
-            height: 2px;
-            background: var(--primary);
-            transition: var(--transition);
-        }
-
-        nav a:hover::after,
-        nav a.active::after {
-            width: 100%;
-        }
-
-        .mobile-toggle {
-            display: none;
-            background: none;
-            border: none;
-            color: white;
-            font-size: 1.8rem;
-            cursor: pointer;
-            z-index: 2000;
-        }
-
-        /* Hero Section */
-        .hero {
-            padding: 10rem 0 6rem;
-            text-align: center;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .hero-content {
-            max-width: 850px;
-            margin: 0 auto;
-            position: relative;
-            z-index: 2;
-        }
-
-        .role-badge {
-            display: inline-block;
-            background: rgba(99, 102, 241, 0.15);
-            color: var(--primary);
-            padding: 0.4rem 1.2rem;
-            border-radius: 50px;
-            font-weight: 600;
-            margin-bottom: 1.8rem;
-            backdrop-filter: blur(4px);
-            border: 1px solid rgba(99, 102, 241, 0.2);
-            font-size: 1.05rem;
-        }
-
-        .hero h1 {
-            font-family: 'Space Grotesk', sans-serif;
-            font-size: 4.2rem;
-            font-weight: 800;
-            margin-bottom: 1.5rem;
-            background: linear-gradient(to right, #fff, #cbd5e1);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            line-height: 1.1;
-            text-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-        }
-
-        .hero p {
-            font-size: 1.4rem;
-            color: rgba(255, 255, 255, 0.85);
-            margin-bottom: 2.8rem;
-            max-width: 750px;
-            margin-left: auto;
-            margin-right: auto;
-            line-height: 1.7;
-        }
-
-        .cta-container {
-            display: flex;
-            justify-content: center;
-            gap: 1.5rem;
-            flex-wrap: wrap;
-        }
-
-        .cta-button {
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            gap: 0.8rem;
-            background: var(--primary);
-            color: white;
-            padding: 1rem 2.5rem;
-            border-radius: 50px;
-            text-decoration: none;
-            font-weight: 600;
-            font-size: 1.15rem;
-            transition: var(--transition);
-            border: 2px solid var(--primary);
-            box-shadow: 0 4px 20px rgba(99, 102, 241, 0.45);
-        }
-
-        .cta-button:hover {
-            background: transparent;
-            transform: translateY(-4px);
-            box-shadow: 0 8px 25px rgba(99, 102, 241, 0.6);
-        }
-
-        .cta-button.secondary {
-            background: transparent;
-            color: white;
-            border: 2px solid rgba(255, 255, 255, 0.3);
-        }
-
-        .cta-button.secondary:hover {
-            background: rgba(255, 255, 255, 0.1);
-            border-color: white;
-        }
-
-        .hero-shape {
-            position: absolute;
-            bottom: -50px;
-            left: 0;
-            width: 100%;
-            height: 100px;
-            background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1440 320'%3E%3Cpath fill='%231e293b' fill-opacity='1' d='M0,128L48,144C96,160,192,192,288,186.7C384,181,480,139,576,138.7C672,139,768,181,864,208C960,235,1056,245,1152,229.3C1248,213,1344,171,1392,149.3L1440,128L1440,320L1392,320C1344,320,1248,320,1152,320C1056,320,960,320,864,320C768,320,672,320,576,320C480,320,384,320,288,320C192,320,96,320,48,320L0,320Z'%3E%3C/path%3E%3C/svg%3E");
-            background-size: cover;
-        }
-
-        /* Section Styling */
-        section {
-            padding: 6rem 0;
-        }
-
-        .section-header {
-            text-align: center;
-            margin-bottom: 4rem;
-            position: relative;
-        }
-
-        .section-header::after {
-            content: '';
-            position: absolute;
-            bottom: -20px;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 80px;
-            height: 4px;
-            background: var(--primary);
-            border-radius: 2px;
-        }
-
-        .section-header h2 {
-            font-family: 'Space Grotesk', sans-serif;
-            font-size: 2.8rem;
-            color: white;
-            margin-bottom: 1.2rem;
-            position: relative;
-            display: inline-block;
-        }
-
-        .section-header h2::after {
-            content: '';
-            position: absolute;
-            bottom: -10px;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 60%;
-            height: 3px;
-            background: var(--accent);
-            border-radius: 3px;
-        }
-
-        .section-header p {
-            color: rgba(255, 255, 255, 0.7);
-            max-width: 750px;
-            margin: 1.5rem auto 0;
-            font-size: 1.2rem;
-            font-weight: 300;
-        }
-
-        /* Bio Section */
-        .bio-container {
-            background: var(--gradient-card);
-            border-radius: var(--border-radius);
-            padding: 3rem;
-            box-shadow: var(--box-shadow);
-            backdrop-filter: blur(12px);
-            border: 1px solid rgba(99, 102, 241, 0.15);
-            margin-bottom: 3rem;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .bio-container::before {
-            content: '';
-            position: absolute;
-            top: -50%;
-            left: -50%;
-            width: 200%;
-            height: 200%;
-            background: radial-gradient(circle, rgba(99, 102, 241, 0.08) 0%, transparent 70%);
-            z-index: 0;
-        }
-
-        .bio-container p {
-            font-size: 1.2rem;
-            line-height: 1.8;
-            color: rgba(255, 255, 255, 0.85);
-            position: relative;
-            z-index: 1;
-        }
-
-        .bio-container p em {
-            font-style: normal;
-            color: var(--primary);
-            font-weight: 600;
-        }
-
-        /* Projects Section */
-        .projects-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(380px, 1fr));
-            gap: 2.8rem;
-            margin-top: 2rem;
-        }
-
-        .project-card {
-            background: var(--gradient-card);
-            border-radius: var(--border-radius);
-            overflow: hidden;
-            box-shadow: var(--box-shadow);
-            transition: var(--transition);
-            border: 1px solid rgba(99, 102, 241, 0.15);
-            backdrop-filter: blur(8px);
-            position: relative;
-            overflow: hidden;
-        }
-
-        .project-card::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 4px;
-            background: linear-gradient(90deg, var(--primary), var(--secondary), var(--accent));
-        }
-
-        .project-card:hover {
-            transform: translateY(-12px);
-            box-shadow: 0 25px 30px -10px rgba(0, 0, 0, 0.3);
-            border-color: rgba(99, 102, 241, 0.3);
-        }
-
-        .project-header {
-            padding: 2rem;
-            text-align: center;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .project-header::before {
-            content: '';
-            position: absolute;
-            top: -50%;
-            left: -50%;
-            width: 200%;
-            height: 200%;
-            background: radial-gradient(circle, rgba(99, 102, 241, 0.15) 0%, transparent 70%);
-            z-index: 0;
-        }
-
-        .project-header h3 {
-            font-family: 'Space Grotesk', sans-serif;
-            font-size: 2rem;
-            margin-bottom: 0.5rem;
-            position: relative;
-            z-index: 1;
-        }
-
-        .project-header .subtitle {
-            font-size: 1.25rem;
-            opacity: 0.9;
-            font-weight: 300;
-            color: rgba(255, 255, 255, 0.85);
-            position: relative;
-            z-index: 1;
-        }
-
-        .project-number {
-            position: absolute;
-            top: 15px;
-            right: 20px;
-            font-size: 5rem;
-            font-weight: 800;
-            color: rgba(99, 102, 241, 0.1);
-            z-index: 0;
-            font-family: 'Space Grotesk', sans-serif;
-            line-height: 1;
-        }
-
-        .project-content {
-            padding: 2rem;
-            position: relative;
-            z-index: 1;
-        }
-
-        .project-content h4 {
-            font-family: 'Space Grotesk', sans-serif;
-            color: var(--primary);
-            margin: 1.8rem 0 1rem;
-            font-size: 1.4rem;
-            display: flex;
-            align-items: center;
-            gap: 0.8rem;
-        }
-
-        .project-content h4 i {
-            color: var(--accent);
-            font-size: 1.2rem;
-        }
-
-        .project-content p {
-            margin-bottom: 1.2rem;
-            color: rgba(255, 255, 255, 0.85);
-            line-height: 1.7;
-        }
-
-        .features-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
-            gap: 1.2rem;
-            margin: 1.5rem 0;
-        }
-
-        .feature-item {
-            background: rgba(30, 41, 59, 0.6);
-            padding: 1rem;
-            border-radius: 12px;
-            font-size: 0.95rem;
-            text-align: center;
-            transition: var(--transition);
-            border: 1px solid rgba(99, 102, 241, 0.2);
-        }
-
-        .feature-item:hover {
-            background: rgba(99, 102, 241, 0.15);
-            transform: translateY(-3px);
-            border-color: rgba(99, 102, 241, 0.4);
-        }
-
-        .tech-stack {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 0.8rem;
-            margin: 1.5rem 0;
-        }
-
-        .tech-tag {
-            background: rgba(30, 41, 59, 0.7);
-            padding: 0.5rem 1.1rem;
-            border-radius: 50px;
-            font-size: 0.95rem;
-            font-weight: 500;
-            border: 1px solid rgba(99, 102, 241, 0.3);
-            transition: var(--transition);
-        }
-
-        .tech-tag:hover {
-            background: rgba(99, 102, 241, 0.15);
-            border-color: var(--primary);
-        }
-
-        .tech-tag.primary {
-            background: rgba(99, 102, 241, 0.2);
-            color: var(--primary);
-            border-color: rgba(99, 102, 241, 0.5);
-        }
-
-        .screenshots-container {
-            margin: 2rem 0;
-        }
-
-        .screenshots-title {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 1.2rem;
-            padding-bottom: 0.5rem;
-            border-bottom: 1px solid rgba(99, 102, 241, 0.3);
-        }
-
-        .screenshots-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(110px, 1fr));
-            gap: 12px;
-            margin-top: 1rem;
-        }
-
-        .screenshot-placeholder {
-            background: linear-gradient(135deg, rgba(30, 41, 59, 0.8) 0%, rgba(15, 23, 42, 0.9) 100%);
-            border: 1px solid rgba(99, 102, 241, 0.2);
-            border-radius: 12px;
-            aspect-ratio: 9/16;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            color: var(--primary);
-            font-weight: 500;
-            font-size: 0.8rem;
-            text-align: center;
-            padding: 0.5rem;
-            transition: var(--transition);
-            position: relative;
-            overflow: hidden;
-        }
-
-        .screenshot-placeholder::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 3px;
-            background: linear-gradient(90deg, var(--primary), var(--secondary));
-        }
-
-        .screenshot-placeholder:hover {
-            transform: scale(1.05);
-            border-color: var(--primary);
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
-        }
-
-        .screenshot-placeholder i {
-            font-size: 1.8rem;
-            margin-bottom: 0.5rem;
-            opacity: 0.7;
-        }
-
-        .highlight-box {
-            background: rgba(30, 41, 59, 0.7);
-            border-left: 3px solid var(--accent);
-            padding: 1.5rem;
-            border-radius: 0 var(--border-radius) var(--border-radius) 0;
-            margin: 2rem 0;
-            position: relative;
-            overflow: hidden;
-            border: 1px solid rgba(236, 72, 153, 0.2);
-        }
-
-        .highlight-box::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 4px;
-            height: 100%;
-            background: linear-gradient(to bottom, var(--accent), var(--primary));
-        }
-
-        .highlight-box code {
-            background: rgba(15, 23, 42, 0.7);
-            padding: 0.2rem 0.5rem;
-            border-radius: 4px;
-            font-family: monospace;
-            color: var(--primary);
-        }
-
-        .future-improvements {
-            background: rgba(30, 41, 59, 0.6);
-            border-radius: var(--border-radius);
-            padding: 1.5rem;
-            margin-top: 1.5rem;
-            border: 1px solid rgba(16, 185, 129, 0.2);
-        }
-
-        .future-improvements ul {
-            padding-left: 1.8rem;
-            margin-top: 0.8rem;
-        }
-
-        .future-improvements li {
-            margin-bottom: 0.6rem;
-            color: rgba(255, 255, 255, 0.85);
-        }
-
-        .future-improvements li::marker {
-            color: var(--success);
-            font-weight: bold;
-        }
-
-        /* Skills Section */
-        .skills-container {
-            background: var(--gradient-card);
-            border-radius: var(--border-radius);
-            padding: 3rem;
-            box-shadow: var(--box-shadow);
-            backdrop-filter: blur(12px);
-            border: 1px solid rgba(99, 102, 241, 0.15);
-        }
-
-        .skills-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-            gap: 2rem;
-            margin-top: 2rem;
-        }
-
-        .skill-category {
-            margin-bottom: 1.8rem;
-        }
-
-        .skill-category h4 {
-            font-family: 'Space Grotesk', sans-serif;
-            color: var(--primary);
-            margin-bottom: 1.2rem;
-            font-size: 1.4rem;
-            display: flex;
-            align-items: center;
-            gap: 0.8rem;
-        }
-
-        .skill-category h4 i {
-            color: var(--accent);
-            font-size: 1.3rem;
-        }
-
-        .skill-list {
-            list-style: none;
-        }
-
-        .skill-list li {
-            padding: 0.9rem 0;
-            border-bottom: 1px dashed rgba(99, 102, 241, 0.2);
-            display: flex;
-            align-items: flex-start;
-            gap: 0.8rem;
-        }
-
-        .skill-list li:last-child {
-            border-bottom: none;
-        }
-
-        .skill-list li i {
-            color: var(--success);
-            font-size: 1.1rem;
-            min-width: 20px;
-            margin-top: 4px;
-        }
-
-        /* Contact Section */
-        .contact-container {
-            background: var(--gradient-card);
-            border-radius: var(--border-radius);
-            padding: 3.5rem;
-            text-align: center;
-            box-shadow: var(--box-shadow);
-            backdrop-filter: blur(12px);
-            border: 1px solid rgba(99, 102, 241, 0.15);
-            position: relative;
-            overflow: hidden;
-        }
-
-        .contact-container::before {
-            content: '';
-            position: absolute;
-            top: -50%;
-            left: -50%;
-            width: 200%;
-            height: 200%;
-            background: radial-gradient(circle, rgba(139, 92, 246, 0.1) 0%, transparent 70%);
-            z-index: 0;
-        }
-
-        .contact-container h2 {
-            font-family: 'Space Grotesk', sans-serif;
-            margin-bottom: 1.5rem;
-            font-size: 2.5rem;
-            position: relative;
-            z-index: 1;
-        }
-
-        .contact-container p {
-            font-size: 1.3rem;
-            max-width: 850px;
-            margin: 0 auto 2.5rem;
-            opacity: 0.85;
-            line-height: 1.8;
-            position: relative;
-            z-index: 1;
-        }
-
-        .contact-details {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-            gap: 2rem;
-            margin: 2.5rem 0;
-            position: relative;
-            z-index: 1;
-        }
-
-        .contact-item {
-            background: rgba(15, 23, 42, 0.7);
-            border-radius: 16px;
-            padding: 1.8rem;
-            transition: var(--transition);
-            border: 1px solid rgba(99, 102, 241, 0.2);
-            text-align: left;
-        }
-
-        .contact-item:hover {
-            transform: translateY(-5px);
-            border-color: var(--primary);
-            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.2);
-        }
-
-        .contact-item i {
-            font-size: 2.2rem;
-            color: var(--primary);
-            margin-bottom: 1.2rem;
-            display: block;
-        }
-
-        .contact-item h3 {
-            font-size: 1.4rem;
-            margin-bottom: 0.8rem;
-            color: white;
-        }
-
-        .contact-item a,
-        .contact-item p {
-            color: rgba(255, 255, 255, 0.85);
-            text-decoration: none;
-            font-size: 1.1rem;
-            transition: var(--transition);
-            display: block;
-            margin: 0.3rem 0;
-        }
-
-        .contact-item a:hover {
-            color: var(--primary);
-            transform: translateX(3px);
-        }
-
-        .contact-options {
-            display: flex;
-            justify-content: center;
-            gap: 1.8rem;
-            flex-wrap: wrap;
-            margin-top: 2.5rem;
-            position: relative;
-            z-index: 1;
-        }
-
-        .contact-option {
-            background: rgba(15, 23, 42, 0.7);
-            border-radius: 16px;
-            padding: 2rem;
-            min-width: 280px;
-            transition: var(--transition);
-            border: 1px solid rgba(99, 102, 241, 0.2);
-            text-align: center;
-            backdrop-filter: blur(8px);
-        }
-
-        .contact-option:hover {
-            background: rgba(99, 102, 241, 0.1);
-            transform: translateY(-7px);
-            border-color: var(--primary);
-            box-shadow: 0 15px 30px -5px rgba(0, 0, 0, 0.25);
-        }
-
-        .contact-option i {
-            font-size: 3rem;
-            color: var(--primary);
-            margin-bottom: 1.2rem;
-            display: block;
-        }
-
-        .contact-option h3 {
-            font-size: 1.5rem;
-            margin-bottom: 0.8rem;
-            color: white;
-        }
-
-        .contact-option p {
-            color: rgba(255, 255, 255, 0.85);
-            font-size: 1.05rem;
-            line-height: 1.6;
-        }
-
-        /* Footer */
-        footer {
-            background: rgba(7, 11, 21, 0.95);
-            backdrop-filter: blur(12px);
-            color: rgba(255, 255, 255, 0.7);
-            text-align: center;
-            padding: 2.5rem 0;
-            margin-top: 2rem;
-            border-top: 1px solid rgba(99, 102, 241, 0.2);
-        }
-
-        .social-links {
-            display: flex;
-            justify-content: center;
-            gap: 1.8rem;
-            margin: 1.8rem 0;
-        }
-
-        .social-link {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            width: 60px;
-            height: 60px;
-            background: rgba(30, 41, 59, 0.7);
-            border-radius: 50%;
-            color: white;
-            font-size: 1.6rem;
-            transition: var(--transition);
-            border: 1px solid rgba(99, 102, 241, 0.3);
-        }
-
-        .social-link:hover {
-            background: var(--primary);
-            transform: translateY(-5px) scale(1.1);
-            box-shadow: 0 10px 25px rgba(99, 102, 241, 0.4);
-            border-color: transparent;
-        }
-
-        .copyright {
-            font-size: 1.05rem;
-            opacity: 0.8;
-            margin-top: 0.8rem;
-        }
-
-        /* Responsive Design */
-        @media (max-width: 1100px) {
-            .hero h1 {
-                font-size: 3.5rem;
-            }
-
-            .screenshots-grid {
-                grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
-            }
-        }
-
-        @media (max-width: 992px) {
-            .hero h1 {
-                font-size: 3rem;
-            }
-
-            .hero p {
-                font-size: 1.25rem;
-            }
-
-            nav ul {
-                gap: 1.8rem;
-            }
-
-            .projects-grid {
-                grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
-            }
-        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Inter', sans-serif; line-height: 1.6; color: var(--light); background: var(--gradient-bg); overflow-x: hidden; position: relative; }
+        body::before { content: ''; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: radial-gradient(circle at 10% 20%, rgba(99,102,241,0.05) 0%, transparent 20%), radial-gradient(circle at 90% 80%, rgba(139,92,246,0.05) 0%, transparent 20%); z-index: -1; }
+        .container { width: 90%; max-width: 1400px; margin: 0 auto; padding: 0 15px; }
+        header { background: rgba(15,23,42,0.85); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); padding: 1.2rem 0; position: fixed; width: 100%; top: 0; z-index: 1000; border-bottom: 1px solid rgba(99,102,241,0.2); }
+        .header-container { display: flex; justify-content: space-between; align-items: center; }
+        .logo { font-family: 'Space Grotesk', sans-serif; font-size: 1.8rem; font-weight: 700; color: white; text-decoration: none; display: flex; align-items: center; gap: 0.5rem; }
+        .logo-icon { color: var(--primary); font-size: 2rem; }
+        nav ul { display: flex; list-style: none; gap: 2.5rem; }
+        nav a { color: rgba(255,255,255,0.85); text-decoration: none; font-weight: 500; font-size: 1.05rem; transition: var(--transition); position: relative; padding: 0.5rem 0; }
+        nav a:hover, nav a.active { color: white; }
+        nav a::after { content: ''; position: absolute; bottom: 0; left: 0; width: 0; height: 2px; background: var(--primary); transition: var(--transition); }
+        nav a:hover::after, nav a.active::after { width: 100%; }
+        .mobile-toggle { display: none; background: none; border: none; color: white; font-size: 1.8rem; cursor: pointer; z-index: 2000; }
+        .hero { padding: 10rem 0 6rem; text-align: center; position: relative; overflow: hidden; }
+        .hero-content { max-width: 850px; margin: 0 auto; position: relative; z-index: 2; }
+        .role-badge { display: inline-block; background: rgba(99,102,241,0.15); color: var(--primary); padding: 0.4rem 1.2rem; border-radius: 50px; font-weight: 600; margin-bottom: 1.8rem; backdrop-filter: blur(4px); border: 1px solid rgba(99,102,241,0.2); font-size: 1.05rem; }
+        .hero h1 { font-family: 'Space Grotesk', sans-serif; font-size: 4.2rem; font-weight: 800; margin-bottom: 1.5rem; background: linear-gradient(to right, #fff, #cbd5e1); -webkit-background-clip: text; -webkit-text-fill-color: transparent; line-height: 1.1; }
+        .hero p { font-size: 1.4rem; color: rgba(255,255,255,0.85); margin-bottom: 2.8rem; max-width: 750px; margin-left: auto; margin-right: auto; line-height: 1.7; }
+        .cta-container { display: flex; justify-content: center; gap: 1.5rem; flex-wrap: wrap; }
+        .cta-button { display: inline-flex; align-items: center; justify-content: center; gap: 0.8rem; background: var(--primary); color: white; padding: 1rem 2.5rem; border-radius: 50px; text-decoration: none; font-weight: 600; font-size: 1.15rem; transition: var(--transition); border: 2px solid var(--primary); box-shadow: 0 4px 20px rgba(99,102,241,0.45); }
+        .cta-button:hover { background: transparent; transform: translateY(-4px); box-shadow: 0 8px 25px rgba(99,102,241,0.6); }
+        .cta-button.secondary { background: transparent; color: white; border: 2px solid rgba(255,255,255,0.3); }
+        .cta-button.secondary:hover { background: rgba(255,255,255,0.1); border-color: white; }
+        .hero-shape { position: absolute; bottom: -50px; left: 0; width: 100%; height: 100px; background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1440 320'%3E%3Cpath fill='%231e293b' fill-opacity='1' d='M0,128L48,144C96,160,192,192,288,186.7C384,181,480,139,576,138.7C672,139,768,181,864,208C960,235,1056,245,1152,229.3C1248,213,1344,171,1392,149.3L1440,128L1440,320L1392,320C1344,320,1248,320,1152,320C1056,320,960,320,864,320C768,320,672,320,576,320C480,320,384,320,288,320C192,320,96,320,48,320L0,320Z'%3E%3C/path%3E%3C/svg%3E"); background-size: cover; }
+        section { padding: 6rem 0; }
+        .section-header { text-align: center; margin-bottom: 4rem; position: relative; }
+        .section-header::after { content: ''; position: absolute; bottom: -20px; left: 50%; transform: translateX(-50%); width: 80px; height: 4px; background: var(--primary); border-radius: 2px; }
+        .section-header h2 { font-family: 'Space Grotesk', sans-serif; font-size: 2.8rem; color: white; margin-bottom: 1.2rem; position: relative; display: inline-block; }
+        .section-header h2::after { content: ''; position: absolute; bottom: -10px; left: 50%; transform: translateX(-50%); width: 60%; height: 3px; background: var(--accent); border-radius: 3px; }
+        .section-header p { color: rgba(255,255,255,0.7); max-width: 750px; margin: 1.5rem auto 0; font-size: 1.2rem; font-weight: 300; }
+        .bio-container { background: var(--gradient-card); border-radius: var(--border-radius); padding: 3rem; box-shadow: var(--box-shadow); backdrop-filter: blur(12px); border: 1px solid rgba(99,102,241,0.15); margin-bottom: 3rem; position: relative; overflow: hidden; }
+        .bio-container::before { content: ''; position: absolute; top: -50%; left: -50%; width: 200%; height: 200%; background: radial-gradient(circle, rgba(99,102,241,0.08) 0%, transparent 70%); z-index: 0; }
+        .bio-container p { font-size: 1.2rem; line-height: 1.8; color: rgba(255,255,255,0.85); position: relative; z-index: 1; }
+        .bio-container p em { font-style: normal; color: var(--primary); font-weight: 600; }
+        .projects-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(380px, 1fr)); gap: 2.8rem; margin-top: 2rem; }
+        .project-card { background: var(--gradient-card); border-radius: var(--border-radius); overflow: hidden; box-shadow: var(--box-shadow); transition: var(--transition); border: 1px solid rgba(99,102,241,0.15); backdrop-filter: blur(8px); position: relative; }
+        .project-card::before { content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 4px; background: linear-gradient(90deg, var(--primary), var(--secondary), var(--accent)); }
+        .project-card:hover { transform: translateY(-12px); box-shadow: 0 25px 30px -10px rgba(0,0,0,0.3); border-color: rgba(99,102,241,0.3); }
+        .project-header { padding: 2rem; text-align: center; position: relative; overflow: hidden; }
+        .project-header::before { content: ''; position: absolute; top: -50%; left: -50%; width: 200%; height: 200%; background: radial-gradient(circle, rgba(99,102,241,0.15) 0%, transparent 70%); z-index: 0; }
+        .project-header h3 { font-family: 'Space Grotesk', sans-serif; font-size: 2rem; margin-bottom: 0.5rem; position: relative; z-index: 1; }
+        .project-header .subtitle { font-size: 1.1rem; opacity: 0.9; font-weight: 300; color: rgba(255,255,255,0.85); position: relative; z-index: 1; }
+        .project-number { position: absolute; top: 15px; right: 20px; font-size: 5rem; font-weight: 800; color: rgba(99,102,241,0.1); z-index: 0; font-family: 'Space Grotesk', sans-serif; line-height: 1; }
+        .project-content { padding: 2rem; position: relative; z-index: 1; }
+        .project-content h4 { font-family: 'Space Grotesk', sans-serif; color: var(--primary); margin: 1.8rem 0 1rem; font-size: 1.4rem; display: flex; align-items: center; gap: 0.8rem; }
+        .project-content h4 i { color: var(--accent); font-size: 1.2rem; }
+        .project-content p { margin-bottom: 1.2rem; color: rgba(255,255,255,0.85); line-height: 1.7; }
+        .features-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); gap: 1.2rem; margin: 1.5rem 0; }
+        .feature-item { background: rgba(30,41,59,0.6); padding: 1rem; border-radius: 12px; font-size: 0.95rem; text-align: center; transition: var(--transition); border: 1px solid rgba(99,102,241,0.2); }
+        .feature-item:hover { background: rgba(99,102,241,0.15); transform: translateY(-3px); border-color: rgba(99,102,241,0.4); }
+        .tech-stack { display: flex; flex-wrap: wrap; gap: 0.8rem; margin: 1.5rem 0; }
+        .tech-tag { background: rgba(30,41,59,0.7); padding: 0.5rem 1.1rem; border-radius: 50px; font-size: 0.95rem; font-weight: 500; border: 1px solid rgba(99,102,241,0.3); transition: var(--transition); }
+        .tech-tag:hover { background: rgba(99,102,241,0.15); border-color: var(--primary); }
+        .tech-tag.primary { background: rgba(99,102,241,0.2); color: var(--primary); border-color: rgba(99,102,241,0.5); }
+
+        .screenshots-container { margin: 0.5rem 0 1.5rem; }
+        .screenshots-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(110px, 1fr)); gap: 12px; margin-top: 0.8rem; }
+        .highlight-box { background: rgba(30,41,59,0.7); padding: 1.5rem; border-radius: 0 var(--border-radius) var(--border-radius) 0; margin: 2rem 0; position: relative; overflow: hidden; border: 1px solid rgba(236,72,153,0.2); }
+        .highlight-box::before { content: ''; position: absolute; top: 0; left: 0; width: 4px; height: 100%; background: linear-gradient(to bottom, var(--accent), var(--primary)); }
+        .highlight-box code { background: rgba(15,23,42,0.7); padding: 0.2rem 0.5rem; border-radius: 4px; font-family: monospace; color: var(--primary); }
+        .future-improvements { background: rgba(30,41,59,0.6); border-radius: var(--border-radius); padding: 1.5rem; margin-top: 1.5rem; border: 1px solid rgba(16,185,129,0.2); }
+        .future-improvements ul { padding-left: 1.8rem; margin-top: 0.8rem; }
+        .future-improvements li { margin-bottom: 0.6rem; color: rgba(255,255,255,0.85); }
+        .future-improvements li::marker { color: var(--success); font-weight: bold; }
+        .skills-container { background: var(--gradient-card); border-radius: var(--border-radius); padding: 3rem; box-shadow: var(--box-shadow); backdrop-filter: blur(12px); border: 1px solid rgba(99,102,241,0.15); }
+        .skills-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 2rem; margin-top: 2rem; }
+        .skill-category { margin-bottom: 1.8rem; }
+        .skill-category h4 { font-family: 'Space Grotesk', sans-serif; color: var(--primary); margin-bottom: 1.2rem; font-size: 1.4rem; display: flex; align-items: center; gap: 0.8rem; }
+        .skill-category h4 i { color: var(--accent); font-size: 1.3rem; }
+        .skill-list { list-style: none; }
+        .skill-list li { padding: 0.9rem 0; border-bottom: 1px dashed rgba(99,102,241,0.2); display: flex; align-items: flex-start; gap: 0.8rem; }
+        .skill-list li:last-child { border-bottom: none; }
+        .skill-list li i { color: var(--success); font-size: 1.1rem; min-width: 20px; margin-top: 4px; }
+        .contact-container { background: var(--gradient-card); border-radius: var(--border-radius); padding: 3.5rem; text-align: center; box-shadow: var(--box-shadow); backdrop-filter: blur(12px); border: 1px solid rgba(99,102,241,0.15); position: relative; overflow: hidden; }
+        .contact-container::before { content: ''; position: absolute; top: -50%; left: -50%; width: 200%; height: 200%; background: radial-gradient(circle, rgba(139,92,246,0.1) 0%, transparent 70%); z-index: 0; }
+        .contact-container h2 { font-family: 'Space Grotesk', sans-serif; margin-bottom: 1.5rem; font-size: 2.5rem; position: relative; z-index: 1; }
+        .contact-details { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 2rem; margin: 2.5rem 0; position: relative; z-index: 1; }
+        .contact-item { background: rgba(15,23,42,0.7); border-radius: 16px; padding: 1.8rem; transition: var(--transition); border: 1px solid rgba(99,102,241,0.2); text-align: left; }
+        .contact-item:hover { transform: translateY(-5px); border-color: var(--primary); box-shadow: 0 10px 25px -5px rgba(0,0,0,0.2); }
+        .contact-item i { font-size: 2.2rem; color: var(--primary); margin-bottom: 1.2rem; display: block; }
+        .contact-item h3 { font-size: 1.4rem; margin-bottom: 0.8rem; color: white; }
+        .contact-item a, .contact-item p { color: rgba(255,255,255,0.85); text-decoration: none; font-size: 1.1rem; transition: var(--transition); display: block; margin: 0.3rem 0; }
+        .contact-item a:hover { color: var(--primary); transform: translateX(3px); }
+        footer { background: rgba(7,11,21,0.95); backdrop-filter: blur(12px); color: rgba(255,255,255,0.7); text-align: center; padding: 2.5rem 0; margin-top: 2rem; border-top: 1px solid rgba(99,102,241,0.2); }
+        .social-links { display: flex; justify-content: center; gap: 1.8rem; margin: 1.8rem 0; }
+        .social-link { display: flex; align-items: center; justify-content: center; width: 60px; height: 60px; background: rgba(30,41,59,0.7); border-radius: 50%; color: white; font-size: 1.6rem; transition: var(--transition); border: 1px solid rgba(99,102,241,0.3); text-decoration: none; }
+        .social-link:hover { background: var(--primary); transform: translateY(-5px) scale(1.1); box-shadow: 0 10px 25px rgba(99,102,241,0.4); border-color: transparent; }
+        .copyright { font-size: 1.05rem; opacity: 0.8; margin-top: 0.8rem; }
 
         @media (max-width: 768px) {
-            .mobile-toggle {
-                display: block;
-            }
-
-            nav ul {
-                position: fixed;
-                top: 75px;
-                right: -100%;
-                flex-direction: column;
-                background: var(--dark);
-                width: 85%;
-                height: calc(100vh - 75px);
-                padding: 2.5rem;
-                transition: var(--transition);
-                box-shadow: -5px 0 25px rgba(0, 0, 0, 0.2);
-                backdrop-filter: blur(12px);
-                border-left: 1px solid rgba(99, 102, 241, 0.3);
-            }
-
-            nav ul.active {
-                right: 0;
-            }
-
-            nav ul li {
-                margin: 1.2rem 0;
-            }
-
-            nav a {
-                font-size: 1.3rem;
-                display: block;
-                padding: 0.8rem 0;
-            }
-
-            .hero {
-                padding: 8rem 0 5rem;
-            }
-
-            .hero h1 {
-                font-size: 2.6rem;
-            }
-
-            .hero p {
-                font-size: 1.15rem;
-            }
-
-            .cta-container {
-                flex-direction: column;
-                align-items: center;
-            }
-
-            .cta-button {
-                width: 100%;
-                max-width: 350px;
-                justify-content: center;
-            }
-
-            .projects-grid {
-                grid-template-columns: 1fr;
-            }
-
-            section {
-                padding: 4.5rem 0;
-            }
-
-            .section-header h2 {
-                font-size: 2.3rem;
-            }
-
-            .contact-details,
-            .contact-options {
-                grid-template-columns: 1fr;
-            }
+            .mobile-toggle { display: block; }
+            nav ul { position: fixed; top: 75px; right: -100%; flex-direction: column; background: var(--dark); width: 85%; height: calc(100vh - 75px); padding: 2.5rem; transition: var(--transition); box-shadow: -5px 0 25px rgba(0,0,0,0.2); backdrop-filter: blur(12px); border-left: 1px solid rgba(99,102,241,0.3); }
+            nav ul.active { right: 0; }
+            nav ul li { margin: 1.2rem 0; }
+            nav a { font-size: 1.3rem; display: block; padding: 0.8rem 0; }
+            .hero { padding: 8rem 0 5rem; }
+            .hero h1 { font-size: 2.6rem; }
+            .hero p { font-size: 1.15rem; }
+            .cta-container { flex-direction: column; align-items: center; }
+            .cta-button { width: 100%; max-width: 350px; justify-content: center; }
+            .projects-grid { grid-template-columns: 1fr; }
+            section { padding: 4.5rem 0; }
+            .section-header h2 { font-size: 2.3rem; }
+            .contact-details { grid-template-columns: 1fr; }
         }
-
         @media (max-width: 480px) {
-            .hero h1 {
-                font-size: 2.2rem;
-            }
-
-            .section-header h2 {
-                font-size: 2rem;
-            }
-
-            .project-header h3 {
-                font-size: 1.7rem;
-            }
-
-            .screenshots-grid {
-                grid-template-columns: repeat(2, 1fr);
-            }
-
-            .screenshots-title {
-                flex-direction: column;
-                gap: 1rem;
-            }
-
-            .screenshots-title .view-all {
-                align-self: flex-start;
-            }
-
-            .contact-item,
-            .contact-option {
-                min-width: auto;
-            }
-
-            .social-links {
-                gap: 1.2rem;
-            }
-
-            .social-link {
-                width: 50px;
-                height: 50px;
-                font-size: 1.3rem;
-            }
+            .hero h1 { font-size: 2.2rem; }
+            .section-header h2 { font-size: 2rem; }
+            .project-header h3 { font-size: 1.7rem; }
+            .screenshots-grid { grid-template-columns: repeat(2, 1fr); }
         }
     </style>
 </head>
 
 <body>
-    <!-- Header -->
+
     <header>
         <div class="container header-container">
             <a href="#" class="logo">
                 <i class="fas fa-mobile-alt logo-icon"></i>
                 Sudipta<span>Roy</span>
             </a>
-            <button class="mobile-toggle" id="mobileToggle">
-                <i class="fas fa-bars"></i>
-            </button>
+            <button class="mobile-toggle" id="mobileToggle"><i class="fas fa-bars"></i></button>
             <nav>
                 <ul id="navMenu">
                     <li><a href="#bio" class="active">Bio</a></li>
@@ -1026,43 +161,31 @@
         </div>
     </header>
 
-    <!-- Hero Section -->
     <section class="hero">
         <div class="container hero-content">
             <div class="role-badge">Android Developer (Java & Kotlin)</div>
             <h1>Building Mobile Experiences That Matter</h1>
-            <p>Creating secure, intuitive Android applications with clean architecture, Firebase backend, AI
-                integration, and offline-first design</p>
+            <p>Creating secure, intuitive Android applications with clean architecture, Firebase backend, AI integration, and offline-first design</p>
             <div class="cta-container">
-                <a href="#projects" class="cta-button">
-                    <i class="fas fa-briefcase"></i> View My Projects
-                </a>
-                <a href="#contact" class="cta-button secondary">
-                    <i class="fas fa-paper-plane"></i> Get In Touch
-                </a>
+                <a href="#projects" class="cta-button"><i class="fas fa-briefcase"></i> View My Projects</a>
+                <a href="#contact" class="cta-button secondary"><i class="fas fa-paper-plane"></i> Get In Touch</a>
             </div>
         </div>
         <div class="hero-shape"></div>
     </section>
 
-    <!-- Bio Section -->
     <section id="bio" class="bio-section">
         <div class="container">
             <div class="section-header">
                 <h2>About Me</h2>
-                <p>Mobile developer specializing in Android applications with a focus on user experience, security, and
-                    performance</p>
+                <p>Mobile developer specializing in Android applications with a focus on user experience, security, and performance</p>
             </div>
             <div class="bio-container">
-                <p>I build practical, user-focused Android apps with clean architecture, Firebase backend, AI features
-                    and offline support. I have built several apps. Below are four polished projects i made: <em>Notes
-                        App</em>, <em>XChat</em>, <em>HelpHive</em>, and <em>WebNovel Summarizer</em> — each includes a short elevator pitch, feature
-                    list, tech stack and demo.</p>
+                <p>I build practical, user-focused Android apps with clean architecture, Firebase backend, AI features and offline support. Below are four polished projects: <em>Notes App</em>, <em>XChat</em>, <em>HelpHive</em>, and <em>WebNovel Summarizer</em> — each includes a short elevator pitch, feature list, tech stack and demo.</p>
             </div>
         </div>
     </section>
 
-    <!-- Projects Section -->
     <section id="projects" class="projects-section">
         <div class="container">
             <div class="section-header">
@@ -1071,27 +194,29 @@
             </div>
 
             <div class="projects-grid">
-                <!-- Project 1: Notes App -->
+
+                <!-- ══ PROJECT 1: NOTES APP ══════════════════════════════════ -->
                 <div class="project-card">
                     <div class="project-header">
                         <div class="project-number">01</div>
                         <h3>Notes App</h3>
-                        <div class="subtitle">Simple, reliable note-taking with offline access</div>
+                        <div class="subtitle">Secure note-taking with Firebase sync &amp; smart reminders</div>
                     </div>
                     <div class="project-content">
+
                         <h4><i class="fas fa-bolt"></i> Elevator Pitch</h4>
-                        <p>A lightweight, secure note app (Java) with image attachments, reminders, offline read access
-                            and Firebase sync — perfect to show end-to-end auth, storage and background notifications.
-                        </p>
+                        <p>A production-quality note-taking app built in Java that goes far beyond a simple CRUD demo. It handles the full identity lifecycle — email verification, secure auth, password reset — then layers on image attachments stored in Firebase Storage, scheduled reminders that fire even when the app is closed, and seamless offline read access. Every architectural decision was made to show real-world reliability: what happens when the network drops, when the app is killed, when the user forgets their password.</p>
 
                         <h4><i class="fas fa-star"></i> Key Features</h4>
                         <div class="features-grid">
                             <div class="feature-item">Email/Password Auth</div>
-                            <div class="feature-item">Image Attachments</div>
-                            <div class="feature-item">Timer Reminders</div>
-                            <div class="feature-item">Offline Access</div>
                             <div class="feature-item">Email Verification</div>
+                            <div class="feature-item">Password Reset Flow</div>
+                            <div class="feature-item">Image Attachments</div>
+                            <div class="feature-item">WorkManager Reminders</div>
+                            <div class="feature-item">Offline Read Access</div>
                             <div class="feature-item">Firestore Sync</div>
+                            <div class="feature-item">Firebase Storage</div>
                         </div>
 
                         <h4><i class="fas fa-code"></i> Tech Stack</h4>
@@ -1104,61 +229,55 @@
                             <span class="tech-tag">WorkManager</span>
                         </div>
 
+                        <h4><i class="fas fa-mobile-alt"></i> Screenshots</h4>
                         <div class="screenshots-grid">
-                            <img src="assets/screenshots/notes-app/note1.jpg" alt="Notes App Home Screen"
-                                class="screenshot-image">
-                            <img src="assets/screenshots/notes-app/note2.jpg" alt="Notes App Create Note"
-                                class="screenshot-image">
-                            <img src="assets/screenshots/notes-app/note3.jpg" alt="Notes App Image Picker"
-                                class="screenshot-image">
-                            <img src="assets/screenshots/notes-app/note4.jpg" alt="Notes App Long Press Menu"
-                                class="screenshot-image">
-                            <img src="assets/screenshots/notes-app/note5.jpg" alt="Notes App Timer Notification"
-                                class="screenshot-image">
-                            <img src="assets/screenshots/notes-app/note6.jpg" alt="Notes App Login Screen"
-                                class="screenshot-image">
-                            <img src="assets/screenshots/notes-app/note7.jpg" alt="Notes App Settings"
-                                class="screenshot-image">
+                            <img src="assets/screenshots/notes-app/note1.jpg" alt="Notes App Home Screen" class="screenshot-image">
+                            <img src="assets/screenshots/notes-app/note2.jpg" alt="Notes App Create Note" class="screenshot-image">
+                            <img src="assets/screenshots/notes-app/note3.jpg" alt="Notes App Image Picker" class="screenshot-image">
+                            <img src="assets/screenshots/notes-app/note4.jpg" alt="Notes App Long Press Menu" class="screenshot-image">
+                            <img src="assets/screenshots/notes-app/note5.jpg" alt="Notes App Timer Notification" class="screenshot-image">
+                            <img src="assets/screenshots/notes-app/note6.jpg" alt="Notes App Login Screen" class="screenshot-image">
+                            <img src="assets/screenshots/notes-app/note7.jpg" alt="Notes App Settings" class="screenshot-image">
                         </div>
 
                         <div class="highlight-box">
-                            <strong>Implementation Highlight:</strong> Optimized offline data sync with Firestore
-                            persistence, ensuring seamless user experience across connectivity states. Implemented
-                            secure timer scheduling using WorkManager that triggers notifications even when the app is
-                            closed.
+                            <strong>Implementation Highlight:</strong> The reminder system uses WorkManager with a custom <code>NotificationWorker</code> that survives app death and device restarts — unlike AlarmManager, it respects Doze mode and battery optimization constraints. Firestore offline persistence is enabled with multi-tab synchronization so reads are instant from local cache, while writes queue and sync automatically the moment connectivity returns. The full auth lifecycle (register → email verify → login → password reset) is handled without any third-party auth UI library.
                         </div>
 
                         <div class="future-improvements">
                             <h4><i class="fas fa-rocket"></i> Future Improvements</h4>
                             <ul>
-                                <li>Full-text search & tags & filters</li>
-                                <li>Export/import notes (JSON/backup)</li>
+                                <li>Full-text search, tags &amp; filters</li>
+                                <li>Export/import notes as JSON backup</li>
                                 <li>End-to-end encryption for sensitive notes</li>
                             </ul>
                         </div>
                     </div>
                 </div>
 
-                <!-- Project 2: XChat -->
+                <!-- ══ PROJECT 2: XCHAT ══════════════════════════════════════ -->
                 <div class="project-card">
                     <div class="project-header">
                         <div class="project-number">02</div>
                         <h3>XChat</h3>
-                        <div class="subtitle">Secure peer chat + AI assistant</div>
+                        <div class="subtitle">E2E encrypted peer chat with WebRTC calls &amp; Gemini AI</div>
                     </div>
                     <div class="project-content">
+
                         <h4><i class="fas fa-bolt"></i> Elevator Pitch</h4>
-                        <p>An end-to-end encrypted one-to-one chat app with WebRTC calling and an integrated AI
-                            assistant. Great to show realtime features, E2EE, and media/call integration.</p>
+                        <p>XChat is a full-stack, one-to-one messaging app with three layers of real-time technology working simultaneously — Firebase for presence and message sync, Socket.IO for WebRTC signaling, and WebRTC itself for peer audio/video calls. All messages are encrypted end-to-end with AES keys derived from user credentials, so even Firebase cannot read the content. A built-in Gemini AI assistant lets users switch from human chat to AI chat in the same interface, with API keys protected from reverse engineering.</p>
 
                         <h4><i class="fas fa-star"></i> Key Features</h4>
                         <div class="features-grid">
-                            <div class="feature-item">E2E Encryption</div>
-                            <div class="feature-item">WebRTC Calling</div>
+                            <div class="feature-item">AES E2E Encryption</div>
+                            <div class="feature-item">WebRTC Video Calls</div>
+                            <div class="feature-item">WebRTC Audio Calls</div>
+                            <div class="feature-item">Socket.IO Signaling</div>
                             <div class="feature-item">Gemini AI Assistant</div>
                             <div class="feature-item">Friend Requests</div>
                             <div class="feature-item">Image Sharing</div>
-                            <div class="feature-item">Call Logs</div>
+                            <div class="feature-item">Call History Logs</div>
+                            <div class="feature-item">Online Presence</div>
                             <div class="feature-item">Profile Management</div>
                         </div>
 
@@ -1166,68 +285,67 @@
                         <div class="tech-stack">
                             <span class="tech-tag primary">Kotlin</span>
                             <span class="tech-tag">WebRTC</span>
-                            <span class="tech-tag">Firebase</span>
-                            <span class="tech-tag">Gemini AI</span>
-                            <span class="tech-tag">Glide</span>
+                            <span class="tech-tag">Firebase Realtime DB</span>
+                            <span class="tech-tag">Firestore</span>
                             <span class="tech-tag">Socket.IO</span>
+                            <span class="tech-tag">Gemini AI</span>
+                            <span class="tech-tag">AES Encryption</span>
+                            <span class="tech-tag">Glide</span>
                         </div>
 
-                        <div class="screenshots-container">
-                            <div class="screenshots-title">
-                            </div>
-                            <div class="screenshots-grid">
-                                <img src="assets/screenshots/xchat/x1.jpg" alt="Profile Setup" class="screenshot-image">
-                                <img src="assets/screenshots/xchat/x2.jpg" alt="User Search" class="screenshot-image">
-                                <img src="assets/screenshots/xchat/x3.jpg" alt="Chat Screen" class="screenshot-image">
-                                <img src="assets/screenshots/xchat/x4.jpg" alt="Media Sharing" class="screenshot-image">
-                                <img src="assets/screenshots/xchat/x5.jpg" alt="Video Call" class="screenshot-image">
-                                <img src="assets/screenshots/xchat/x6.jpg" alt="Voice Call" class="screenshot-image">
-                                <img src="assets/screenshots/xchat/x7.jpg" alt="AI Assistant" class="screenshot-image">
-                                <img src="assets/screenshots/xchat/x8.jpg" alt="Call Logs" class="screenshot-image">
-                                <img src="assets/screenshots/xchat/x9.jpg" alt="Settings" class="screenshot-image">
-                            </div>
+                        <h4><i class="fas fa-mobile-alt"></i> Screenshots</h4>
+                        <div class="screenshots-grid">
+                            <img src="assets/screenshots/xchat/x1.jpg" alt="Profile Setup" class="screenshot-image">
+                            <img src="assets/screenshots/xchat/x2.jpg" alt="User Search" class="screenshot-image">
+                            <img src="assets/screenshots/xchat/x3.jpg" alt="Chat Screen" class="screenshot-image">
+                            <img src="assets/screenshots/xchat/x4.jpg" alt="Media Sharing" class="screenshot-image">
+                            <img src="assets/screenshots/xchat/x5.jpg" alt="Video Call" class="screenshot-image">
+                            <img src="assets/screenshots/xchat/x6.jpg" alt="Voice Call" class="screenshot-image">
+                            <img src="assets/screenshots/xchat/x7.jpg" alt="AI Assistant" class="screenshot-image">
+                            <img src="assets/screenshots/xchat/x8.jpg" alt="Call Logs" class="screenshot-image">
+                            <img src="assets/screenshots/xchat/x9.jpg" alt="Settings" class="screenshot-image">
                         </div>
 
                         <div class="highlight-box">
-                            <strong>Implementation Highlight:</strong> Engineered WebRTC signaling server integration
-                            for low-latency audio calls. Secured data in transit/at rest using AES keys derived from
-                            user credentials. Implemented Gemini API with secure key management via
-                            <code>local.properties</code> to prevent API key exposure.
+                            <strong>Implementation Highlight:</strong> WebRTC peer connection setup required a custom Socket.IO signaling server to exchange SDP offers/answers and ICE candidates between devices behind NAT. AES encryption keys are derived per-user from a combination of credentials — never stored in plaintext or transmitted over the wire, meaning message content is unreadable even if the Firebase database is compromised. The Gemini AI integration maintains a fully isolated conversation thread so AI context never bleeds into the human chat history.
                         </div>
 
                         <div class="future-improvements">
                             <h4><i class="fas fa-rocket"></i> Future Improvements</h4>
                             <ul>
-                                <li>Group chat & group calls</li>
-                                <li>Stronger key management (Signal-protocol-like)</li>
-                                <li>Turn server deployment for better NAT traversal</li>
+                                <li>Group chat &amp; group calls</li>
+                                <li>Signal-protocol-like double-ratchet key management</li>
+                                <li>TURN server deployment for better NAT traversal</li>
                             </ul>
                         </div>
                     </div>
                 </div>
 
-                <!-- Project 3: HelpHive -->
+                <!-- ══ PROJECT 3: HELPHIVE ════════════════════════════════════ -->
                 <div class="project-card">
                     <div class="project-header">
                         <div class="project-number">03</div>
                         <h3>HelpHive</h3>
-                        <div class="subtitle">Community mental health & help network</div>
+                        <div class="subtitle">Community care ecosystem — mood tracking, kindness logging &amp; practical help network</div>
                     </div>
                     <div class="project-content">
+
                         <h4><i class="fas fa-bolt"></i> Elevator Pitch</h4>
-                        <p>A community-first app to track moods, log kind acts and request/offer help — combines
-                            analytics (mood histogram), AI-generated supportive messages, and conversational help
-                            requests. Built with clean architecture and offline caching.</p>
+                        <p>HelpHive is a three-app ecosystem designed to combat modern social isolation. <strong>HelpHive Core</strong> matches neighbors for practical assistance. <strong>MoodMosaic</strong> lets users log emotions, visualize aggregated community mood patterns on a neighborhood heat map, and receive clinically-informed AI support messages when negative emotions are detected. <strong>KindConnect</strong> captures everyday acts of kindness and surfaces them in a positive-only community feed — with no leaderboards, only intrinsic recognition. tested with 12+ users. It has offline sync reliability, built on clean architecture with Hilt DI and a layered Room/Firestore repository.</p>
 
                         <h4><i class="fas fa-star"></i> Key Features</h4>
                         <div class="features-grid">
-                            <div class="feature-item">Mood Tracking</div>
+                            <div class="feature-item">Standard Authentication system</div>
+                            <div class="feature-item">Mood Logging (8 emotions)</div>
+                            <div class="feature-item">Neighborhood Mood Map</div>
                             <div class="feature-item">AI Support Messages</div>
-                            <div class="feature-item">Kindness Log</div>
-                            <div class="feature-item">Help Requests</div>
+                            <div class="feature-item">Crisis Resource Access</div>
+                            <div class="feature-item">Kindness Feed</div>
+                            <div class="feature-item">Group Challenges</div>
                             <div class="feature-item">Mood Statistics</div>
-                            <div class="feature-item">Offline Caching</div>
                             <div class="feature-item">Community Feed</div>
+                            <div class="feature-item">Offline-First Sync</div>
+                            <div class="feature-item">Hilt Dependency Injection</div>
                         </div>
 
                         <h4><i class="fas fa-code"></i> Tech Stack</h4>
@@ -1235,85 +353,73 @@
                             <span class="tech-tag primary">Kotlin</span>
                             <span class="tech-tag">Clean Architecture</span>
                             <span class="tech-tag">Room Database</span>
-                            <span class="tech-tag">MPAndroidChart</span>
+                            <span class="tech-tag">Firestore</span>
                             <span class="tech-tag">Hilt DI</span>
                             <span class="tech-tag">Gemini AI</span>
+                            <span class="tech-tag">MPAndroidChart</span>
+                            <span class="tech-tag">Coroutines &amp; Flow</span>
                         </div>
 
-                        <div class="screenshots-container">
-                            <div class="screenshots-title">
-                            </div>
-                            <div class="screenshots-grid">
-                                <img src="assets/screenshots/helphive/h1.jpg" alt="Home Screen"
-                                    class="screenshot-image">
-                                <img src="assets/screenshots/helphive/h2.jpg" alt="Mood Tracking"
-                                    class="screenshot-image">
-                                <img src="assets/screenshots/helphive/h3.jpg" alt="Mood Statistics"
-                                    class="screenshot-image">
-                                <img src="assets/screenshots/helphive/h4.jpg" alt="Kindness Log"
-                                    class="screenshot-image">
-                                <img src="assets/screenshots/helphive/h5.jpg" alt="Help Requests"
-                                    class="screenshot-image">
-                                <img src="assets/screenshots/helphive/h6.jpg" alt="Chat Interface"
-                                    class="screenshot-image">
-                                <img src="assets/screenshots/helphive/h7.jpg" alt="AI Messages"
-                                    class="screenshot-image">
-                                <img src="assets/screenshots/helphive/h8.jpg" alt="Profile Setup"
-                                    class="screenshot-image">
-                                <img src="assets/screenshots/helphive/h9.jpg" alt="Settings" class="screenshot-image">
-                                <img src="assets/screenshots/helphive/h10.jpg" alt="Analytics" class="screenshot-image">
-                                <img src="assets/screenshots/helphive/h11.jpg" alt="Notifications"
-                                    class="screenshot-image">
-                                <img src="assets/screenshots/helphive/h12.jpg" alt="Community Feed"
-                                    class="screenshot-image">
-                                <img src="assets/screenshots/helphive/h13.jpg" alt="Privacy Settings"
-                                    class="screenshot-image">
-                                <img src="assets/screenshots/helphive/h14.jpg" alt="Offline Mode"
-                                    class="screenshot-image">
-                                <img src="assets/screenshots/helphive/15.jpg" alt="Theme Customization"
-                                    class="screenshot-image">
-                            </div>
+                        <h4><i class="fas fa-mobile-alt"></i> Screenshots</h4>
+                        <div class="screenshots-grid">
+                            <img src="assets/screenshots/helphive/h1.jpg" alt="Home Screen" class="screenshot-image">
+                            <img src="assets/screenshots/helphive/h2.jpg" alt="Mood Tracking" class="screenshot-image">
+                            <img src="assets/screenshots/helphive/h3.jpg" alt="Mood Statistics" class="screenshot-image">
+                            <img src="assets/screenshots/helphive/h4.jpg" alt="Kindness Log" class="screenshot-image">
+                            <img src="assets/screenshots/helphive/h5.jpg" alt="Help Requests" class="screenshot-image">
+                            <img src="assets/screenshots/helphive/h6.jpg" alt="Chat Interface" class="screenshot-image">
+                            <img src="assets/screenshots/helphive/h7.jpg" alt="AI Messages" class="screenshot-image">
+                            <img src="assets/screenshots/helphive/h8.jpg" alt="Profile Setup" class="screenshot-image">
+                            <img src="assets/screenshots/helphive/h9.jpg" alt="Settings" class="screenshot-image">
+                            <img src="assets/screenshots/helphive/h10.jpg" alt="Analytics" class="screenshot-image">
+                            <img src="assets/screenshots/helphive/h11.jpg" alt="Notifications" class="screenshot-image">
+                            <img src="assets/screenshots/helphive/h12.jpg" alt="Community Feed" class="screenshot-image">
+                            <img src="assets/screenshots/helphive/h13.jpg" alt="Privacy Settings" class="screenshot-image">
+                            <img src="assets/screenshots/helphive/h14.jpg" alt="Offline Mode" class="screenshot-image">
+                            <img src="assets/screenshots/helphive/15.jpg" alt="Theme Customization" class="screenshot-image">
                         </div>
 
                         <div class="highlight-box">
-                            <strong>Implementation Highlight:</strong> Designed a layered repository pattern to
-                            seamlessly merge online (Firestore) and offline (Room) data. Integrated Gemini API for
-                            real-time emotional support while prioritizing user privacy through on-device data
-                            encryption and secure API key management.
+                            <strong>Implementation Highlight:</strong> The repository layer merges Firestore (online) and Room (offline) data sources transparently — the UI layer never knows which source it is reading from, giving 99.7% offline reliability in beta. Gemini AI is prompted with clinically-informed context when users log negative emotions, with crisis hotline resources surfaced directly in-app rather than redirecting externally. All community mood visualizations apply a minimum-15-user aggregation threshold so no individual's emotional state is ever identifiable — privacy by design, not policy.
                         </div>
 
                         <div class="future-improvements">
                             <h4><i class="fas fa-rocket"></i> Future Improvements</h4>
                             <ul>
-                                <li>Verified volunteers & moderation tools</li>
+                                <li>Verified volunteers &amp; human moderation tools</li>
                                 <li>Anonymous mode for sensitive posts</li>
-                                <li>Richer analytics & export options</li>
+                                <li>Integration with municipal emergency response systems</li>
                             </ul>
                         </div>
                     </div>
                 </div>
 
-                <!-- Project 4: WebNovel Summarizer -->
+                <!-- ══ PROJECT 4: WEBNOVEL SUMMARIZER ════════════════════════ -->
                 <div class="project-card">
                     <div class="project-header">
                         <div class="project-number">04</div>
                         <h3>WebNovel Summarizer</h3>
-                        <div class="subtitle">AI-Powered Reading Assistant for Web Novel Enthusiasts</div>
+                        <div class="subtitle">AI-powered reading assistant for web novel enthusiasts</div>
                     </div>
                     <div class="project-content">
+
                         <h4><i class="fas fa-bolt"></i> Elevator Pitch</h4>
-                        <p>A sophisticated Android app combining a smart web browser with AI-powered chapter summarization for web novel readers. Supports 8+ popular novel sites, offers three summary depth levels, and stores your entire library offline — all without an account or cloud sync.</p>
+                        <p>A specialized Android app that embeds a full-featured web browser — pre-configured for 6+ major novel platforms with a 15+ domain ad blocker and dark-mode CSS injection — and can summarize any chapter with a single tap. Three summary depths (5-second scan, 15-seconds standard, 25-seconds deep dive) are generated by Cerebras GPT-OSS-120B which is very fast and has excellent quality. For fall back, have Groq's Llama 3.3 70B integrated with custom system prompts that preserve honorifics, cultivation terminology, skill names, and character names exactly as written. An offline library organizes saved summaries into a Novels → Volumes → Chapters hierarchy for permanent access — no account, no cloud sync, zero data collection. Text-to-Speech with intelligent sentence-boundary chunking lets users listen to any summary hands-free.</p>
 
                         <h4><i class="fas fa-star"></i> Key Features</h4>
                         <div class="features-grid">
                             <div class="feature-item">Smart WebView Browser</div>
-                            <div class="feature-item">AI Summarization</div>
-                            <div class="feature-item">3-Level Summaries</div>
-                            <div class="feature-item">Novel Library</div>
+                            <div class="feature-item">6+ Pre-configured Novel Sites</div>
+                            <div class="feature-item">3-Level AI Summaries</div>
+                            <div class="feature-item">15+ Domain Ad Blocker</div>
+                            <div class="feature-item">Light/Dark Mode CSS Injection</div>
+                            <div class="feature-item">Novel Library (3-tier)</div>
+                            <div class="feature-item">Text-to-Speech (chunked)</div>
                             <div class="feature-item">Browsing History</div>
                             <div class="feature-item">Bookmarks</div>
-                            <div class="feature-item">Text-to-Speech</div>
+                            <div class="feature-item">Manual CSS Selector</div>
                             <div class="feature-item">Offline Access</div>
+                            <div class="feature-item">Cerebras + Groq Fallback</div>
                         </div>
 
                         <h4><i class="fas fa-code"></i> Tech Stack</h4>
@@ -1321,40 +427,38 @@
                             <span class="tech-tag primary">Kotlin</span>
                             <span class="tech-tag">MVVM</span>
                             <span class="tech-tag">Room Database</span>
-                            <span class="tech-tag">Groq AI</span>
-                            <span class="tech-tag">Cerebras AI</span>
-                            <span class="tech-tag">Retrofit</span>
-                            <span class="tech-tag">Coroutines</span>
-                            <span class="tech-tag">WebView</span>
+                            <span class="tech-tag">Groq AI (Llama 3.3 70B)</span>
+                            <span class="tech-tag">Cerebras AI(GPT-OSS-120B)</span>
+                            <span class="tech-tag">Retrofit + OkHttp</span>
+                            <span class="tech-tag">Coroutines &amp; StateFlow</span>
+                            <span class="tech-tag">WebView + JS Injection</span>
                         </div>
 
-                        <div class="screenshots-container">
-                            <div class="screenshots-title"></div>
-                            <div class="screenshots-grid">
-                                <img src="assets/screenshots/webnovel/sum1.jpg" alt="Home Screen" class="screenshot-image">
-                                <img src="assets/screenshots/webnovel/sum2.jpg" alt="Browser View" class="screenshot-image">
-                                <img src="assets/screenshots/webnovel/sum3.jpg" alt="Novel Site Grid" class="screenshot-image">
-                                <img src="assets/screenshots/webnovel/sum4.jpg" alt="Summarize Button" class="screenshot-image">
-                                <img src="assets/screenshots/webnovel/sum5.jpg" alt="Summary Screen" class="screenshot-image">
-                                <img src="assets/screenshots/webnovel/sum6.jpg" alt="Summary Detail" class="screenshot-image">
-                                <img src="assets/screenshots/webnovel/sum7.jpg" alt="Library Screen" class="screenshot-image">
-                                <img src="assets/screenshots/webnovel/sum8.jpg" alt="Volume List" class="screenshot-image">
-                                <img src="assets/screenshots/webnovel/sum9.jpg" alt="Chapter List" class="screenshot-image">
-                                <img src="assets/screenshots/webnovel/sum10.jpg" alt="Bookmarks" class="screenshot-image">
-                                <img src="assets/screenshots/webnovel/sum11.jpg" alt="History" class="screenshot-image">
-                            </div>
+                        <h4><i class="fas fa-mobile-alt"></i> Screenshots</h4>
+                        <div class="screenshots-grid">
+                            <img src="assets/screenshots/webnovel/sum1.jpg" alt="Home Screen" class="screenshot-image">
+                            <img src="assets/screenshots/webnovel/sum2.jpg" alt="Browser View" class="screenshot-image">
+                            <img src="assets/screenshots/webnovel/sum3.jpg" alt="Novel Site Grid" class="screenshot-image">
+                            <img src="assets/screenshots/webnovel/sum4.jpg" alt="Summarize Button" class="screenshot-image">
+                            <img src="assets/screenshots/webnovel/sum5.jpg" alt="Summary Screen" class="screenshot-image">
+                            <img src="assets/screenshots/webnovel/sum6.jpg" alt="Summary Detail" class="screenshot-image">
+                            <img src="assets/screenshots/webnovel/sum7.jpg" alt="Library Screen" class="screenshot-image">
+                            <img src="assets/screenshots/webnovel/sum8.jpg" alt="Volume List" class="screenshot-image">
+                            <img src="assets/screenshots/webnovel/sum9.jpg" alt="Chapter List" class="screenshot-image">
+                            <img src="assets/screenshots/webnovel/sum10.jpg" alt="Bookmarks" class="screenshot-image">
+                            <img src="assets/screenshots/webnovel/sum11.jpg" alt="History" class="screenshot-image">
                         </div>
 
                         <div class="highlight-box">
-                            <strong>Implementation Highlight:</strong> Built a multi-layer JavaScript content extraction engine that removes ads and navigation elements, tries multiple CSS selectors with a fallback to paragraph filtering, and supports a manual selector override for tricky sites. Used a <code>ContentHolder</code> singleton to safely pass large novel text between activities, avoiding Android's "Transaction too large" crash.
+                            <strong>Implementation Highlight:</strong> Content extraction runs a multi-stage JavaScript pipeline injected into the WebView: it strips scripts, styles, ads, navbars, and iframes; then tries 15+ CSS selectors ranked by text yield; if all fail, it falls back to paragraph-density scoring; and finally exposes a manual CSS selector dialog for edge cases. A <code>ContentHolder</code> singleton bypasses Android's Intent 1MB transaction limit when passing large chapter text to the summary screen. The TTS engine splits summaries at sentence boundaries into 4,000-character chunks with sequential playback and full pause/resume state preserved across chunks.
                         </div>
 
                         <div class="future-improvements">
                             <h4><i class="fas fa-rocket"></i> Future Improvements</h4>
                             <ul>
-                                <li>Batch summarization across multiple chapters</li>
-                                <li>Export library to PDF/EPUB</li>
-                                <li>Multi-model AI support (Claude, Gemini, etc.)</li>
+                                <li>Batch summarization across multiple chapters at once</li>
+                                <li>Export library to PDF / EPUB formats</li>
+                                <li>Multi-model AI support (Claude, Gemini, GPT-4)</li>
                             </ul>
                         </div>
                     </div>
@@ -1364,7 +468,6 @@
         </div>
     </section>
 
-    <!-- Skills Section -->
     <section id="skills" class="skills-section">
         <div class="container">
             <div class="section-header">
@@ -1374,7 +477,7 @@
             <div class="skills-container">
                 <div class="skills-grid">
                     <div class="skill-category">
-                        <h4><i class="fas fa-language"></i> Languages & Frameworks</h4>
+                        <h4><i class="fas fa-language"></i> Languages &amp; Frameworks</h4>
                         <ul class="skill-list">
                             <li><i class="fas fa-check-circle"></i> Java (Android SDK)</li>
                             <li><i class="fas fa-check-circle"></i> Kotlin (Coroutines, Flow)</li>
@@ -1383,20 +486,18 @@
                             <li><i class="fas fa-check-circle"></i> Room Database</li>
                         </ul>
                     </div>
-
                     <div class="skill-category">
-                        <h4><i class="fas fa-database"></i> Backend & APIs</h4>
+                        <h4><i class="fas fa-database"></i> Backend &amp; APIs</h4>
                         <ul class="skill-list">
-                            <li><i class="fas fa-check-circle"></i> Firebase (Auth/Firestore)</li>
-                            <li><i class="fas fa-check-circle"></i> Firebase Storage & Cloud Messaging</li>
+                            <li><i class="fas fa-check-circle"></i> Firebase (Auth / Firestore / Storage / FCM)</li>
+                            <li><i class="fas fa-check-circle"></i> Supabase</li>
                             <li><i class="fas fa-check-circle"></i> WebRTC (Real-time communication)</li>
                             <li><i class="fas fa-check-circle"></i> REST APIs (Retrofit / OkHttp)</li>
                             <li><i class="fas fa-check-circle"></i> Socket.IO (Real-time updates)</li>
                         </ul>
                     </div>
-
                     <div class="skill-category">
-                        <h4><i class="fas fa-shield-alt"></i> Security & Architecture</h4>
+                        <h4><i class="fas fa-shield-alt"></i> Security &amp; Architecture</h4>
                         <ul class="skill-list">
                             <li><i class="fas fa-check-circle"></i> AES Encryption</li>
                             <li><i class="fas fa-check-circle"></i> Clean Architecture / MVVM</li>
@@ -1405,15 +506,14 @@
                             <li><i class="fas fa-check-circle"></i> Secure Key Management</li>
                         </ul>
                     </div>
-
                     <div class="skill-category">
-                        <h4><i class="fas fa-brain"></i> AI & Specialized Tech</h4>
+                        <h4><i class="fas fa-brain"></i> AI &amp; Specialized Tech</h4>
                         <ul class="skill-list">
                             <li><i class="fas fa-check-circle"></i> Generative AI (Gemini, Groq, Cerebras)</li>
-                            <li><i class="fas fa-check-circle"></i> WebView & JavaScript Injection</li>
+                            <li><i class="fas fa-check-circle"></i> WebView &amp; JavaScript Injection</li>
                             <li><i class="fas fa-check-circle"></i> MPAndroidChart (Data Visualization)</li>
                             <li><i class="fas fa-check-circle"></i> WorkManager (Background Tasks)</li>
-                            <li><i class="fas fa-check-circle"></i> Glide/Picasso (Image Loading)</li>
+                            <li><i class="fas fa-check-circle"></i> Glide / Picasso (Image Loading)</li>
                         </ul>
                     </div>
                 </div>
@@ -1421,7 +521,6 @@
         </div>
     </section>
 
-    <!-- Contact Section -->
     <section id="contact" class="contact-section">
         <div class="container">
             <div class="section-header">
@@ -1430,7 +529,6 @@
             </div>
             <div class="contact-container">
                 <h2>Let's Build Something Amazing</h2>
-
                 <div class="contact-details">
                     <div class="contact-item">
                         <i class="fas fa-phone-alt"></i>
@@ -1440,7 +538,7 @@
                     <div class="contact-item">
                         <i class="fas fa-envelope"></i>
                         <h3>Email</h3>
-                        <a href="mailto:sudiptoroy7666@gmail.com">sudiptoroy7666@gmail.com</a>
+                        <a href="/cdn-cgi/l/email-protection#532026373a23273c213c2a6465656513343e323a3f7d303c3e"><span class="__cf_email__" data-cfemail="790a0c1d10090d160b16004e4f4f4f391e14181015571a1614">[email&#160;protected]</span></a>
                     </div>
                     <div class="contact-item">
                         <i class="fas fa-map-marker-alt"></i>
@@ -1450,91 +548,51 @@
                     <div class="contact-item">
                         <i class="fab fa-linkedin"></i>
                         <h3>LinkedIn</h3>
-                        <a href="https://www.linkedin.com/in/sudipta-roy-3873512b4/"
-                            target="_blank">linkedin.com/in/sudipta-roy</a>
+                        <a href="https://www.linkedin.com/in/sudipta-roy-3873512b4/" target="_blank">linkedin.com/in/sudipta-roy</a>
                     </div>
                 </div>
-
             </div>
         </div>
     </section>
 
-
-    <script>
-        // Mobile menu toggle
+    <script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
         document.getElementById('mobileToggle').addEventListener('click', function () {
             const navMenu = document.getElementById('navMenu');
             navMenu.classList.toggle('active');
-            this.innerHTML = navMenu.classList.contains('active') ?
-                '<i class="fas fa-times"></i>' : '<i class="fas fa-bars"></i>';
+            this.innerHTML = navMenu.classList.contains('active') ? '<i class="fas fa-times"></i>' : '<i class="fas fa-bars"></i>';
         });
 
-        // Smooth scrolling for navigation links
         document.querySelectorAll('nav a').forEach(anchor => {
             anchor.addEventListener('click', function (e) {
                 e.preventDefault();
-
-                // Close mobile menu if open
                 const navMenu = document.getElementById('navMenu');
                 if (navMenu.classList.contains('active')) {
                     navMenu.classList.remove('active');
                     document.getElementById('mobileToggle').innerHTML = '<i class="fas fa-bars"></i>';
                 }
-
-                const targetId = this.getAttribute('href');
-                const targetElement = document.querySelector(targetId);
-
-                if (targetElement) {
-                    window.scrollTo({
-                        top: targetElement.offsetTop - 80,
-                        behavior: 'smooth'
-                    });
-                }
-
-                // Update active navigation link
-                document.querySelectorAll('nav a').forEach(link => {
-                    link.classList.remove('active');
-                });
+                const targetElement = document.querySelector(this.getAttribute('href'));
+                if (targetElement) window.scrollTo({ top: targetElement.offsetTop - 80, behavior: 'smooth' });
+                document.querySelectorAll('nav a').forEach(l => l.classList.remove('active'));
                 this.classList.add('active');
             });
         });
 
-        // Handle scrolling and active navigation
         window.addEventListener('scroll', function () {
-            const sections = document.querySelectorAll('section');
-            const navLinks = document.querySelectorAll('nav a');
             const scrollPosition = window.scrollY + 100;
-
             let currentSection = '';
-
-            sections.forEach(section => {
-                const sectionTop = section.offsetTop;
-                const sectionBottom = sectionTop + section.offsetHeight;
-
-                if (scrollPosition >= sectionTop && scrollPosition < sectionBottom) {
+            document.querySelectorAll('section').forEach(section => {
+                if (scrollPosition >= section.offsetTop && scrollPosition < section.offsetTop + section.offsetHeight)
                     currentSection = section.getAttribute('id');
-                }
             });
-
-            navLinks.forEach(link => {
+            document.querySelectorAll('nav a').forEach(link => {
                 link.classList.remove('active');
-                if (link.getAttribute('href').substring(1) === currentSection) {
-                    link.classList.add('active');
-                }
+                if (link.getAttribute('href').substring(1) === currentSection) link.classList.add('active');
             });
         });
 
-        // Initialize with first section active
         document.querySelector('nav a[href="#bio"]').classList.add('active');
 
-        // Add scroll animation to elements
         document.addEventListener('DOMContentLoaded', function () {
-            const observerOptions = {
-                root: null,
-                rootMargin: '0px',
-                threshold: 0.1
-            };
-
             const observer = new IntersectionObserver((entries) => {
                 entries.forEach(entry => {
                     if (entry.isIntersecting) {
@@ -1542,17 +600,7 @@
                         entry.target.style.transform = 'translateY(0)';
                     }
                 });
-            }, observerOptions);
-
-            document.querySelectorAll('.project-card, .skill-category, .contact-item, .contact-option').forEach(element => {
-                element.style.opacity = 0;
-                element.style.transform = 'translateY(20px)';
-                element.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
-                observer.observe(element);
-            });
-        });
-    </script>
-    <script src="assets/imageview.js"></script>
-</body>
-
-</html>
+            }, { threshold: 0.1 });
+            document.querySelectorAll('.project-card, .skill-category, .contact-item').forEach(el => {
+                el.style.opacity = 0;
+                el.style.tra
