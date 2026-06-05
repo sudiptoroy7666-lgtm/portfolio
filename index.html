@@ -1,630 +1,1709 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sudipta Roy | Android Developer Portfolio</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="assets/style.css">
-    <style>
-        :root {
-            --primary: #6366f1;
-            --primary-dark: #4f46e5;
-            --secondary: #8b5cf6;
-            --accent: #ec4899;
-            --dark: #0f172a;
-            --dark-light: #1e293b;
-            --light: #f8fafc;
-            --gray: #64748b;
-            --light-gray: #e2e8f0;
-            --success: #10b981;
-            --border-radius: 16px;
-            --box-shadow: 0 10px 25px -5px rgba(0,0,0,0.1), 0 8px 10px -6px rgba(0,0,0,0.1);
-            --transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
-            --gradient-bg: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
-            --gradient-card: linear-gradient(145deg, #1e293b, #0f172a);
-        }
-        * { margin: 0; padding: 0; box-sizing: border-box; }
-        body { font-family: 'Inter', sans-serif; line-height: 1.6; color: var(--light); background: var(--gradient-bg); overflow-x: hidden; position: relative; }
-        body::before { content: ''; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: radial-gradient(circle at 10% 20%, rgba(99,102,241,0.05) 0%, transparent 20%), radial-gradient(circle at 90% 80%, rgba(139,92,246,0.05) 0%, transparent 20%); z-index: -1; }
-        .container { width: 90%; max-width: 1400px; margin: 0 auto; padding: 0 15px; }
-        header { background: rgba(15,23,42,0.85); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); padding: 1.2rem 0; position: fixed; width: 100%; top: 0; z-index: 1000; border-bottom: 1px solid rgba(99,102,241,0.2); }
-        .header-container { display: flex; justify-content: space-between; align-items: center; }
-        .logo { font-family: 'Space Grotesk', sans-serif; font-size: 1.8rem; font-weight: 700; color: white; text-decoration: none; display: flex; align-items: center; gap: 0.5rem; }
-        .logo-icon { color: var(--primary); font-size: 2rem; }
-        nav ul { display: flex; list-style: none; gap: 2.5rem; }
-        nav a { color: rgba(255,255,255,0.85); text-decoration: none; font-weight: 500; font-size: 1.05rem; transition: var(--transition); position: relative; padding: 0.5rem 0; }
-        nav a:hover, nav a.active { color: white; }
-        nav a::after { content: ''; position: absolute; bottom: 0; left: 0; width: 0; height: 2px; background: var(--primary); transition: var(--transition); }
-        nav a:hover::after, nav a.active::after { width: 100%; }
-        .mobile-toggle { display: none; background: none; border: none; color: white; font-size: 1.8rem; cursor: pointer; z-index: 2000; }
-        .hero { padding: 10rem 0 6rem; text-align: center; position: relative; overflow: hidden; }
-        .hero-content { max-width: 850px; margin: 0 auto; position: relative; z-index: 2; }
-        .role-badge { display: inline-block; background: rgba(99,102,241,0.15); color: var(--primary); padding: 0.4rem 1.2rem; border-radius: 50px; font-weight: 600; margin-bottom: 1.8rem; backdrop-filter: blur(4px); border: 1px solid rgba(99,102,241,0.2); font-size: 1.05rem; }
-        .hero h1 { font-family: 'Space Grotesk', sans-serif; font-size: 4.2rem; font-weight: 800; margin-bottom: 1.5rem; background: linear-gradient(to right, #fff, #cbd5e1); -webkit-background-clip: text; -webkit-text-fill-color: transparent; line-height: 1.1; }
-        .hero p { font-size: 1.4rem; color: rgba(255,255,255,0.85); margin-bottom: 2.8rem; max-width: 750px; margin-left: auto; margin-right: auto; line-height: 1.7; }
-        .cta-container { display: flex; justify-content: center; gap: 1.5rem; flex-wrap: wrap; }
-        .cta-button { display: inline-flex; align-items: center; justify-content: center; gap: 0.8rem; background: var(--primary); color: white; padding: 1rem 2.5rem; border-radius: 50px; text-decoration: none; font-weight: 600; font-size: 1.15rem; transition: var(--transition); border: 2px solid var(--primary); box-shadow: 0 4px 20px rgba(99,102,241,0.45); }
-        .cta-button:hover { background: transparent; transform: translateY(-4px); box-shadow: 0 8px 25px rgba(99,102,241,0.6); }
-        .cta-button.secondary { background: transparent; color: white; border: 2px solid rgba(255,255,255,0.3); }
-        .cta-button.secondary:hover { background: rgba(255,255,255,0.1); border-color: white; }
-        .hero-shape { position: absolute; bottom: -50px; left: 0; width: 100%; height: 100px; background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1440 320'%3E%3Cpath fill='%231e293b' fill-opacity='1' d='M0,128L48,144C96,160,192,192,288,186.7C384,181,480,139,576,138.7C672,139,768,181,864,208C960,235,1056,245,1152,229.3C1248,213,1344,171,1392,149.3L1440,128L1440,320L1392,320C1344,320,1248,320,1152,320C1056,320,960,320,864,320C768,320,672,320,576,320C480,320,384,320,288,320C192,320,96,320,48,320L0,320Z'%3E%3C/path%3E%3C/svg%3E"); background-size: cover; }
-        section { padding: 6rem 0; }
-        .section-header { text-align: center; margin-bottom: 4rem; position: relative; }
-        .section-header::after { content: ''; position: absolute; bottom: -20px; left: 50%; transform: translateX(-50%); width: 80px; height: 4px; background: var(--primary); border-radius: 2px; }
-        .section-header h2 { font-family: 'Space Grotesk', sans-serif; font-size: 2.8rem; color: white; margin-bottom: 1.2rem; position: relative; display: inline-block; }
-        .section-header h2::after { content: ''; position: absolute; bottom: -10px; left: 50%; transform: translateX(-50%); width: 60%; height: 3px; background: var(--accent); border-radius: 3px; }
-        .section-header p { color: rgba(255,255,255,0.7); max-width: 750px; margin: 1.5rem auto 0; font-size: 1.2rem; font-weight: 300; }
-        .bio-container { background: var(--gradient-card); border-radius: var(--border-radius); padding: 3rem; box-shadow: var(--box-shadow); backdrop-filter: blur(12px); border: 1px solid rgba(99,102,241,0.15); margin-bottom: 3rem; position: relative; overflow: hidden; }
-        .bio-container::before { content: ''; position: absolute; top: -50%; left: -50%; width: 200%; height: 200%; background: radial-gradient(circle, rgba(99,102,241,0.08) 0%, transparent 70%); z-index: 0; }
-        .bio-container p { font-size: 1.2rem; line-height: 1.8; color: rgba(255,255,255,0.85); position: relative; z-index: 1; }
-        .bio-container p em { font-style: normal; color: var(--primary); font-weight: 600; }
-        .projects-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(380px, 1fr)); gap: 2.8rem; margin-top: 2rem; }
-        .project-card { background: var(--gradient-card); border-radius: var(--border-radius); overflow: hidden; box-shadow: var(--box-shadow); transition: var(--transition); border: 1px solid rgba(99,102,241,0.15); backdrop-filter: blur(8px); position: relative; }
-        .project-card::before { content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 4px; background: linear-gradient(90deg, var(--primary), var(--secondary), var(--accent)); }
-        .project-card:hover { transform: translateY(-12px); box-shadow: 0 25px 30px -10px rgba(0,0,0,0.3); border-color: rgba(99,102,241,0.3); }
-        .project-header { padding: 2rem; text-align: center; position: relative; overflow: hidden; }
-        .project-header::before { content: ''; position: absolute; top: -50%; left: -50%; width: 200%; height: 200%; background: radial-gradient(circle, rgba(99,102,241,0.15) 0%, transparent 70%); z-index: 0; }
-        .project-header h3 { font-family: 'Space Grotesk', sans-serif; font-size: 2rem; margin-bottom: 0.5rem; position: relative; z-index: 1; }
-        .project-header .subtitle { font-size: 1.1rem; opacity: 0.9; font-weight: 300; color: rgba(255,255,255,0.85); position: relative; z-index: 1; }
-        .project-number { position: absolute; top: 15px; right: 20px; font-size: 5rem; font-weight: 800; color: rgba(99,102,241,0.1); z-index: 0; font-family: 'Space Grotesk', sans-serif; line-height: 1; }
-        .project-content { padding: 2rem; position: relative; z-index: 1; }
-        .project-content h4 { font-family: 'Space Grotesk', sans-serif; color: var(--primary); margin: 1.8rem 0 1rem; font-size: 1.4rem; display: flex; align-items: center; gap: 0.8rem; }
-        .project-content h4 i { color: var(--accent); font-size: 1.2rem; }
-        .project-content p { margin-bottom: 1.2rem; color: rgba(255,255,255,0.85); line-height: 1.7; }
-        .features-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); gap: 1.2rem; margin: 1.5rem 0; }
-        .feature-item { background: rgba(30,41,59,0.6); padding: 1rem; border-radius: 12px; font-size: 0.95rem; text-align: center; transition: var(--transition); border: 1px solid rgba(99,102,241,0.2); }
-        .feature-item:hover { background: rgba(99,102,241,0.15); transform: translateY(-3px); border-color: rgba(99,102,241,0.4); }
-        .tech-stack { display: flex; flex-wrap: wrap; gap: 0.8rem; margin: 1.5rem 0; }
-        .tech-tag { background: rgba(30,41,59,0.7); padding: 0.5rem 1.1rem; border-radius: 50px; font-size: 0.95rem; font-weight: 500; border: 1px solid rgba(99,102,241,0.3); transition: var(--transition); }
-        .tech-tag:hover { background: rgba(99,102,241,0.15); border-color: var(--primary); }
-        .tech-tag.primary { background: rgba(99,102,241,0.2); color: var(--primary); border-color: rgba(99,102,241,0.5); }
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SUDIPTA ROY // ANDROID DEVELOPER</title>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+<link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@400;500;600;700&family=Orbitron:wght@500;700;900&family=Space+Grotesk:wght@300;400;500;700&family=JetBrains+Mono:wght@400;500&family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+/* ═══════════════════════════════════════════════════════════
+   CORE TOKENS — NEON AURORA PALETTE
+═══════════════════════════════════════════════════════════ */
+:root{
+  --bg-void:#030014;
+  --bg-deep:#0a0420;
+  --bg-panel:rgba(15,8,40,0.55);
+  --bg-glass:rgba(255,255,255,0.03);
 
-        .screenshots-container { margin: 0.5rem 0 1.5rem; }
-        .screenshots-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(110px, 1fr)); gap: 12px; margin-top: 0.8rem; }
-        .highlight-box { background: rgba(30,41,59,0.7); padding: 1.5rem; border-radius: 0 var(--border-radius) var(--border-radius) 0; margin: 2rem 0; position: relative; overflow: hidden; border: 1px solid rgba(236,72,153,0.2); }
-        .highlight-box::before { content: ''; position: absolute; top: 0; left: 0; width: 4px; height: 100%; background: linear-gradient(to bottom, var(--accent), var(--primary)); }
-        .highlight-box code { background: rgba(15,23,42,0.7); padding: 0.2rem 0.5rem; border-radius: 4px; font-family: monospace; color: var(--primary); }
-        .future-improvements { background: rgba(30,41,59,0.6); border-radius: var(--border-radius); padding: 1.5rem; margin-top: 1.5rem; border: 1px solid rgba(16,185,129,0.2); }
-        .future-improvements ul { padding-left: 1.8rem; margin-top: 0.8rem; }
-        .future-improvements li { margin-bottom: 0.6rem; color: rgba(255,255,255,0.85); }
-        .future-improvements li::marker { color: var(--success); font-weight: bold; }
-        .skills-container { background: var(--gradient-card); border-radius: var(--border-radius); padding: 3rem; box-shadow: var(--box-shadow); backdrop-filter: blur(12px); border: 1px solid rgba(99,102,241,0.15); }
-        .skills-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 2rem; margin-top: 2rem; }
-        .skill-category { margin-bottom: 1.8rem; }
-        .skill-category h4 { font-family: 'Space Grotesk', sans-serif; color: var(--primary); margin-bottom: 1.2rem; font-size: 1.4rem; display: flex; align-items: center; gap: 0.8rem; }
-        .skill-category h4 i { color: var(--accent); font-size: 1.3rem; }
-        .skill-list { list-style: none; }
-        .skill-list li { padding: 0.9rem 0; border-bottom: 1px dashed rgba(99,102,241,0.2); display: flex; align-items: flex-start; gap: 0.8rem; }
-        .skill-list li:last-child { border-bottom: none; }
-        .skill-list li i { color: var(--success); font-size: 1.1rem; min-width: 20px; margin-top: 4px; }
-        .contact-container { background: var(--gradient-card); border-radius: var(--border-radius); padding: 3.5rem; text-align: center; box-shadow: var(--box-shadow); backdrop-filter: blur(12px); border: 1px solid rgba(99,102,241,0.15); position: relative; overflow: hidden; }
-        .contact-container::before { content: ''; position: absolute; top: -50%; left: -50%; width: 200%; height: 200%; background: radial-gradient(circle, rgba(139,92,246,0.1) 0%, transparent 70%); z-index: 0; }
-        .contact-container h2 { font-family: 'Space Grotesk', sans-serif; margin-bottom: 1.5rem; font-size: 2.5rem; position: relative; z-index: 1; }
-        .contact-details { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 2rem; margin: 2.5rem 0; position: relative; z-index: 1; }
-        .contact-item { background: rgba(15,23,42,0.7); border-radius: 16px; padding: 1.8rem; transition: var(--transition); border: 1px solid rgba(99,102,241,0.2); text-align: left; }
-        .contact-item:hover { transform: translateY(-5px); border-color: var(--primary); box-shadow: 0 10px 25px -5px rgba(0,0,0,0.2); }
-        .contact-item i { font-size: 2.2rem; color: var(--primary); margin-bottom: 1.2rem; display: block; }
-        .contact-item h3 { font-size: 1.4rem; margin-bottom: 0.8rem; color: white; }
-        .contact-item a, .contact-item p { color: rgba(255,255,255,0.85); text-decoration: none; font-size: 1.1rem; transition: var(--transition); display: block; margin: 0.3rem 0; }
-        .contact-item a:hover { color: var(--primary); transform: translateX(3px); }
-        footer { background: rgba(7,11,21,0.95); backdrop-filter: blur(12px); color: rgba(255,255,255,0.7); text-align: center; padding: 2.5rem 0; margin-top: 2rem; border-top: 1px solid rgba(99,102,241,0.2); }
-        .social-links { display: flex; justify-content: center; gap: 1.8rem; margin: 1.8rem 0; }
-        .social-link { display: flex; align-items: center; justify-content: center; width: 60px; height: 60px; background: rgba(30,41,59,0.7); border-radius: 50%; color: white; font-size: 1.6rem; transition: var(--transition); border: 1px solid rgba(99,102,241,0.3); text-decoration: none; }
-        .social-link:hover { background: var(--primary); transform: translateY(-5px) scale(1.1); box-shadow: 0 10px 25px rgba(99,102,241,0.4); border-color: transparent; }
-        .copyright { font-size: 1.05rem; opacity: 0.8; margin-top: 0.8rem; }
+  --neon-blue:#00D4FF;
+  --neon-purple:#A855F7;
+  --neon-pink:#EC4899;
+  --neon-green:#10B981;
+  --neon-orange:#F97316;
+  --neon-yellow:#FACC15;
 
-        @media (max-width: 768px) {
-            .mobile-toggle { display: block; }
-            nav ul { position: fixed; top: 75px; right: -100%; flex-direction: column; background: var(--dark); width: 85%; height: calc(100vh - 75px); padding: 2.5rem; transition: var(--transition); box-shadow: -5px 0 25px rgba(0,0,0,0.2); backdrop-filter: blur(12px); border-left: 1px solid rgba(99,102,241,0.3); }
-            nav ul.active { right: 0; }
-            nav ul li { margin: 1.2rem 0; }
-            nav a { font-size: 1.3rem; display: block; padding: 0.8rem 0; }
-            .hero { padding: 8rem 0 5rem; }
-            .hero h1 { font-size: 2.6rem; }
-            .hero p { font-size: 1.15rem; }
-            .cta-container { flex-direction: column; align-items: center; }
-            .cta-button { width: 100%; max-width: 350px; justify-content: center; }
-            .projects-grid { grid-template-columns: 1fr; }
-            section { padding: 4.5rem 0; }
-            .section-header h2 { font-size: 2.3rem; }
-            .contact-details { grid-template-columns: 1fr; }
-        }
-        @media (max-width: 480px) {
-            .hero h1 { font-size: 2.2rem; }
-            .section-header h2 { font-size: 2rem; }
-            .project-header h3 { font-size: 1.7rem; }
-            .screenshots-grid { grid-template-columns: repeat(2, 1fr); }
-        }
-    </style>
+  --grad-primary:linear-gradient(135deg, #00D4FF 0%, #A855F7 50%, #EC4899 100%);
+  --grad-secondary:linear-gradient(135deg, #A855F7 0%, #EC4899 100%);
+  --grad-aurora:linear-gradient(135deg, #00D4FF 0%, #10B981 50%, #A855F7 100%);
+  --grad-fire:linear-gradient(135deg, #F97316 0%, #EC4899 50%, #A855F7 100%);
+  --grad-ice:linear-gradient(135deg, #00D4FF 0%, #3B82F6 100%);
+
+  --text:#F8FAFC;
+  --text-dim:#CBD5E1;
+  --text-mute:#64748B;
+  --border:rgba(168,85,247,0.2);
+  --border-hot:rgba(0,212,255,0.5);
+
+  --glow-blue:0 0 20px rgba(0,212,255,0.5), 0 0 40px rgba(0,212,255,0.2);
+  --glow-purple:0 0 20px rgba(168,85,247,0.5), 0 0 40px rgba(168,85,247,0.2);
+  --glow-pink:0 0 20px rgba(236,72,153,0.5);
+  --glow-multi:0 0 30px rgba(0,212,255,0.3), 0 0 60px rgba(168,85,247,0.2), 0 0 90px rgba(236,72,153,0.1);
+
+  --mono:'JetBrains Mono', monospace;
+  --display:'Orbitron', sans-serif;
+  --body:'Inter', sans-serif;
+  --ui:'Space Grotesk', sans-serif;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{
+  font-family:var(--body);
+  background:var(--bg-void);
+  color:var(--text);
+  overflow-x:hidden;
+  cursor:none;
+  font-weight:400;
+  letter-spacing:0.01em;
+  line-height:1.6;
+}
+a{color:inherit;text-decoration:none}
+img{max-width:100%;display:block}
+::selection{background:var(--neon-purple);color:#fff}
+
+/* ═══════════════════════════════════════════════════════════
+   CUSTOM CURSOR
+═══════════════════════════════════════════════════════════ */
+.cursor-dot,.cursor-ring{
+  position:fixed;pointer-events:none;z-index:9999;
+  border-radius:50%;transition:transform .15s ease, width .2s, height .2s, background .2s;
+  mix-blend-mode:difference;
+}
+.cursor-dot{width:6px;height:6px;background:var(--neon-blue);transform:translate(-50%,-50%);box-shadow:0 0 10px var(--neon-blue)}
+.cursor-ring{width:36px;height:36px;border:1.5px solid var(--neon-purple);transform:translate(-50%,-50%)}
+.cursor-ring.hover{width:64px;height:64px;border-color:var(--neon-pink);background:rgba(236,72,153,0.08)}
+@media (max-width:900px){.cursor-dot,.cursor-ring{display:none}body{cursor:auto}}
+
+/* ═══════════════════════════════════════════════════════════
+   BACKGROUND LAYERS
+═══════════════════════════════════════════════════════════ */
+#starfield{position:fixed;inset:0;z-index:0;pointer-events:none}
+.grid-overlay{
+  position:fixed;inset:0;z-index:1;pointer-events:none;
+  background-image:
+    linear-gradient(rgba(168,85,247,0.03) 1px,transparent 1px),
+    linear-gradient(90deg,rgba(0,212,255,0.03) 1px,transparent 1px);
+  background-size:60px 60px;
+  mask-image:radial-gradient(ellipse at center, black 30%, transparent 80%);
+}
+.aurora-bg{
+  position:fixed;inset:0;z-index:0;pointer-events:none;
+  background:
+    radial-gradient(ellipse 80% 50% at 20% 40%, rgba(168,85,247,0.08) 0%, transparent 50%),
+    radial-gradient(ellipse 60% 40% at 80% 20%, rgba(0,212,255,0.06) 0%, transparent 50%),
+    radial-gradient(ellipse 70% 50% at 50% 80%, rgba(236,72,153,0.05) 0%, transparent 50%);
+  animation:auroraShift 20s ease-in-out infinite alternate;
+}
+@keyframes auroraShift{
+  0%{opacity:1;transform:scale(1)}
+  50%{opacity:.7;transform:scale(1.05)}
+  100%{opacity:1;transform:scale(1)}
+}
+.scanlines{
+  position:fixed;inset:0;z-index:2;pointer-events:none;
+  background:repeating-linear-gradient(0deg,rgba(0,0,0,0.08) 0px,rgba(0,0,0,0.08) 1px,transparent 1px,transparent 3px);
+  opacity:.2;
+}
+.vignette{
+  position:fixed;inset:0;z-index:3;pointer-events:none;
+  background:radial-gradient(ellipse at center, transparent 40%, rgba(3,0,20,0.8) 100%);
+}
+
+/* ═══════════════════════════════════════════════════════════
+   LOADING SCREEN
+═══════════════════════════════════════════════════════════ */
+#loader{
+  position:fixed;inset:0;background:var(--bg-void);z-index:10000;
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
+  transition:opacity .8s ease, visibility .8s;
+}
+#loader.done{opacity:0;visibility:hidden}
+.loader-rune{
+  width:120px;height:120px;position:relative;
+  animation:spin 3s linear infinite;
+}
+.loader-rune::before,.loader-rune::after{
+  content:'';position:absolute;inset:0;
+  border-radius:50%;
+}
+.loader-rune::before{
+  border:2px solid transparent;
+  border-top-color:var(--neon-blue);
+  border-right-color:var(--neon-purple);
+  filter:drop-shadow(0 0 10px var(--neon-blue));
+}
+.loader-rune::after{
+  inset:15px;
+  border:2px solid transparent;
+  border-bottom-color:var(--neon-pink);
+  border-left-color:var(--neon-green);
+  animation:spin 1.5s linear infinite reverse;
+  filter:drop-shadow(0 0 10px var(--neon-pink));
+}
+.loader-rune i{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;color:var(--neon-blue);font-size:2rem;filter:drop-shadow(0 0 15px var(--neon-blue))}
+@keyframes spin{to{transform:rotate(360deg)}}
+.loader-text{
+  font-family:var(--mono);color:var(--neon-blue);margin-top:2rem;font-size:.85rem;
+  letter-spacing:.3em;text-transform:uppercase;
+  text-shadow:0 0 10px var(--neon-blue);
+}
+.loader-bar{
+  width:240px;height:2px;background:rgba(168,85,247,0.15);margin-top:1rem;overflow:hidden;position:relative;border-radius:2px;
+}
+.loader-bar::after{
+  content:'';position:absolute;inset:0;width:40%;
+  background:linear-gradient(90deg,transparent,var(--neon-blue),var(--neon-purple),transparent);
+  animation:slide 1.4s ease-in-out infinite;
+}
+@keyframes slide{0%{left:-40%}100%{left:100%}}
+
+/* ═══════════════════════════════════════════════════════════
+   STATUS BAR (top HUD)
+═══════════════════════════════════════════════════════════ */
+.hud-top{
+  position:fixed;top:0;left:0;right:0;z-index:100;
+  display:flex;justify-content:space-between;align-items:center;
+  padding:14px 28px;font-family:var(--mono);font-size:.72rem;
+  letter-spacing:.25em;text-transform:uppercase;color:var(--text-dim);
+  background:linear-gradient(180deg, rgba(3,0,20,0.95), rgba(3,0,20,0.5), transparent);
+  border-bottom:1px solid rgba(168,85,247,0.15);
+  backdrop-filter:blur(12px);
+}
+.hud-top .live{display:flex;align-items:center;gap:8px}
+.hud-top .live::before{
+  content:'';width:8px;height:8px;background:var(--neon-green);border-radius:50%;
+  box-shadow:0 0 10px var(--neon-green), 0 0 20px var(--neon-green);animation:pulse 1.5s ease-in-out infinite;
+}
+@keyframes pulse{50%{opacity:.3;transform:scale(.85)}}
+.hud-top .hud-info{display:flex;align-items:center;gap:20px}
+.hud-top .hud-time{color:var(--neon-blue);text-shadow:0 0 8px rgba(0,212,255,0.5)}
+.hud-top .hud-session{color:var(--text-mute)}
+@media (max-width:700px){
+  .hud-top{padding:10px 16px}
+  .hud-top .hud-session{display:none}
+}
+
+/* ═══════════════════════════════════════════════════════════
+   NAVIGATION
+═══════════════════════════════════════════════════════════ */
+nav.side{
+  position:fixed;right:28px;top:50%;transform:translateY(-50%);z-index:99;
+  display:flex;flex-direction:column;gap:14px;
+}
+nav.side a{
+  width:14px;height:14px;border:1.5px solid rgba(168,85,247,0.4);
+  background:transparent;position:relative;transition:all .3s;
+  clip-path:polygon(50% 0,100% 50%,50% 100%,0 50%);
+}
+nav.side a.active,nav.side a:hover{
+  background:var(--grad-primary);
+  box-shadow:var(--glow-purple);
+  transform:scale(1.3);
+  border-color:transparent;
+}
+nav.side a::before{
+  content:attr(data-label);position:absolute;right:24px;top:50%;transform:translateY(-50%);
+  font-family:var(--mono);font-size:.7rem;color:var(--text-dim);letter-spacing:.2em;
+  white-space:nowrap;opacity:0;pointer-events:none;transition:opacity .3s;
+}
+nav.side a:hover::before{opacity:1;color:var(--neon-blue)}
+@media (max-width:900px){nav.side{display:none}}
+
+/* ═══════════════════════════════════════════════════════════
+   HERO
+═══════════════════════════════════════════════════════════ */
+.hero{
+  position:relative;min-height:100vh;display:flex;align-items:center;justify-content:center;
+  padding:120px 20px 80px;z-index:5;overflow:hidden;
+}
+.hero-frame{
+  position:relative;max-width:1200px;width:100%;
+  padding:80px 60px;
+  border:1px solid rgba(168,85,247,0.2);
+  background:linear-gradient(135deg, rgba(15,8,40,0.7), rgba(3,0,20,0.9));
+  backdrop-filter:blur(20px);
+  clip-path:polygon(0 40px, 40px 0, 100% 0, 100% calc(100% - 40px), calc(100% - 40px) 100%, 0 100%);
+  box-shadow:0 0 80px rgba(168,85,247,0.1), inset 0 0 60px rgba(0,212,255,0.03);
+}
+.hero-frame::before,.hero-frame::after{
+  content:'';position:absolute;width:120px;height:120px;
+  pointer-events:none;
+}
+.hero-frame::before{
+  top:16px;left:16px;
+  border-top:1px solid var(--neon-blue);
+  border-left:1px solid var(--neon-blue);
+  filter:drop-shadow(0 0 8px var(--neon-blue));
+}
+.hero-frame::after{
+  bottom:16px;right:16px;
+  border-bottom:1px solid var(--neon-pink);
+  border-right:1px solid var(--neon-pink);
+  filter:drop-shadow(0 0 8px var(--neon-pink));
+}
+.hero-tag{
+  display:inline-flex;align-items:center;gap:12px;
+  font-family:var(--mono);font-size:.75rem;letter-spacing:.3em;
+  color:var(--neon-blue);text-transform:uppercase;margin-bottom:28px;
+  padding:8px 18px;border:1px solid rgba(0,212,255,0.3);
+  background:rgba(0,212,255,0.05);
+  backdrop-filter:blur(8px);
+  clip-path:polygon(10px 0,100% 0,100% calc(100% - 10px),calc(100% - 10px) 100%,0 100%,0 10px);
+  box-shadow:0 0 20px rgba(0,212,255,0.1);
+}
+.hero-tag .dot{width:6px;height:6px;background:var(--neon-green);border-radius:50%;box-shadow:0 0 8px var(--neon-green);animation:pulse 1.4s infinite}
+.hero h1{
+  font-family:var(--display);font-weight:900;
+  font-size:clamp(2.4rem, 7vw, 6rem);
+  line-height:.95;letter-spacing:-.02em;
+  margin-bottom:20px;text-transform:uppercase;
+}
+.hero h1 .line{display:block;overflow:hidden;position:relative}
+.hero h1 .line span{display:inline-block;animation:riseIn 1.2s cubic-bezier(.2,.9,.2,1) both}
+.hero h1 .line:nth-child(2) span{animation-delay:.15s}
+.hero h1 .line:nth-child(3) span{animation-delay:.3s}
+.hero h1 .gold{
+  background:var(--grad-primary);
+  -webkit-background-clip:text;background-clip:text;color:transparent;
+  filter:drop-shadow(0 0 30px rgba(168,85,247,0.4));
+  position:relative;
+}
+.hero h1 .gold::after{
+  content:'';position:absolute;left:0;right:0;bottom:-4px;height:2px;
+  background:var(--grad-primary);
+  animation:shimmer 3s ease-in-out infinite;
+  filter:blur(1px);
+}
+@keyframes shimmer{0%,100%{transform:translateX(-100%)}50%{transform:translateX(100%)}}
+@keyframes riseIn{from{transform:translateY(110%)}to{transform:translateY(0)}}
+.hero .sub{
+  font-family:var(--ui);font-size:clamp(1rem, 1.4vw, 1.2rem);
+  color:var(--text-dim);max-width:680px;margin:24px 0 40px;
+  font-weight:400;letter-spacing:.02em;
+}
+.hero .sub b{
+  background:var(--grad-secondary);
+  -webkit-background-clip:text;background-clip:text;color:transparent;
+  font-weight:600;
+}
+.hero .sub .typed{color:var(--neon-blue);border-right:2px solid var(--neon-blue);padding-right:4px;animation:blink 1s step-end infinite;text-shadow:0 0 8px var(--neon-blue)}
+@keyframes blink{50%{border-color:transparent}}
+.cta-row{display:flex;gap:18px;flex-wrap:wrap;align-items:center}
+.btn{
+  position:relative;display:inline-flex;align-items:center;gap:12px;
+  padding:16px 32px;font-family:var(--display);font-weight:700;font-size:.85rem;
+  letter-spacing:.25em;text-transform:uppercase;
+  background:transparent;color:var(--text);
+  border:1px solid rgba(168,85,247,0.4);cursor:none;
+  transition:all .3s;overflow:hidden;
+  clip-path:polygon(12px 0,100% 0,100% calc(100% - 12px),calc(100% - 12px) 100%,0 100%,0 12px);
+  backdrop-filter:blur(8px);
+}
+.btn::before{
+  content:'';position:absolute;inset:0;
+  background:var(--grad-primary);
+  transform:translateX(-101%);transition:transform .4s cubic-bezier(.7,0,.3,1);
+  z-index:-1;
+}
+.btn:hover::before{transform:translateX(0)}
+.btn:hover{color:#fff;box-shadow:var(--glow-purple);border-color:transparent}
+.btn.ghost{border-color:rgba(0,212,255,0.3)}
+.btn.ghost:hover{border-color:var(--neon-blue);color:var(--neon-blue);box-shadow:var(--glow-blue)}
+.btn.ghost::before{background:transparent}
+.btn i{font-size:1rem}
+
+.hero-stats{
+  display:grid;grid-template-columns:repeat(4,1fr);gap:24px;
+  margin-top:60px;padding-top:40px;border-top:1px solid rgba(168,85,247,0.15);
+}
+.stat{position:relative}
+.stat::before{
+  content:'';position:absolute;top:-40px;left:0;width:30px;height:1px;
+  background:var(--grad-primary);
+}
+.stat .n{
+  font-family:var(--display);font-size:clamp(2rem, 4vw, 3rem);font-weight:900;
+  background:var(--grad-primary);
+  -webkit-background-clip:text;background-clip:text;color:transparent;
+  line-height:1;display:flex;align-items:baseline;gap:4px;
+  filter:drop-shadow(0 0 10px rgba(168,85,247,0.3));
+}
+.stat .n .plus{color:var(--neon-green);font-size:.6em}
+.stat .l{
+  font-family:var(--mono);font-size:.7rem;letter-spacing:.25em;
+  text-transform:uppercase;color:var(--text-mute);margin-top:8px;
+}
+@media (max-width:700px){
+  .hero-frame{padding:60px 24px}
+  .hero-stats{grid-template-columns:repeat(2,1fr);gap:24px 12px}
+}
+
+/* Scroll indicator */
+.scroll-cue{
+  position:absolute;bottom:30px;left:50%;transform:translateX(-50%);
+  display:flex;flex-direction:column;align-items:center;gap:12px;z-index:6;
+}
+.scroll-cue span{font-family:var(--mono);font-size:.65rem;letter-spacing:.3em;color:var(--text-mute);text-transform:uppercase}
+.scroll-cue .bar{width:1px;height:50px;background:linear-gradient(180deg,var(--neon-purple),transparent);position:relative;overflow:hidden}
+.scroll-cue .bar::after{
+  content:'';position:absolute;left:0;right:0;top:-20px;height:20px;
+  background:linear-gradient(180deg,var(--neon-blue),var(--neon-purple));
+  animation:drop 2s ease-in-out infinite;
+  box-shadow:0 0 10px var(--neon-blue);
+}
+@keyframes drop{0%{top:-20px;opacity:0}30%{opacity:1}70%{opacity:1}100%{top:100%;opacity:0}}
+
+/* ═══════════════════════════════════════════════════════════
+   SECTION BASE
+═══════════════════════════════════════════════════════════ */
+section{position:relative;padding:140px 20px;z-index:5}
+.container{max-width:1300px;margin:0 auto;position:relative}
+.section-head{display:flex;align-items:flex-end;justify-content:space-between;margin-bottom:80px;flex-wrap:wrap;gap:24px}
+.section-label{
+  display:inline-flex;align-items:center;gap:12px;
+  font-family:var(--mono);font-size:.75rem;letter-spacing:.3em;
+  text-transform:uppercase;margin-bottom:18px;
+  background:var(--grad-primary);
+  -webkit-background-clip:text;background-clip:text;color:transparent;
+}
+.section-label::before{content:'';width:40px;height:1px;background:var(--grad-primary)}
+.section-title{
+  font-family:var(--display);font-weight:900;text-transform:uppercase;
+  font-size:clamp(2rem, 5vw, 4rem);line-height:.95;letter-spacing:-.01em;
+}
+.section-title .hl{
+  background:var(--grad-primary);
+  -webkit-background-clip:text;background-clip:text;color:transparent;
+  filter:drop-shadow(0 0 20px rgba(168,85,247,0.3));
+}
+.section-meta{
+  font-family:var(--mono);font-size:.75rem;color:var(--text-mute);
+  letter-spacing:.25em;text-transform:uppercase;text-align:right;
+}
+.section-meta .num{
+  background:var(--grad-primary);
+  -webkit-background-clip:text;background-clip:text;color:transparent;
+  font-size:1.2rem;margin-right:10px;
+}
+@media (max-width:700px){.section-meta{text-align:left}}
+
+/* Reveal animation */
+.reveal{opacity:0;transform:translateY(40px);transition:opacity .9s cubic-bezier(.2,.9,.2,1), transform .9s cubic-bezier(.2,.9,.2,1)}
+.reveal.in{opacity:1;transform:translateY(0)}
+.reveal-delay-1{transition-delay:.1s}
+.reveal-delay-2{transition-delay:.2s}
+.reveal-delay-3{transition-delay:.3s}
+.reveal-delay-4{transition-delay:.4s}
+
+/* ═══════════════════════════════════════════════════════════
+   ABOUT / DOSSIER
+═══════════════════════════════════════════════════════════ */
+.dossier{
+  display:grid;grid-template-columns:1fr 1fr;gap:60px;align-items:center;
+}
+.dossier-left{position:relative}
+.dossier-card{
+  position:relative;padding:40px;
+  background:linear-gradient(135deg, rgba(15,8,40,0.8), rgba(3,0,20,0.6));
+  border:1px solid rgba(168,85,247,0.2);
+  backdrop-filter:blur(20px);
+  clip-path:polygon(20px 0,100% 0,100% calc(100% - 20px),calc(100% - 20px) 100%,0 100%,0 20px);
+  box-shadow:0 0 60px rgba(168,85,247,0.08), inset 0 0 40px rgba(0,212,255,0.02);
+}
+.dossier-card::before{
+  content:'';position:absolute;inset:-1px;z-index:-1;
+  background:conic-gradient(from 0deg, transparent, var(--neon-blue), var(--neon-purple), var(--neon-pink), transparent 30%);
+  animation:rotate 6s linear infinite;
+  clip-path:polygon(20px 0,100% 0,100% calc(100% - 20px),calc(100% - 20px) 100%,0 100%,0 20px);
+  filter:blur(2px);
+}
+@keyframes rotate{to{transform:rotate(360deg)}}
+.dossier-head{display:flex;align-items:center;gap:20px;margin-bottom:24px;padding-bottom:20px;border-bottom:1px solid rgba(168,85,247,0.15)}
+.avatar{
+  width:72px;height:72px;flex-shrink:0;position:relative;
+  background:var(--grad-primary);
+  display:flex;align-items:center;justify-content:center;
+  font-family:var(--display);font-weight:900;font-size:1.8rem;color:#fff;
+  clip-path:polygon(50% 0,100% 25%,100% 75%,50% 100%,0 75%,0 25%);
+  box-shadow:0 0 20px rgba(168,85,247,0.4);
+}
+.dossier-head .who .name{font-family:var(--display);font-size:1.4rem;font-weight:700;letter-spacing:.05em;text-transform:uppercase}
+.dossier-head .who .role{
+  font-family:var(--mono);font-size:.7rem;letter-spacing:.25em;text-transform:uppercase;margin-top:4px;
+  background:var(--grad-secondary);
+  -webkit-background-clip:text;background-clip:text;color:transparent;
+}
+.dossier p{color:var(--text-dim);font-size:1.05rem;margin-bottom:16px;line-height:1.75}
+.dossier p b{
+  background:var(--grad-secondary);
+  -webkit-background-clip:text;background-clip:text;color:transparent;
+  font-weight:600;
+}
+.dossier .links{display:flex;gap:16px;margin-top:24px;flex-wrap:wrap}
+.dossier .links a{
+  display:inline-flex;align-items:center;gap:8px;padding:10px 18px;
+  font-family:var(--mono);font-size:.72rem;letter-spacing:.2em;text-transform:uppercase;
+  border:1px solid rgba(168,85,247,0.2);transition:all .3s;
+  background:rgba(168,85,247,0.03);
+}
+.dossier .links a:hover{
+  border-color:var(--neon-purple);color:var(--neon-purple);
+  background:rgba(168,85,247,0.08);
+  box-shadow:0 0 20px rgba(168,85,247,0.2);
+}
+
+.dossier-right{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.spec-card{
+  padding:24px;background:var(--bg-glass);border:1px solid rgba(168,85,247,0.15);
+  position:relative;overflow:hidden;transition:all .4s;
+  backdrop-filter:blur(12px);
+}
+.spec-card:hover{
+  border-color:var(--neon-purple);transform:translateY(-4px);
+  box-shadow:0 10px 40px rgba(168,85,247,0.15);
+}
+.spec-card::after{
+  content:'';position:absolute;top:0;left:0;width:40px;height:1px;
+  background:var(--grad-primary);
+}
+.spec-card i{font-size:1.4rem;margin-bottom:12px;display:block;
+  background:var(--grad-primary);
+  -webkit-background-clip:text;background-clip:text;color:transparent;
+}
+.spec-card .k{font-family:var(--mono);font-size:.65rem;letter-spacing:.25em;text-transform:uppercase;color:var(--text-mute);margin-bottom:6px}
+.spec-card .v{font-family:var(--display);font-size:1.1rem;font-weight:700;color:var(--text)}
+@media (max-width:900px){.dossier{grid-template-columns:1fr;gap:40px}}
+
+/* ═══════════════════════════════════════════════════════════
+   PROJECTS (FEATURED PROJECTS)
+═══════════════════════════════════════════════════════════ */
+.roster-filter{
+  display:flex;gap:12px;flex-wrap:wrap;margin-bottom:50px;
+}
+.chip{
+  padding:8px 18px;font-family:var(--mono);font-size:.7rem;letter-spacing:.25em;
+  text-transform:uppercase;border:1px solid rgba(168,85,247,0.2);color:var(--text-dim);
+  cursor:none;transition:all .3s;background:rgba(168,85,247,0.03);
+  backdrop-filter:blur(8px);
+}
+.chip:hover,.chip.active{
+  border-color:var(--neon-purple);color:var(--neon-purple);
+  background:rgba(168,85,247,0.1);
+  box-shadow:0 0 20px rgba(168,85,247,0.2);
+}
+
+.roster{
+  display:grid;grid-template-columns:repeat(auto-fit,minmax(340px,1fr));gap:28px;
+}
+.card{
+  position:relative;background:linear-gradient(135deg, rgba(15,8,40,0.7), rgba(3,0,20,0.8));
+  border:1px solid rgba(168,85,247,0.15);overflow:hidden;
+  cursor:none;transition:all .5s cubic-bezier(.2,.9,.2,1);
+  backdrop-filter:blur(20px);
+  clip-path:polygon(0 0,100% 0,100% calc(100% - 24px),calc(100% - 24px) 100%,0 100%);
+}
+.card::before{
+  content:'';position:absolute;inset:0;z-index:1;pointer-events:none;
+  background:linear-gradient(135deg,transparent 60%,rgba(var(--accent-rgb,168,85,247),0.08) 100%);
+  opacity:0;transition:opacity .4s;
+}
+.card::after{
+  content:'';position:absolute;inset:-1px;z-index:0;pointer-events:none;
+  background:linear-gradient(135deg,var(--accent-color,var(--neon-purple)),transparent 50%);
+  opacity:0;transition:opacity .4s;
+  clip-path:polygon(0 0,100% 0,100% calc(100% - 24px),calc(100% - 24px) 100%,0 100%);
+  mix-blend-mode:overlay;
+}
+.card:hover{
+  transform:translateY(-10px);
+  border-color:var(--accent-color,var(--neon-purple));
+  box-shadow:0 30px 60px rgba(0,0,0,0.5), 0 0 40px rgba(var(--accent-rgb,168,85,247),0.2);
+}
+.card:hover::before{opacity:1}
+.card:hover::after{opacity:.4}
+.card-inner{position:relative;z-index:2;padding:32px}
+
+.card-head{display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:24px}
+.card-num{
+  font-family:var(--display);font-weight:900;font-size:3rem;line-height:1;
+  background:linear-gradient(180deg,var(--accent-color,var(--neon-purple)) 0%,transparent 100%);
+  -webkit-background-clip:text;background-clip:text;color:transparent;
+  opacity:.4;
+}
+.card-icon{
+  width:54px;height:54px;display:flex;align-items:center;justify-content:center;
+  background:rgba(var(--accent-rgb,168,85,247),0.1);
+  border:1px solid rgba(var(--accent-rgb,168,85,247),0.3);
+  font-size:1.3rem;color:var(--accent-color,var(--neon-purple));
+  clip-path:polygon(50% 0,100% 25%,100% 75%,50% 100%,0 75%,0 25%);
+}
+.card-title{font-family:var(--display);font-weight:900;font-size:1.6rem;text-transform:uppercase;letter-spacing:.02em;line-height:1.1;margin-bottom:8px}
+.card-tag{
+  display:inline-block;font-family:var(--mono);font-size:.65rem;letter-spacing:.25em;
+  text-transform:uppercase;color:var(--accent-color,var(--neon-purple));
+  padding:4px 10px;border:1px solid currentColor;margin-bottom:18px;
+}
+.card-pitch{font-size:.95rem;color:var(--text-dim);line-height:1.6;margin-bottom:24px;display:-webkit-box;-webkit-line-clamp:4;-webkit-box-orient:vertical;overflow:hidden}
+
+.card-tech{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:24px}
+.card-tech span{
+  font-family:var(--mono);font-size:.65rem;letter-spacing:.1em;
+  padding:4px 10px;background:rgba(var(--accent-rgb,168,85,247),0.08);
+  border:1px solid rgba(var(--accent-rgb,168,85,247),0.2);
+  color:var(--text-dim);text-transform:uppercase;
+}
+
+.card-actions{display:flex;gap:10px;align-items:center}
+.card-btn{
+  flex:1;padding:12px 16px;font-family:var(--display);font-size:.75rem;font-weight:700;
+  letter-spacing:.2em;text-transform:uppercase;text-align:center;
+  background:transparent;color:var(--text);border:1px solid rgba(168,85,247,0.2);
+  cursor:none;transition:all .3s;display:flex;align-items:center;justify-content:center;gap:8px;
+}
+.card-btn:hover{
+  background:var(--accent-color,var(--neon-purple));color:#fff;
+  border-color:var(--accent-color,var(--neon-purple));
+  box-shadow:0 0 20px rgba(var(--accent-rgb,168,85,247),0.4);
+}
+.card-btn.primary{
+  background:linear-gradient(135deg,var(--accent-color,var(--neon-purple)),var(--neon-pink));
+  color:#fff;border-color:transparent;
+}
+.card-btn.primary:hover{box-shadow:0 0 30px rgba(var(--accent-rgb,168,85,247),0.5)}
+
+/* Corner decorations on card */
+.card .corner{position:absolute;width:20px;height:20px;border:1px solid var(--accent-color,var(--neon-purple));z-index:3}
+.card .corner.tl{top:8px;left:8px;border-right:none;border-bottom:none}
+.card .corner.br{bottom:8px;right:8px;border-left:none;border-top:none}
+
+/* ═══════════════════════════════════════════════════════════
+   PROJECT MODAL (expanded details)
+═══════════════════════════════════════════════════════════ */
+.modal-backdrop{
+  position:fixed;inset:0;background:rgba(3,0,20,0.92);backdrop-filter:blur(16px);
+  z-index:500;opacity:0;visibility:hidden;transition:all .4s;
+  display:flex;align-items:center;justify-content:center;padding:20px;
+}
+.modal-backdrop.open{opacity:1;visibility:visible}
+.modal{
+  width:100%;max-width:1000px;max-height:90vh;overflow-y:auto;
+  background:linear-gradient(135deg,rgba(15,8,40,0.95),rgba(3,0,20,0.98));
+  border:1px solid rgba(168,85,247,0.3);position:relative;
+  transform:translateY(40px) scale(.96);transition:transform .5s cubic-bezier(.2,.9,.2,1);
+  clip-path:polygon(24px 0,100% 0,100% calc(100% - 24px),calc(100% - 24px) 100%,0 100%,0 24px);
+  box-shadow:0 0 100px rgba(168,85,247,0.2);
+}
+.modal-backdrop.open .modal{transform:translateY(0) scale(1)}
+.modal::-webkit-scrollbar{width:6px}
+.modal::-webkit-scrollbar-track{background:transparent}
+.modal::-webkit-scrollbar-thumb{background:var(--grad-primary);border-radius:3px}
+.modal-close{
+  position:absolute;top:20px;right:20px;z-index:10;
+  width:42px;height:42px;border:1px solid var(--neon-purple);
+  background:rgba(3,0,20,0.8);
+  color:var(--neon-purple);font-size:1.2rem;cursor:none;
+  display:flex;align-items:center;justify-content:center;
+  transition:all .3s;clip-path:polygon(50% 0,100% 50%,50% 100%,0 50%);
+}
+.modal-close:hover{
+  background:var(--grad-primary);color:#fff;
+  transform:rotate(90deg);
+  box-shadow:var(--glow-purple);
+}
+.modal-body{padding:60px}
+.modal-head{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:32px;flex-wrap:wrap;gap:16px}
+.modal-head .tag{
+  font-family:var(--mono);font-size:.7rem;letter-spacing:.3em;text-transform:uppercase;
+  background:var(--grad-primary);
+  -webkit-background-clip:text;background-clip:text;color:transparent;
+}
+.modal-head h2{
+  font-family:var(--display);font-weight:900;font-size:2.4rem;text-transform:uppercase;line-height:1;margin-top:8px;
+  background:var(--grad-primary);
+  -webkit-background-clip:text;background-clip:text;color:transparent;
+  filter:drop-shadow(0 0 20px rgba(168,85,247,0.3));
+}
+.modal-head .sub{font-family:var(--ui);color:var(--text-dim);margin-top:12px;font-size:1rem;max-width:600px}
+
+.modal-section{margin-top:40px}
+.modal-section h3{
+  font-family:var(--display);font-size:.9rem;font-weight:700;
+  text-transform:uppercase;letter-spacing:.25em;
+  margin-bottom:16px;padding-bottom:10px;border-bottom:1px solid rgba(168,85,247,0.15);
+  display:flex;align-items:center;gap:10px;
+  background:var(--grad-primary);
+  -webkit-background-clip:text;background-clip:text;color:transparent;
+}
+.modal-section h3 i{
+  background:var(--grad-secondary);
+  -webkit-background-clip:text;background-clip:text;color:transparent;
+}
+.modal-pitch{color:var(--text-dim);font-size:1rem;line-height:1.75}
+.feature-list{display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:10px}
+.feature-list div{
+  padding:10px 14px;font-size:.88rem;
+  background:rgba(168,85,247,0.05);
+  border:1px solid rgba(168,85,247,0.15);color:var(--text-dim);
+  display:flex;align-items:center;gap:10px;transition:all .3s;
+}
+.feature-list div::before{content:'▸';color:var(--neon-purple)}
+.feature-list div:hover{
+  border-color:var(--neon-purple);color:var(--text);
+  transform:translateX(4px);
+  box-shadow:0 0 15px rgba(168,85,247,0.15);
+}
+.tech-list{display:flex;flex-wrap:wrap;gap:8px}
+.tech-list span{
+  padding:8px 14px;
+  background:rgba(168,85,247,0.08);
+  border:1px solid rgba(168,85,247,0.2);
+  font-family:var(--mono);font-size:.75rem;letter-spacing:.15em;
+  text-transform:uppercase;color:var(--text);
+}
+.tech-list span.primary{
+  background:var(--grad-primary);color:#fff;border-color:transparent;
+  font-weight:700;box-shadow:0 0 15px rgba(168,85,247,0.3);
+}
+
+.modal-highlight{
+  padding:24px;
+  background:rgba(236,72,153,0.05);
+  border-left:3px solid var(--neon-pink);position:relative;
+  font-family:var(--ui);color:var(--text-dim);line-height:1.75;font-size:.95rem;
+}
+.modal-highlight strong{
+  display:block;font-family:var(--display);font-size:.8rem;letter-spacing:.2em;
+  text-transform:uppercase;margin-bottom:10px;
+  background:var(--grad-secondary);
+  -webkit-background-clip:text;background-clip:text;color:transparent;
+}
+.modal-highlight code{
+  font-family:var(--mono);background:rgba(0,0,0,0.4);padding:2px 6px;
+  border-radius:2px;color:var(--neon-blue);font-size:.85em;
+}
+
+/* ═══════════════════════════════════════════════════════════
+   SCREENSHOTS (Hero + Thumbnails) - FIXED
+═══════════════════════════════════════════════════════════ */
+.ss-hero{
+  display:grid;grid-template-columns:1fr;gap:20px;
+}
+.ss-hero .hero-img{
+  width:100%;max-width:300px;margin:0 auto;
+  aspect-ratio:9/19.5;
+  border-radius:28px;
+  overflow:hidden;
+  border:3px solid rgba(168,85,247,0.3);
+  box-shadow:0 20px 60px rgba(var(--accent-rgb,168,85,247),0.3), inset 0 0 0 1px rgba(255,255,255,0.05);
+  position:relative;
+  background:#000;
+}
+.ss-hero .hero-img img{
+  width:100%;height:100%;
+  object-fit:contain;
+  transition:all .5s;
+}
+.ss-hero .hero-label{
+  position:absolute;bottom:0;left:0;right:0;
+  padding:14px;text-align:center;
+  background:linear-gradient(180deg,transparent 0%, rgba(0,0,0,0.85) 100%);
+  font-family:var(--mono);font-size:.7rem;letter-spacing:.2em;
+  color:var(--neon-blue);text-transform:uppercase;
+  z-index:2;
+}
+.ss-hero .thumbs{
+  display:flex;gap:12px;justify-content:center;flex-wrap:wrap;
+  padding:10px 0;
+}
+.ss-hero .thumbs .thumb{
+  width:60px;aspect-ratio:9/19.5;
+  border-radius:10px;overflow:hidden;
+  border:2px solid transparent;transition:all .3s;cursor:pointer;
+  opacity:.5;position:relative;
+  background:#000;
+}
+.ss-hero .thumbs .thumb:hover,.ss-hero .thumbs .thumb.active{
+  border-color:var(--neon-purple);opacity:1;
+  box-shadow:0 0 20px rgba(var(--accent-rgb,168,85,247),0.5);
+  transform:translateY(-3px);
+}
+.ss-hero .thumbs .thumb img{
+  width:100%;height:100%;
+  object-fit:contain;
+}
+.ss-hero .thumbs .thumb .thumb-label{
+  position:absolute;bottom:0;left:0;right:0;
+  padding:3px 2px;text-align:center;
+  background:rgba(0,0,0,0.85);
+  font-family:var(--mono);font-size:.4rem;letter-spacing:.02em;
+  color:var(--text-dim);text-transform:uppercase;
+  white-space:nowrap;overflow:hidden;text-overflow:ellipsis;
+  z-index:2;
+}
+
+/* ═══════════════════════════════════════════════════════════
+   FUTURE ROADMAP
+═══════════════════════════════════════════════════════════ */
+.future-list{list-style:none}
+.future-list li{
+  padding:10px 0;border-bottom:1px dashed rgba(168,85,247,0.15);
+  display:flex;align-items:center;gap:12px;color:var(--text-dim);
+}
+.future-list li::before{
+  content:'◆';
+  background:var(--grad-primary);
+  -webkit-background-clip:text;background-clip:text;color:transparent;
+}
+.future-list li:last-child{border-bottom:none}
+
+.modal-video{
+  position:relative;aspect-ratio:16/9;background:#000;
+  border:1px solid rgba(168,85,247,0.2);overflow:hidden;
+}
+.modal-video iframe,.modal-video video{width:100%;height:100%;border:0}
+.modal-video .placeholder{
+  position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:12px;
+  background:linear-gradient(135deg,rgba(15,8,40,0.8),rgba(3,0,20,0.9));
+}
+.modal-video .placeholder i{font-size:2.4rem;
+  background:var(--grad-primary);
+  -webkit-background-clip:text;background-clip:text;color:transparent;
+}
+.modal-video .placeholder span{font-family:var(--mono);font-size:.75rem;color:var(--text-mute);letter-spacing:.25em;text-transform:uppercase}
+
+@media (max-width:700px){
+  .modal-body{padding:40px 24px}
+  .modal-head h2{font-size:1.6rem}
+  .ss-hero .hero-img{max-width:260px}
+  .ss-hero .thumbs .thumb{width:50px}
+}
+
+/* ═══════════════════════════════════════════════════════════
+   TECHNICAL SKILLS
+═══════════════════════════════════════════════════════════ */
+.skills-grid{
+  display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:24px;
+}
+.skill-cat{
+  padding:30px;
+  background:linear-gradient(135deg, rgba(15,8,40,0.7), rgba(3,0,20,0.6));
+  border:1px solid rgba(168,85,247,0.15);
+  position:relative;transition:all .4s;
+  backdrop-filter:blur(20px);
+  clip-path:polygon(0 0,100% 0,100% calc(100% - 16px),calc(100% - 16px) 100%,0 100%);
+}
+.skill-cat:hover{
+  border-color:var(--neon-purple);transform:translateY(-4px);
+  box-shadow:0 10px 40px rgba(168,85,247,0.15);
+}
+.skill-cat::before{
+  content:attr(data-num);position:absolute;top:12px;right:18px;
+  font-family:var(--display);font-weight:900;font-size:2rem;
+  background:var(--grad-primary);
+  -webkit-background-clip:text;background-clip:text;color:transparent;
+  opacity:.2;
+}
+.skill-cat h4{
+  font-family:var(--display);font-size:.9rem;font-weight:700;
+  text-transform:uppercase;letter-spacing:.2em;
+  margin-bottom:20px;padding-bottom:12px;border-bottom:1px solid rgba(168,85,247,0.15);
+  display:flex;align-items:center;gap:10px;
+  background:var(--grad-primary);
+  -webkit-background-clip:text;background-clip:text;color:transparent;
+}
+.skill-cat h4 i{
+  background:var(--grad-ice);
+  -webkit-background-clip:text;background-clip:text;color:transparent;
+}
+.skill-list{display:flex;flex-direction:column;gap:10px}
+.skill-item{
+  display:flex;align-items:center;gap:12px;
+  padding:10px 14px;
+  background:rgba(168,85,247,0.04);
+  border:1px solid rgba(168,85,247,0.1);
+  border-radius:4px;
+  transition:all .3s;
+}
+.skill-item:hover{
+  border-color:rgba(168,85,247,0.3);
+  background:rgba(168,85,247,0.08);
+  transform:translateX(4px);
+}
+.skill-item::before{
+  content:'▸';
+  color:var(--neon-purple);
+  font-size:.8rem;
+}
+.skill-item span{
+  font-family:var(--ui);font-size:.9rem;color:var(--text);
+}
+
+/* ═══════════════════════════════════════════════════════════
+   CONTACT
+═══════════════════════════════════════════════════════════ */
+.contact-main{
+  padding:60px 50px;
+  background:linear-gradient(135deg, rgba(15,8,40,0.8), rgba(3,0,20,0.7));
+  border:1px solid rgba(168,85,247,0.2);
+  position:relative;overflow:hidden;
+  backdrop-filter:blur(20px);
+  clip-path:polygon(0 0,100% 0,100% calc(100% - 30px),calc(100% - 30px) 100%,0 100%);
+  box-shadow:0 0 60px rgba(168,85,247,0.08);
+}
+.contact-main::before{
+  content:'';position:absolute;top:-50%;right:-50%;width:100%;height:100%;
+  background:radial-gradient(circle,rgba(168,85,247,0.08) 0%,transparent 60%);
+}
+.contact-main h3{
+  font-family:var(--display);font-size:2.2rem;font-weight:900;
+  text-transform:uppercase;line-height:1.05;margin-bottom:16px;position:relative;
+}
+.contact-main h3 .hl{
+  background:var(--grad-primary);
+  -webkit-background-clip:text;background-clip:text;color:transparent;
+}
+.contact-main p{color:var(--text-dim);max-width:500px;margin-bottom:32px;position:relative}
+.contact-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:14px;position:relative}
+.contact-card{
+  padding:20px;
+  background:rgba(3,0,20,0.6);
+  border:1px solid rgba(168,85,247,0.15);
+  transition:all .3s;display:block;
+}
+.contact-card:hover{
+  border-color:var(--neon-purple);transform:translateY(-3px);
+  box-shadow:0 10px 30px rgba(168,85,247,0.2);
+}
+.contact-card i{font-size:1.2rem;margin-bottom:10px;
+  background:var(--grad-primary);
+  -webkit-background-clip:text;background-clip:text;color:transparent;
+}
+.contact-card .k{font-family:var(--mono);font-size:.65rem;letter-spacing:.25em;color:var(--text-mute);text-transform:uppercase;margin-bottom:4px}
+.contact-card .v{font-family:var(--ui);font-size:.92rem;color:var(--text);word-break:break-word}
+
+@media (max-width:700px){
+  .contact-grid{grid-template-columns:1fr}
+  .contact-main{padding:40px 28px}
+}
+
+/* ═══════════════════════════════════════════════════════════
+   FOOTER
+═══════════════════════════════════════════════════════════ */
+footer{
+  position:relative;padding:40px 20px;
+  border-top:1px solid rgba(168,85,247,0.15);
+  background:linear-gradient(180deg,transparent,rgba(3,0,20,0.6));z-index:5;
+}
+.foot{max-width:1300px;margin:0 auto;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:20px}
+.foot-logo{
+  font-family:var(--display);font-weight:900;font-size:1.2rem;letter-spacing:.2em;text-transform:uppercase;
+  background:var(--grad-primary);
+  -webkit-background-clip:text;background-clip:text;color:transparent;
+  filter:drop-shadow(0 0 10px rgba(168,85,247,0.3));
+}
+.foot-links{display:flex;gap:16px}
+.foot-links a{
+  width:42px;height:42px;display:flex;align-items:center;justify-content:center;
+  border:1px solid rgba(168,85,247,0.2);color:var(--text-dim);transition:all .3s;
+  clip-path:polygon(50% 0,100% 25%,100% 75%,50% 100%,0 75%,0 25%);
+}
+.foot-links a:hover{
+  color:#fff;background:var(--grad-primary);border-color:transparent;
+  box-shadow:var(--glow-purple);
+}
+
+/* ═══════════════════════════════════════════════════════════
+   UTIL
+═══════════════════════════════════════════════════════════ */
+@media (max-width:700px){
+  section{padding:80px 16px}
+  .section-head{margin-bottom:40px;flex-direction:column;align-items:flex-start}
+}
+</style>
 </head>
-
 <body>
 
-    <header>
-        <div class="container header-container">
-            <a href="#" class="logo">
-                <i class="fas fa-mobile-alt logo-icon"></i>
-                Sudipta<span>Roy</span>
-            </a>
-            <button class="mobile-toggle" id="mobileToggle"><i class="fas fa-bars"></i></button>
-            <nav>
-                <ul id="navMenu">
-                    <li><a href="#bio" class="active">Bio</a></li>
-                    <li><a href="#projects">Projects</a></li>
-                    <li><a href="#skills">Skills</a></li>
-                    <li><a href="#contact">Contact</a></li>
-                </ul>
-            </nav>
-        </div>
-    </header>
+<!-- ═══════ BG LAYERS ═══════ -->
+<canvas id="starfield"></canvas>
+<div class="aurora-bg"></div>
+<div class="grid-overlay"></div>
+<div class="scanlines"></div>
+<div class="vignette"></div>
 
-    <section class="hero">
-        <div class="container hero-content">
-            <div class="role-badge">Android Developer (Java & Kotlin)</div>
-            <h1>Building Mobile Experiences That Matter</h1>
-            <p>Creating secure, intuitive Android applications with clean architecture, Firebase backend, AI integration, and offline-first design</p>
-            <div class="cta-container">
-                <a href="#projects" class="cta-button"><i class="fas fa-briefcase"></i> View My Projects</a>
-                <a href="#contact" class="cta-button secondary"><i class="fas fa-paper-plane"></i> Get In Touch</a>
-            </div>
-        </div>
-        <div class="hero-shape"></div>
-    </section>
-
-    <section id="bio" class="bio-section">
-        <div class="container">
-            <div class="section-header">
-                <h2>About Me</h2>
-                <p>Mobile developer specializing in Android applications with a focus on user experience, security, and performance</p>
-            </div>
-            <div class="bio-container">
-    <p>
-        I build practical, user-focused Android apps with clean architecture, Firebase backend, AI features and offline support. 
-        Below are four polished projects: <em>Notes App</em>, <em>XChat</em>, <em>HelpHive</em>, and <em>WebNovel Summarizer</em> — 
-        each includes a short elevator pitch, feature list, tech stack and demo.
-    </p>
-    <p>
-        Download from: 
-        <a href="https://apkpure.com/p/com.example.novel_summary" target="_blank">APKPure</a> 
-        | 
-        <a href="https://github.com/sudiptoroy7666-lgtm" target="_blank">GitHub</a>
-    </p>
+<!-- ═══════ LOADING SCREEN ═══════ -->
+<div id="loader">
+  <div class="loader-rune"><i class="fas fa-mobile-alt"></i></div>
+  <div class="loader-text">INITIALIZING // <span id="loadPct">0</span>%</div>
+  <div class="loader-bar"></div>
 </div>
 
-<style>
-    .bio-container a:visited {
-        color: #FFFFFF; /* change to any color you like */
+<!-- ═══════ CUSTOM CURSOR ═══════ -->
+<div class="cursor-dot"></div>
+<div class="cursor-ring"></div>
+
+<!-- ═══════ TOP HUD ═══════ -->
+<div class="hud-top">
+  <div class="live"><span>SYSTEM ONLINE</span></div>
+  <div class="hud-info">
+    <span class="hud-time" id="hudTime">--:--:--</span>
+    <span class="hud-session" id="hudSession">SESSION: 00:00</span>
+  </div>
+</div>
+
+<!-- ═══════ SIDE NAV ═══════ -->
+<nav class="side">
+  <a href="#hero" class="active" data-label="HERO"></a>
+  <a href="#dossier" data-label="DOSSIER"></a>
+  <a href="#roster" data-label="PROJECTS"></a>
+  <a href="#arsenal" data-label="SKILLS"></a>
+  <a href="#link" data-label="CONTACT"></a>
+</nav>
+
+<!-- ═══════ HERO ═══════ -->
+<section id="hero" class="hero">
+  <div class="hero-frame">
+    <div class="hero-tag"><span class="dot"></span><span>ANDROID DEVELOPER // JAVA & KOTLIN & FLUTTER</span></div>
+    <h1>
+      <div class="line"><span>BUILDING</span></div>
+      <div class="line"><span class="gold">MOBILE</span></div>
+      <div class="line"><span>EXPERIENCES</span></div>
+    </h1>
+    <p class="sub">
+      Forging <b>secure</b>, <b>AI-enhanced</b> applications with clean architecture, cryptographic primitives, and <b>offline-first</b> design.
+      Specializing in <span class="typed" id="typed"></span>
+    </p>
+    <div class="cta-row">
+      <a href="#roster" class="btn"><i class="fas fa-layer-group"></i> VIEW PROJECTS</a>
+      <a href="#link" class="btn ghost"><i class="fas fa-satellite-dish"></i> GET IN TOUCH</a>
+    </div>
+
+    <div class="hero-stats">
+      <div class="stat reveal"><div class="n"><span class="count" data-to="6">0</span><span class="plus">+</span></div><div class="l">Shipped Apps</div></div>
+      <div class="stat reveal reveal-delay-1"><div class="n"><span class="count" data-to="65">0</span><span class="plus">K</span></div><div class="l">Lines of Code</div></div>
+      <div class="stat reveal reveal-delay-2"><div class="n"><span class="count" data-to="20">0</span><span class="plus">+</span></div><div class="l">APIs Integrated</div></div>
+      <div class="stat reveal reveal-delay-3"><div class="n"><span class="count" data-to="100">0</span><span class="plus">%</span></div><div class="l">Passion Driven</div></div>
+    </div>
+  </div>
+  <div class="scroll-cue">
+    <span>SCROLL</span>
+    <div class="bar"></div>
+  </div>
+</section>
+
+<!-- ═══════ DOSSIER / ABOUT ═══════ -->
+<section id="dossier">
+  <div class="container">
+    <div class="section-head">
+      <div>
+        <div class="section-label">DOSSIER // 001</div>
+        <h2 class="section-title">OPERATOR <span class="hl">PROFILE</span></h2>
+      </div>
+      <div class="section-meta"><span class="num">01</span>CLEARANCE // PUBLIC</div>
+    </div>
+
+    <div class="dossier">
+      <div class="dossier-left reveal">
+        <div class="dossier-card">
+          <div class="dossier-head">
+            <div class="avatar">SR</div>
+            <div class="who">
+              <div class="name">SUDIPTA ROY</div>
+              <div class="role">// MULTI-PLATFORM ARCHITECT</div>
+            </div>
+          </div>
+          <p>I build practical, user-focused Android and cross-platform apps with <b>clean architecture</b>, <b>zero-knowledge cryptography</b>, <b>AI features</b>, and offline support.</p>
+          <p>Below are six polished projects spanning <b>Flutter</b>, <b>Kotlin</b>, and <b>Java</b> — each demonstrates real-world reliability: what happens when the network drops, when the app is killed, or when cryptographic keys must survive hardware resets.</p>
+          <div class="links">
+            <a href="https://apkpure.com/p/com.example.novel_summary" target="_blank"><i class="fas fa-download"></i> APKPure</a>
+            <a href="https://github.com/sudiptoroy7666-lgtm" target="_blank"><i class="fab fa-github"></i> GitHub</a>
+            <a href="https://sudiptoroy7666-lgtm.github.io/portfolio/" target="_blank"><i class="fas fa-globe"></i> Portfolio</a>
+          </div>
+        </div>
+      </div>
+
+      <div class="dossier-right">
+        <div class="spec-card reveal reveal-delay-1"><i class="fas fa-map-marker-alt"></i><div class="k">Location</div><div class="v">Dhaka, BD</div></div>
+        <div class="spec-card reveal reveal-delay-2"><i class="fas fa-graduation-cap"></i><div class="k">Education</div><div class="v">BSc CSE '25</div></div>
+        <div class="spec-card reveal reveal-delay-3"><i class="fas fa-code-branch"></i><div class="k">Stack</div><div class="v">Kotlin / Java / Flutter</div></div>
+        <div class="spec-card reveal reveal-delay-4"><i class="fas fa-bolt"></i><div class="k">Status</div><div class="v">Open to Work</div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════ FEATURED PROJECTS ═══════ -->
+<section id="roster">
+  <div class="container">
+    <div class="section-head">
+      <div>
+        <div class="section-label">ROSTER // 002</div>
+        <h2 class="section-title">FEATURED <span class="hl">PROJECTS</span></h2>
+      </div>
+      <div class="section-meta"><span class="num">06</span>APPS BUILT</div>
+    </div>
+
+    <div class="roster-filter reveal">
+      <button class="chip active" data-filter="all">ALL</button>
+      <button class="chip" data-filter="kotlin">KOTLIN</button>
+      <button class="chip" data-filter="java">JAVA</button>
+      <button class="chip" data-filter="flutter">FLUTTER</button>
+      <button class="chip" data-filter="ai">AI</button>
+      <button class="chip" data-filter="security">SECURITY</button>
+    </div>
+
+    <div class="roster" id="rosterGrid">
+      <!-- PROJECTS INJECTED BY JS -->
+    </div>
+  </div>
+</section>
+
+<!-- ═══════ TECHNICAL SKILLS ═══════ -->
+<section id="arsenal">
+  <div class="container">
+    <div class="section-head">
+      <div>
+        <div class="section-label">ARSENAL // 003</div>
+        <h2 class="section-title">TECHNICAL <span class="hl">SKILLS</span></h2>
+      </div>
+      <div class="section-meta"><span class="num">24</span>TECHNOLOGIES</div>
+    </div>
+
+    <div class="skills-grid" id="skillsGrid">
+      <!-- INJECTED BY JS -->
+    </div>
+  </div>
+</section>
+
+<!-- ═══════ CONTACT ═══════ -->
+<section id="link">
+  <div class="container">
+    <div class="section-head">
+      <div>
+        <div class="section-label">LINK // 004</div>
+        <h2 class="section-title">ESTABLISH <span class="hl">CONTACT</span></h2>
+      </div>
+      <div class="section-meta"><span class="num">∞</span>CHANNEL OPEN</div>
+    </div>
+
+    <div class="contact-main reveal">
+      <h3>LET'S BUILD <span class="hl">SOMETHING</span> LEGENDARY.</h3>
+      <p>Whether you're hiring for an Android/Flutter role or want to collaborate on a product — the channel is open. Expect a response within 24 hours.</p>
+      <div class="contact-grid">
+        <a class="contact-card" href="tel:+8801928782828"><i class="fas fa-phone-alt"></i><div class="k">Phone</div><div class="v">+880 1928 782828</div></a>
+        <a class="contact-card" href="mailto:sudiptoroy7666@gmail.com"><i class="fas fa-envelope"></i><div class="k">Email</div><div class="v">sudiptoroy7666@gmail.com</div></a>
+        <div class="contact-card"><i class="fas fa-map-marker-alt"></i><div class="k">Location</div><div class="v">Dholaipar, Dhaka 1204</div></div>
+        <a class="contact-card" href="https://www.linkedin.com/in/sudipta-roy-3873512b4/" target="_blank"><i class="fab fa-linkedin"></i><div class="k">LinkedIn</div><div class="v">sudipta-roy</div></a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════ FOOTER ═══════ -->
+<footer>
+  <div class="foot">
+    <div class="foot-logo">◆ SUDIPTA ROY ◆</div>
+    <div class="foot-links">
+      <a href="https://github.com/sudiptoroy7666-lgtm" target="_blank" title="GitHub"><i class="fab fa-github"></i></a>
+      <a href="https://www.linkedin.com/in/sudipta-roy-3873512b4/" target="_blank" title="LinkedIn"><i class="fab fa-linkedin-in"></i></a>
+      <a href="mailto:sudiptoroy7666@gmail.com" title="Email"><i class="fas fa-envelope"></i></a>
+      <a href="tel:+8801928782828" title="Call"><i class="fas fa-phone"></i></a>
+    </div>
+  </div>
+</footer>
+
+<!-- ═══════ PROJECT MODAL ═══════ -->
+<div class="modal-backdrop" id="modalBackdrop">
+  <div class="modal" id="modal">
+    <button class="modal-close" id="modalClose"><i class="fas fa-times"></i></button>
+    <div class="modal-body" id="modalBody"></div>
+  </div>
+</div>
+
+<script>
+/* ═══════════════════════════════════════════════════════════
+   PROJECT DATA
+═══════════════════════════════════════════════════════════ */
+const PROJECTS = [
+  {
+    id:'vaultx',
+    num:'01',
+    title:'VaultX',
+    tag:'ZERO-KNOWLEDGE',
+    subtitle:'Cross-platform password manager with per-field AES-256-GCM encryption',
+    accent:'#00D4FF',
+    accentRGB:'0,212,255',
+    icon:'fas fa-shield-alt',
+    techTags:['flutter','security'],
+    pitch:'A fully offline-first, zero-knowledge password manager built with Flutter. Encrypts every sensitive field independently on-device before touching SQLite or Supabase. The server never sees plaintext — absolute control over cryptographic keys with hardware-backed HSM/TPM storage.',
+    features:['Per-field AES-256-GCM', 'Argon2id KDF in Isolates', 'HKDF-SHA256 Session Keys', 'Hardware-backed HSM/TPM', 'Cross-Platform PIN Sync', 'Portable .vltx Backups', 'CSV Import/Export', 'HaveIBeenPwned k-anon Check', '10-Attempt PIN Wipe', '30s Auto-Clipboard Clear'],
+    stack:[{n:'Flutter',p:1},{n:'Dart'},{n:'Supabase'},{n:'SQLite (Drift)'},{n:'Argon2id'},{n:'AES-256-GCM'},{n:'FFI'}],
+    screenshots:[
+      {label:'Vault List', url:'https://github.com/sudiptoroy7666-lgtm/portfolio/blob/main/assets/screenshots/vaultx/v6.png?raw=true'},
+      {label:'Add Entry', url:'https://github.com/sudiptoroy7666-lgtm/portfolio/blob/main/assets/screenshots/vaultx/v7.png?raw=true'},
+      {label:'Signup', url:'https://github.com/sudiptoroy7666-lgtm/portfolio/blob/main/assets/screenshots/vaultx/v1.jpg?raw=true'},
+      {label:'Login', url:'https://github.com/sudiptoroy7666-lgtm/portfolio/blob/main/assets/screenshots/vaultx/v2.jpg?raw=true'},
+      {label:'Reset Password', url:'https://github.com/sudiptoroy7666-lgtm/portfolio/blob/main/assets/screenshots/vaultx/v3.jpg?raw=true'},
+      {label:'Master Password', url:'https://github.com/sudiptoroy7666-lgtm/portfolio/blob/main/assets/screenshots/vaultx/v4.png?raw=true'},
+      {label:'Password View PIN', url:'https://github.com/sudiptoroy7666-lgtm/portfolio/blob/main/assets/screenshots/vaultx/v5.png?raw=true'},
+      {label:'Password View', url:'https://github.com/sudiptoroy7666-lgtm/portfolio/blob/main/assets/screenshots/vaultx/v8.png?raw=true'},
+      {label:'Import Backup', url:'https://github.com/sudiptoroy7666-lgtm/portfolio/blob/main/assets/screenshots/vaultx/v9.jpg?raw=true'},
+      {label:'Export Data', url:'https://github.com/sudiptoroy7666-lgtm/portfolio/blob/main/assets/screenshots/vaultx/v10.jpg?raw=true'},
+      {label:'Settings', url:'https://github.com/sudiptoroy7666-lgtm/portfolio/blob/main/assets/screenshots/vaultx/v11.png?raw=true'}
+    ],
+    highlight:{
+      title:'Zero-Knowledge Architecture',
+      text:'Master password runs through Argon2id (32MB memory cost) in a Dart Isolate to prevent UI blocking. The resulting master key derives a session key via HKDF-SHA256, then is immediately zeroed from RAM via FFI. The server only ever stores ciphertext and non-secret salts.'
+    },
+    future:['Biometric unlock integration', 'Browser extension for autofill', 'TOTP 2FA support'],
+    video:null
+  },
+  {
+    id:'webnovel',
+    num:'02',
+    title:'WebNovel Summarizer',
+    tag:'AI READING',
+    subtitle:'AI-powered reading assistant for web novel enthusiasts',
+    accent:'#10B981',
+    accentRGB:'16,185,129',
+    icon:'fas fa-book-open',
+    techTags:['kotlin','ai'],
+    pitch:'An Android app that embeds a full-featured web browser pre-configured for 6+ novel platforms with a 15+ domain ad blocker. Summarize any chapter with a single tap using Cerebras GPT-OSS-120B or Groq Llama 3.3 70B. Offline library, TTS, zero data collection.',
+    features:['Smart WebView Browser', '6+ Pre-configured Novel Sites', '3-Level AI Summaries', '15+ Domain Ad Blocker', 'Light/Dark Mode CSS Injection', 'Novel Library (3-tier)', 'Text-to-Speech (chunked)', 'Browsing History', 'Bookmarks', 'Manual CSS Selector', 'Offline Access', 'Cerebras + Groq Fallback'],
+    stack:[{n:'Kotlin',p:1},{n:'MVVM'},{n:'Room Database'},{n:'Groq AI (Llama 3.3 70B)'},{n:'Cerebras AI (GPT-OSS-120B)'},{n:'Retrofit + OkHttp'},{n:'Coroutines & StateFlow'},{n:'WebView + JS Injection'}],
+    screenshots:[
+      {label:'Browser', url:'https://github.com/sudiptoroy7666-lgtm/portfolio/blob/main/assets/screenshots/Ai%20web%20novel%20reader/photo_6131994804041224467_y.jpg?raw=true'},
+      {label:'Novel Sites', url:'https://github.com/sudiptoroy7666-lgtm/portfolio/blob/main/assets/screenshots/Ai%20web%20novel%20reader/photo_6131994804041224476_y.jpg?raw=true'},
+      {label:'Summary', url:'https://github.com/sudiptoroy7666-lgtm/portfolio/blob/main/assets/screenshots/Ai%20web%20novel%20reader/photo_6131994804041224466_y.jpg?raw=true'},
+      {label:'Summary Types', url:'https://github.com/sudiptoroy7666-lgtm/portfolio/blob/main/assets/screenshots/Ai%20web%20novel%20reader/photo_6131994804041224472_y.jpg?raw=true'},
+      {label:'Save Summary', url:'https://github.com/sudiptoroy7666-lgtm/portfolio/blob/main/assets/screenshots/Ai%20web%20novel%20reader/photo_6131994804041224465_y.jpg?raw=true'},
+      {label:'Library', url:'https://github.com/sudiptoroy7666-lgtm/portfolio/blob/main/assets/screenshots/Ai%20web%20novel%20reader/photo_6131994804041224470_y.jpg?raw=true'},
+      {label:'Bookmarks', url:'https://github.com/sudiptoroy7666-lgtm/portfolio/blob/main/assets/screenshots/Ai%20web%20novel%20reader/photo_6131994804041224469_y.jpg?raw=true'},
+      {label:'History', url:'https://github.com/sudiptoroy7666-lgtm/portfolio/blob/main/assets/screenshots/Ai%20web%20novel%20reader/photo_6131994804041224471_y.jpg?raw=true'},
+      {label:'Settings', url:'https://github.com/sudiptoroy7666-lgtm/portfolio/blob/main/assets/screenshots/Ai%20web%20novel%20reader/photo_6131994804041224474_y.jpg?raw=true'},
+      {label:'Available AI', url:'https://github.com/sudiptoroy7666-lgtm/portfolio/blob/main/assets/screenshots/Ai%20web%20novel%20reader/photo_6131994804041224473_y.jpg?raw=true'}
+    ],
+    highlight:{
+      title:'Implementation Highlight',
+      text:'Content extraction runs a multi-stage JavaScript pipeline injected into the WebView: strips scripts/ads/navbars, tries 15+ CSS selectors ranked by text yield, falls back to paragraph-density scoring. A <code>ContentHolder</code> singleton bypasses Android\'s 1MB Intent limit. TTS splits summaries at sentence boundaries into 4,000-character chunks.'
+    },
+    future:['Batch summarization across multiple chapters', 'Export library to PDF / EPUB', 'Multi-model AI support (Claude, Gemini, GPT-4)'],
+    video:null
+  },
+  {
+    id:'privshot',
+    num:'03',
+    title:'PrivShot',
+    tag:'PRIVACY',
+    subtitle:'Privacy-First Screenshot Sanitizer for Android',
+    accent:'#EC4899',
+    accentRGB:'236,72,153',
+    icon:'fas fa-user-secret',
+    techTags:['flutter','security'],
+    pitch:'Detect sensitive information, calculate privacy risk, redact PII, strip metadata, and share safely. 100% offline with zero internet permission required. Uses on-device ML Kit to detect emails, phones, credit cards, and more before you share.',
+    features:['On-Device PII Detection (ML Kit)', 'Interactive Redact Canvas', 'Privacy Risk Score (0-100)', 'Smart Presets (Social/Financial)', 'EXIF & GPS Metadata Stripping', 'Zero INTERNET Permission', 'Share Intent Middle-Man', '70+ Unit Tests'],
+    stack:[{n:'Flutter',p:1},{n:'Dart'},{n:'Google ML Kit'},{n:'dart:ui Canvas'},{n:'Provider'},{n:'Share Plus'}],
+    screenshots:[
+      {label:'Home', url:'https://github.com/sudiptoroy7666-lgtm/portfolio/blob/main/assets/screenshots/privShot/p1.jpg?raw=true'},
+      {label:'Review & Presets', url:'https://github.com/sudiptoroy7666-lgtm/portfolio/blob/main/assets/screenshots/privShot/p2.jpg?raw=true'},
+      {label:'Redacted Types', url:'https://github.com/sudiptoroy7666-lgtm/portfolio/blob/main/assets/screenshots/privShot/p3.jpg?raw=true'},
+      {label:'Output & Share', url:'https://github.com/sudiptoroy7666-lgtm/portfolio/blob/main/assets/screenshots/privShot/p4.jpg?raw=true'},
+      {label:'User Guide', url:'https://github.com/sudiptoroy7666-lgtm/portfolio/blob/main/assets/screenshots/privShot/p5.jpg?raw=true'}
+    ],
+    highlight:{
+      title:'Privacy-by-Default Architecture',
+      text:'The manifest explicitly omits <code>android.permission.INTERNET</code>. All processing happens locally using bundled ML models. Exported images are decoded and re-encoded, permanently stripping EXIF, GPS, timestamps, and device fingerprints before sharing.'
+    },
+    future:['Custom blur/redaction patterns', 'Batch image processing', 'PDF document sanitization'],
+    video:null
+  },
+  {
+    id:'helphive',
+    num:'04',
+    title:'HelpHive',
+    tag:'COMMUNITY',
+    subtitle:'Community care ecosystem — mood tracking, kindness logging & help network',
+    accent:'#A855F7',
+    accentRGB:'168,85,247',
+    icon:'fas fa-heart',
+    techTags:['kotlin','ai'],
+    pitch:'A three-app ecosystem designed to combat modern social isolation. HelpHive Core matches neighbors for help. MoodMosaic visualizes community mood patterns. KindConnect surfaces everyday acts of kindness — no leaderboards, only intrinsic recognition.',
+    features:['Standard Authentication', 'Mood Logging (8 emotions)', 'Neighborhood Mood Map', 'AI Support Messages', 'Crisis Resource Access', 'Kindness Feed', 'Group Challenges', 'Mood Statistics', 'Community Feed', 'Offline-First Sync', 'Hilt DI'],
+    stack:[{n:'Kotlin',p:1},{n:'Clean Architecture'},{n:'Room Database'},{n:'Firestore'},{n:'Hilt DI'},{n:'Gemini AI'},{n:'MPAndroidChart'},{n:'Coroutines & Flow'}],
+    screenshots:[
+      {label:'Home', url:'https://github.com/sudiptoroy7666-lgtm/portfolio/blob/main/assets/screenshots/helphive/h4.jpg?raw=true'},
+      {label:'Auth', url:'https://github.com/sudiptoroy7666-lgtm/portfolio/blob/main/assets/screenshots/helphive/h1.jpg?raw=true'},
+      {label:'Account Options', url:'https://github.com/sudiptoroy7666-lgtm/portfolio/blob/main/assets/screenshots/helphive/h5.jpg?raw=true'},
+      {label:'Profile', url:'https://github.com/sudiptoroy7666-lgtm/portfolio/blob/main/assets/screenshots/helphive/h6.jpg?raw=true'},
+      {label:'Mood Log', url:'https://github.com/sudiptoroy7666-lgtm/portfolio/blob/main/assets/screenshots/helphive/h9.jpg?raw=true'},
+      {label:'Mood Map', url:'https://github.com/sudiptoroy7666-lgtm/portfolio/blob/main/assets/screenshots/helphive/h11.jpg?raw=true'},
+      {label:'AI Cheer Up', url:'https://github.com/sudiptoroy7666-lgtm/portfolio/blob/main/assets/screenshots/helphive/h10.jpg?raw=true'},
+      {label:'Kindness', url:'https://github.com/sudiptoroy7666-lgtm/portfolio/blob/main/assets/screenshots/helphive/h12.jpg?raw=true'},
+      {label:'Help Request', url:'https://github.com/sudiptoroy7666-lgtm/portfolio/blob/main/assets/screenshots/helphive/h13.jpg?raw=true'},
+      {label:'Friends', url:'https://github.com/sudiptoroy7666-lgtm/portfolio/blob/main/assets/screenshots/helphive/h14.jpg?raw=true'},
+      {label:'Chats', url:'https://github.com/sudiptoroy7666-lgtm/portfolio/blob/main/assets/screenshots/helphive/15.jpg?raw=true'}
+    ],
+    highlight:{
+      title:'Implementation Highlight',
+      text:'Repository layer merges Firestore + Room transparently — 99.7% offline reliability. Gemini AI uses clinically-informed prompts with crisis hotlines surfaced in-app. Community mood visualizations apply a 15-user aggregation threshold for privacy by design.'
+    },
+    future:['Verified volunteers & human moderation', 'Anonymous mode for sensitive posts', 'Integration with municipal emergency response'],
+    video:null
+  },
+  {
+    id:'xchat',
+    num:'05',
+    title:'XChat',
+    tag:'SECURE COMMS',
+    subtitle:'E2E encrypted peer chat with WebRTC calls & Gemini AI',
+    accent:'#F97316',
+    accentRGB:'249,115,22',
+    icon:'fas fa-comments',
+    techTags:['kotlin','security','ai'],
+    pitch:'A full-stack one-to-one messaging app with three layers of real-time tech working simultaneously — Firebase, Socket.IO signaling, and WebRTC for peer audio/video calls. All messages are AES-encrypted end-to-end.',
+    features:['AES E2E Encryption', 'WebRTC Video Calls', 'WebRTC Audio Calls', 'Socket.IO Signaling', 'Gemini AI Assistant', 'Friend Requests', 'Image Sharing', 'Call History Logs', 'Online Presence', 'Profile Management'],
+    stack:[{n:'Kotlin',p:1},{n:'WebRTC'},{n:'Firebase Realtime DB'},{n:'Firestore'},{n:'Socket.IO'},{n:'Gemini AI'},{n:'AES Encryption'},{n:'Glide'}],
+    screenshots:[
+      {label:'Chat List', url:'https://github.com/sudiptoroy7666-lgtm/portfolio/blob/main/assets/screenshots/xchat/x4.jpg?raw=true'},
+      {label:'Conversation', url:'https://github.com/sudiptoroy7666-lgtm/portfolio/blob/main/assets/screenshots/xchat/x7.jpg?raw=true'},
+      {label:'Audio Call', url:'https://github.com/sudiptoroy7666-lgtm/portfolio/blob/main/assets/screenshots/xchat/x8.jpg?raw=true'},
+      {label:'Call Logs', url:'https://github.com/sudiptoroy7666-lgtm/portfolio/blob/main/assets/screenshots/xchat/x9.jpg?raw=true'},
+      {label:'Auth', url:'https://github.com/sudiptoroy7666-lgtm/portfolio/blob/main/assets/screenshots/xchat/x1.jpg?raw=true'},
+      {label:'AI Chat', url:'https://github.com/sudiptoroy7666-lgtm/portfolio/blob/main/assets/screenshots/xchat/x6.jpg?raw=true'},
+      {label:'Profile', url:'https://github.com/sudiptoroy7666-lgtm/portfolio/blob/main/assets/screenshots/xchat/x5.jpg?raw=true'}
+    ],
+    highlight:{
+      title:'Implementation Highlight',
+      text:'WebRTC peer connection setup required a custom Socket.IO signaling server to exchange SDP offers/answers and ICE candidates between devices behind NAT. AES keys are derived per-user — never stored in plaintext — so messages are unreadable even if Firebase is compromised.'
+    },
+    future:['Group chat & group calls', 'Signal-protocol double-ratchet key management', 'TURN server deployment for better NAT traversal'],
+    video:null
+  },
+  {
+    id:'notes-app',
+    num:'06',
+    title:'Notes App',
+    tag:'PRODUCTIVITY',
+    subtitle:'Secure note-taking with Firebase sync & smart reminders',
+    accent:'#FACC15',
+    accentRGB:'250,204,21',
+    icon:'fas fa-sticky-note',
+    techTags:['java'],
+    pitch:'A production-quality note-taking app built in Java that goes far beyond a simple CRUD demo. It handles the full identity lifecycle, layers on image attachments, and fires scheduled reminders even when the app is closed.',
+    features:['Email/Password Auth', 'Email Verification', 'Password Reset Flow', 'Image Attachments', 'WorkManager Reminders', 'Offline Read Access', 'Firestore Sync', 'Firebase Storage'],
+    stack:[{n:'Java',p:1},{n:'Firebase Auth'},{n:'Firestore'},{n:'Firebase Storage'},{n:'Picasso'},{n:'WorkManager'}],
+    screenshots:[
+      {label:'Notes List', url:'https://github.com/sudiptoroy7666-lgtm/portfolio/blob/main/assets/screenshots/notes-app/note5.jpg?raw=true'},
+      {label:'Create Note', url:'https://github.com/sudiptoroy7666-lgtm/portfolio/blob/main/assets/screenshots/notes-app/note6.jpg?raw=true'},
+      {label:'Image Attach', url:'https://github.com/sudiptoroy7666-lgtm/portfolio/blob/main/assets/screenshots/notes-app/note7.jpg?raw=true'},
+      {label:'Login', url:'https://github.com/sudiptoroy7666-lgtm/portfolio/blob/main/assets/screenshots/notes-app/note1.jpg?raw=true'}
+    ],
+    highlight:{
+      title:'Implementation Highlight',
+      text:'The reminder system uses WorkManager with a custom <code>NotificationWorker</code> that survives app death and device restarts — unlike AlarmManager, it respects Doze mode. Firestore offline persistence is enabled with multi-tab sync so reads are instant from local cache.'
+    },
+    future:['Full-text search, tags & filters', 'Export/import notes as JSON backup', 'End-to-end encryption for sensitive notes'],
+    video:null
+  }
+];
+
+/* ═══════════════════════════════════════════════════════════
+   SKILLS DATA
+═══════════════════════════════════════════════════════════ */
+const SKILLS = [
+  {num:'01',icon:'fas fa-code',title:'Languages & Frameworks',items:[
+    'Kotlin','Flutter / Dart','Java','XML Layouts','Jetpack Components'
+  ]},
+  {num:'02',icon:'fas fa-database',title:'Backend & APIs',items:[
+    'Firebase Stack','Supabase','WebRTC','Retrofit / OkHttp','Socket.IO'
+  ]},
+  {num:'03',icon:'fas fa-shield-alt',title:'Security & Architecture',items:[
+    'AES-256-GCM / Argon2id','Clean Architecture / MVVM','Hilt DI','Offline-First Design','Secure Key Management'
+  ]},
+  {num:'04',icon:'fas fa-brain',title:'AI & Specialized Tech',items:[
+    'Gemini / Groq / Cerebras','Google ML Kit','WebView + JS Injection','WorkManager','Drift ORM / Room'
+  ]}
+];
+
+/* ═══════════════════════════════════════════════════════════
+   HUD TIME & SESSION COUNTER
+═══════════════════════════════════════════════════════════ */
+const hudTime = document.getElementById('hudTime');
+const hudSession = document.getElementById('hudSession');
+const sessionStart = Date.now();
+
+function updateHud() {
+  const now = new Date();
+  const dateStr = now.toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
+  const timeStr = now.toLocaleTimeString('en-US', { hour12: false, hour: '2-digit', minute: '2-digit', second: '2-digit' });
+  hudTime.textContent = `${dateStr} // ${timeStr}`;
+  
+  const elapsed = Math.floor((Date.now() - sessionStart) / 1000);
+  const mins = Math.floor(elapsed / 60).toString().padStart(2, '0');
+  const secs = (elapsed % 60).toString().padStart(2, '0');
+  hudSession.textContent = `SESSION: ${mins}:${secs}`;
+}
+updateHud();
+setInterval(updateHud, 1000);
+
+/* ═══════════════════════════════════════════════════════════
+   RENDER PROJECT CARDS
+═══════════════════════════════════════════════════════════ */
+const rosterGrid = document.getElementById('rosterGrid');
+function renderCards(filter='all'){
+  rosterGrid.innerHTML = '';
+  PROJECTS.forEach((p,i) => {
+    if(filter !== 'all' && !p.techTags.includes(filter)) return;
+    const card = document.createElement('div');
+    card.className = 'card reveal';
+    card.style.setProperty('--accent-color', p.accent);
+    card.style.setProperty('--accent-rgb', p.accentRGB);
+    card.innerHTML = `
+      <span class="corner tl"></span>
+      <span class="corner br"></span>
+      <div class="card-inner">
+        <div class="card-head">
+          <div class="card-num">${p.num}</div>
+          <div class="card-icon"><i class="${p.icon}"></i></div>
+        </div>
+        <div class="card-tag">${p.tag}</div>
+        <h3 class="card-title">${p.title}</h3>
+        <p class="card-pitch">${p.pitch}</p>
+        <div class="card-tech">${p.stack.slice(0,4).map(t=>`<span>${t.n}</span>`).join('')}</div>
+        <div class="card-actions">
+          <button class="card-btn primary" data-open="${p.id}"><i class="fas fa-eye"></i> DETAILS</button>
+          <button class="card-btn" data-open="${p.id}"><i class="fas fa-images"></i> ${p.screenshots.length} SHOTS</button>
+        </div>
+      </div>
+    `;
+    rosterGrid.appendChild(card);
+  });
+  document.querySelectorAll('[data-open]').forEach(btn => {
+    btn.addEventListener('click', e => {
+      const id = btn.getAttribute('data-open');
+      openModal(id);
+    });
+  });
+  observeReveals();
+}
+renderCards();
+
+document.querySelectorAll('.chip').forEach(chip => {
+  chip.addEventListener('click', () => {
+    document.querySelectorAll('.chip').forEach(c=>c.classList.remove('active'));
+    chip.classList.add('active');
+    renderCards(chip.dataset.filter);
+  });
+});
+
+/* ═══════════════════════════════════════════════════════════
+   RENDER SKILLS
+═══════════════════════════════════════════════════════════ */
+const skillsGrid = document.getElementById('skillsGrid');
+SKILLS.forEach(cat => {
+  const el = document.createElement('div');
+  el.className = 'skill-cat reveal';
+  el.setAttribute('data-num', cat.num);
+  el.innerHTML = `
+    <h4><i class="${cat.icon}"></i> ${cat.title}</h4>
+    <div class="skill-list">
+      ${cat.items.map(s => `
+        <div class="skill-item"><span>${s}</span></div>
+      `).join('')}
+    </div>
+  `;
+  skillsGrid.appendChild(el);
+});
+
+/* ═══════════════════════════════════════════════════════════
+   MODAL
+═══════════════════════════════════════════════════════════ */
+const modalBackdrop = document.getElementById('modalBackdrop');
+const modalBody = document.getElementById('modalBody');
+const modalClose = document.getElementById('modalClose');
+
+function buildScreenshotSection(p) {
+  const shots = p.screenshots;
+  if (!shots || shots.length === 0) {
+    return `
+      <div class="modal-section">
+        <h3><i class="fas fa-images"></i> Screenshots</h3>
+        <p style="color:var(--text-mute);font-style:italic">Screenshots coming soon — record your app demo</p>
+      </div>
+    `;
+  }
+
+  const heroShot = shots[0];
+  
+  const thumbItems = shots.map((s, i) => `
+    <div class="thumb ${i===0?'active':''}" 
+         data-url="${s.url}" 
+         data-label="${s.label}">
+      <img src="${s.url}" alt="${s.label}" loading="lazy" 
+           onerror="this.parentElement.style.background='linear-gradient(135deg, ${p.accent}, #1a1a2e)';this.style.display='none'">
+      <span class="thumb-label">${s.label}</span>
+    </div>
+  `).join('');
+
+  return `
+    <div class="modal-section">
+      <h3><i class="fas fa-mobile-alt"></i> Screenshots (${shots.length})</h3>
+      <div class="ss-hero">
+        <div class="hero-img">
+          <img id="heroMainImg" 
+               src="${heroShot.url}" 
+               alt="${heroShot.label}" 
+               loading="lazy"
+               onerror="this.parentElement.style.background='linear-gradient(135deg, ${p.accent}, #1a1a2e)';this.style.display='none'">
+          <div class="hero-label" id="heroLabel">${heroShot.label}</div>
+        </div>
+        <div class="thumbs" id="heroThumbs">${thumbItems}</div>
+      </div>
+    </div>
+  `;
+}
+
+function openModal(id){
+  const p = PROJECTS.find(x => x.id === id);
+  if(!p) return;
+  modalBody.style.setProperty('--accent-color', p.accent);
+  modalBody.style.setProperty('--accent-rgb', p.accentRGB);
+  
+  const screenshotSection = buildScreenshotSection(p);
+
+  modalBody.innerHTML = `
+    <div class="modal-head">
+      <div>
+        <div class="tag">◆ ${p.tag} ◆</div>
+        <h2>${p.title}</h2>
+        <div class="sub">${p.subtitle}</div>
+      </div>
+    </div>
+
+    <div class="modal-section">
+      <h3><i class="fas fa-bolt"></i> Elevator Pitch</h3>
+      <p class="modal-pitch">${p.pitch}</p>
+    </div>
+
+    ${screenshotSection}
+
+    <div class="modal-section">
+      <h3><i class="fas fa-star"></i> Key Features</h3>
+      <div class="feature-list">
+        ${p.features.map(f=>`<div>${f}</div>`).join('')}
+      </div>
+    </div>
+
+    <div class="modal-section">
+      <h3><i class="fas fa-code"></i> Tech Stack</h3>
+      <div class="tech-list">
+        ${p.stack.map(t=>`<span class="${t.p?'primary':''}">${t.n}</span>`).join('')}
+      </div>
+    </div>
+
+    <div class="modal-section">
+      <h3><i class="fas fa-terminal"></i> ${p.highlight.title}</h3>
+      <div class="modal-highlight">
+        <strong>ENGINEERING DEEP-DIVE</strong>
+        ${p.highlight.text}
+      </div>
+    </div>
+
+    <div class="modal-section">
+      <h3><i class="fas fa-rocket"></i> Future Roadmap</h3>
+      <ul class="future-list">
+        ${p.future.map(f=>`<li>${f}</li>`).join('')}
+      </ul>
+    </div>
+  `;
+  
+  // Wire up hero thumbnail click handlers
+  const heroMain = modalBody.querySelector('#heroMainImg');
+  const heroLabel = modalBody.querySelector('#heroLabel');
+  const thumbs = modalBody.querySelectorAll('#heroThumbs .thumb');
+  
+  thumbs.forEach(thumb => {
+    thumb.addEventListener('click', () => {
+      thumbs.forEach(t => t.classList.remove('active'));
+      thumb.classList.add('active');
+      if(heroMain) {
+        heroMain.src = thumb.dataset.url;
+        heroMain.alt = thumb.dataset.label;
+      }
+      if(heroLabel) {
+        heroLabel.textContent = thumb.dataset.label;
+      }
+    });
+  });
+
+  modalBackdrop.classList.add('open');
+  document.body.style.overflow = 'hidden';
+}
+
+modalClose.addEventListener('click', closeModal);
+modalBackdrop.addEventListener('click', e => { if(e.target === modalBackdrop) closeModal(); });
+document.addEventListener('keydown', e => { if(e.key === 'Escape') closeModal(); });
+function closeModal(){
+  modalBackdrop.classList.remove('open');
+  document.body.style.overflow = '';
+}
+
+/* ═══════════════════════════════════════════════════════════
+   SCROLL REVEAL OBSERVER
+═══════════════════════════════════════════════════════════ */
+function observeReveals(){
+  const io = new IntersectionObserver((entries) => {
+    entries.forEach(e => {
+      if(e.isIntersecting){
+        e.target.classList.add('in');
+        io.unobserve(e.target);
+      }
+    });
+  }, {threshold: 0.12, rootMargin:'0px 0px -60px 0px'});
+  document.querySelectorAll('.reveal:not(.in)').forEach(el => io.observe(el));
+
+  const skillIO = new IntersectionObserver((entries) => {
+    entries.forEach(e => {
+      if(e.isIntersecting){
+        e.target.classList.add('in');
+        skillIO.unobserve(e.target);
+      }
+    });
+  }, {threshold: 0.2});
+  document.querySelectorAll('.skill-cat:not(.in)').forEach(el => skillIO.observe(el));
+}
+observeReveals();
+
+/* ═══════════════════════════════════════════════════════════
+   COUNTERS
+═══════════════════════════════════════════════════════════ */
+const counterIO = new IntersectionObserver((entries) => {
+  entries.forEach(e => {
+    if(e.isIntersecting){
+      const el = e.target;
+      const to = +el.dataset.to;
+      const dur = 1800;
+      const start = performance.now();
+      function tick(t){
+        const p = Math.min((t-start)/dur, 1);
+        const eased = 1 - Math.pow(1-p, 3);
+        el.textContent = Math.round(eased * to);
+        if(p < 1) requestAnimationFrame(tick);
+      }
+      requestAnimationFrame(tick);
+      counterIO.unobserve(el);
     }
-</style>
+  });
+}, {threshold: 0.5});
+document.querySelectorAll('.count').forEach(el => counterIO.observe(el));
 
+/* ═══════════════════════════════════════════════════════════
+   SIDE NAV ACTIVE
+═══════════════════════════════════════════════════════════ */
+const sideLinks = document.querySelectorAll('nav.side a');
+const sections = ['hero','dossier','roster','arsenal','link'].map(id => document.getElementById(id));
+window.addEventListener('scroll', () => {
+  const y = window.scrollY + window.innerHeight/3;
+  let current = 0;
+  sections.forEach((s,i) => { if(s && y >= s.offsetTop) current = i; });
+  sideLinks.forEach((l,i) => l.classList.toggle('active', i === current));
+});
+sideLinks.forEach(l => l.addEventListener('click', e => {
+  e.preventDefault();
+  const target = document.querySelector(l.getAttribute('href'));
+  if(target) window.scrollTo({top: target.offsetTop - 20, behavior:'smooth'});
+}));
 
-        </div>
-    </section>
+/* ═══════════════════════════════════════════════════════════
+   TYPEWRITER
+═══════════════════════════════════════════════════════════ */
+const phrases = ['zero-knowledge crypto.','offline-first sync.','AI integration.','WebRTC calls.','clean architecture.','privacy by design.'];
+const typedEl = document.getElementById('typed');
+let pi = 0, ci = 0, deleting = false;
+function type(){
+  const phrase = phrases[pi];
+  typedEl.textContent = phrase.substring(0, ci);
+  if(!deleting && ci < phrase.length){ ci++; setTimeout(type, 70); }
+  else if(deleting && ci > 0){ ci--; setTimeout(type, 35); }
+  else {
+    deleting = !deleting;
+    if(!deleting) pi = (pi+1) % phrases.length;
+    setTimeout(type, deleting ? 1600 : 400);
+  }
+}
+type();
 
-    <section id="projects" class="projects-section">
-        <div class="container">
-            <div class="section-header">
-                <h2>Featured Projects</h2>
-                <p>Four polished Android applications demonstrating architecture, security, AI integration, and user experience design</p>
-            </div>
+/* ═══════════════════════════════════════════════════════════
+   CUSTOM CURSOR
+═══════════════════════════════════════════════════════════ */
+const dot = document.querySelector('.cursor-dot');
+const ring = document.querySelector('.cursor-ring');
+let mx=0,my=0,rx=0,ry=0;
+window.addEventListener('mousemove', e => { mx=e.clientX; my=e.clientY; dot.style.left=mx+'px'; dot.style.top=my+'px'; });
+function follow(){ rx += (mx-rx)*0.18; ry += (my-ry)*0.18; ring.style.left=rx+'px'; ring.style.top=ry+'px'; requestAnimationFrame(follow); }
+follow();
+document.addEventListener('mouseover', e => {
+  if(e.target.closest('a, button, .card, .chip, .contact-card, img, .ss-hero .thumb')) ring.classList.add('hover');
+});
+document.addEventListener('mouseout', e => {
+  if(e.target.closest('a, button, .card, .chip, .contact-card, img, .ss-hero .thumb')) ring.classList.remove('hover');
+});
 
-            <div class="projects-grid">
+/* ═══════════════════════════════════════════════════════════
+   STARFIELD CANVAS
+═══════════════════════════════════════════════════════════ */
+const canvas = document.getElementById('starfield');
+const ctx = canvas.getContext('2d');
+let stars = [];
+function resize(){ canvas.width = innerWidth; canvas.height = innerHeight; initStars(); }
+function initStars(){
+  stars = [];
+  const count = Math.floor((canvas.width*canvas.height)/8000);
+  for(let i=0;i<count;i++){
+    stars.push({
+      x: Math.random()*canvas.width,
+      y: Math.random()*canvas.height,
+      r: Math.random()*1.4 + 0.2,
+      vx: (Math.random()-0.5)*0.05,
+      vy: (Math.random()-0.5)*0.05,
+      a: Math.random()*0.6 + 0.2,
+      hue: [195, 270, 330, 160][Math.floor(Math.random()*4)],
+      tw: Math.random()*Math.PI*2
+    });
+  }
+}
+resize();
+window.addEventListener('resize', resize);
+function draw(){
+  ctx.clearRect(0,0,canvas.width,canvas.height);
+  stars.forEach(s => {
+    s.x += s.vx; s.y += s.vy; s.tw += 0.04;
+    if(s.x<0) s.x=canvas.width; if(s.x>canvas.width) s.x=0;
+    if(s.y<0) s.y=canvas.height; if(s.y>canvas.height) s.y=0;
+    const flicker = 0.6 + Math.sin(s.tw)*0.4;
+    ctx.beginPath();
+    ctx.arc(s.x, s.y, s.r, 0, Math.PI*2);
+    ctx.fillStyle = `hsla(${s.hue}, 100%, 70%, ${s.a*flicker})`;
+    ctx.shadowBlur = s.r*6;
+    ctx.shadowColor = `hsla(${s.hue}, 100%, 70%, 0.8)`;
+    ctx.fill();
+  });
+  ctx.shadowBlur = 0;
+  requestAnimationFrame(draw);
+}
+draw();
 
-                <!-- ══ PROJECT 1: NOTES APP ══════════════════════════════════ -->
-                <div class="project-card">
-                    <div class="project-header">
-                        <div class="project-number">01</div>
-                        <h3>Notes App</h3>
-                        <div class="subtitle">Secure note-taking with Firebase sync &amp; smart reminders</div>
-                    </div>
-                    <div class="project-content">
+/* ═══════════════════════════════════════════════════════════
+   LOADER
+═══════════════════════════════════════════════════════════ */
+const loader = document.getElementById('loader');
+const loadPct = document.getElementById('loadPct');
+let pct = 0;
+const loadInt = setInterval(() => {
+  pct += Math.random()*12 + 4;
+  if(pct >= 100){ pct = 100; clearInterval(loadInt); setTimeout(()=>loader.classList.add('done'), 300); }
+  loadPct.textContent = Math.floor(pct);
+}, 120);
 
-                        <h4><i class="fas fa-bolt"></i> Elevator Pitch</h4>
-                        <p>A production-quality note-taking app built in Java that goes far beyond a simple CRUD demo. It handles the full identity lifecycle — email verification, secure auth, password reset — then layers on image attachments stored in Firebase Storage, scheduled reminders that fire even when the app is closed, and seamless offline read access. Every architectural decision was made to show real-world reliability: what happens when the network drops, when the app is killed, when the user forgets their password.</p>
-
-                        <h4><i class="fas fa-star"></i> Key Features</h4>
-                        <div class="features-grid">
-                            <div class="feature-item">Email/Password Auth</div>
-                            <div class="feature-item">Email Verification</div>
-                            <div class="feature-item">Password Reset Flow</div>
-                            <div class="feature-item">Image Attachments</div>
-                            <div class="feature-item">WorkManager Reminders</div>
-                            <div class="feature-item">Offline Read Access</div>
-                            <div class="feature-item">Firestore Sync</div>
-                            <div class="feature-item">Firebase Storage</div>
-                        </div>
-
-                        <h4><i class="fas fa-code"></i> Tech Stack</h4>
-                        <div class="tech-stack">
-                            <span class="tech-tag primary">Java</span>
-                            <span class="tech-tag">Firebase Auth</span>
-                            <span class="tech-tag">Firestore</span>
-                            <span class="tech-tag">Firebase Storage</span>
-                            <span class="tech-tag">Picasso</span>
-                            <span class="tech-tag">WorkManager</span>
-                        </div>
-
-                        <h4><i class="fas fa-mobile-alt"></i> Screenshots</h4>
-                        <div class="screenshots-grid">
-                            <img src="assets/screenshots/notes-app/note1.jpg" alt="Notes App Home Screen" class="screenshot-image">
-                            <img src="assets/screenshots/notes-app/note2.jpg" alt="Notes App Create Note" class="screenshot-image">
-                            <img src="assets/screenshots/notes-app/note3.jpg" alt="Notes App Image Picker" class="screenshot-image">
-                            <img src="assets/screenshots/notes-app/note4.jpg" alt="Notes App Long Press Menu" class="screenshot-image">
-                            <img src="assets/screenshots/notes-app/note5.jpg" alt="Notes App Timer Notification" class="screenshot-image">
-                            <img src="assets/screenshots/notes-app/note6.jpg" alt="Notes App Login Screen" class="screenshot-image">
-                            <img src="assets/screenshots/notes-app/note7.jpg" alt="Notes App Settings" class="screenshot-image">
-                        </div>
-
-                        <div class="highlight-box">
-                            <strong>Implementation Highlight:</strong> The reminder system uses WorkManager with a custom <code>NotificationWorker</code> that survives app death and device restarts — unlike AlarmManager, it respects Doze mode and battery optimization constraints. Firestore offline persistence is enabled with multi-tab synchronization so reads are instant from local cache, while writes queue and sync automatically the moment connectivity returns. The full auth lifecycle (register → email verify → login → password reset) is handled without any third-party auth UI library.
-                        </div>
-
-                        <div class="future-improvements">
-                            <h4><i class="fas fa-rocket"></i> Future Improvements</h4>
-                            <ul>
-                                <li>Full-text search, tags &amp; filters</li>
-                                <li>Export/import notes as JSON backup</li>
-                                <li>End-to-end encryption for sensitive notes</li>
-                            </ul>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- ══ PROJECT 2: XCHAT ══════════════════════════════════════ -->
-                <div class="project-card">
-                    <div class="project-header">
-                        <div class="project-number">02</div>
-                        <h3>XChat</h3>
-                        <div class="subtitle">E2E encrypted peer chat with WebRTC calls &amp; Gemini AI</div>
-                    </div>
-                    <div class="project-content">
-
-                        <h4><i class="fas fa-bolt"></i> Elevator Pitch</h4>
-                        <p>XChat is a full-stack, one-to-one messaging app with three layers of real-time technology working simultaneously — Firebase for presence and message sync, Socket.IO for WebRTC signaling, and WebRTC itself for peer audio/video calls. All messages are encrypted end-to-end with AES keys derived from user credentials, so even Firebase cannot read the content. A built-in Gemini AI assistant lets users switch from human chat to AI chat in the same interface, with API keys protected from reverse engineering.</p>
-
-                        <h4><i class="fas fa-star"></i> Key Features</h4>
-                        <div class="features-grid">
-                            <div class="feature-item">AES E2E Encryption</div>
-                            <div class="feature-item">WebRTC Video Calls</div>
-                            <div class="feature-item">WebRTC Audio Calls</div>
-                            <div class="feature-item">Socket.IO Signaling</div>
-                            <div class="feature-item">Gemini AI Assistant</div>
-                            <div class="feature-item">Friend Requests</div>
-                            <div class="feature-item">Image Sharing</div>
-                            <div class="feature-item">Call History Logs</div>
-                            <div class="feature-item">Online Presence</div>
-                            <div class="feature-item">Profile Management</div>
-                        </div>
-
-                        <h4><i class="fas fa-code"></i> Tech Stack</h4>
-                        <div class="tech-stack">
-                            <span class="tech-tag primary">Kotlin</span>
-                            <span class="tech-tag">WebRTC</span>
-                            <span class="tech-tag">Firebase Realtime DB</span>
-                            <span class="tech-tag">Firestore</span>
-                            <span class="tech-tag">Socket.IO</span>
-                            <span class="tech-tag">Gemini AI</span>
-                            <span class="tech-tag">AES Encryption</span>
-                            <span class="tech-tag">Glide</span>
-                        </div>
-
-                        <h4><i class="fas fa-mobile-alt"></i> Screenshots</h4>
-                        <div class="screenshots-grid">
-                            <img src="assets/screenshots/xchat/x1.jpg" alt="Profile Setup" class="screenshot-image">
-                            <img src="assets/screenshots/xchat/x2.jpg" alt="User Search" class="screenshot-image">
-                            <img src="assets/screenshots/xchat/x3.jpg" alt="Chat Screen" class="screenshot-image">
-                            <img src="assets/screenshots/xchat/x4.jpg" alt="Media Sharing" class="screenshot-image">
-                            <img src="assets/screenshots/xchat/x5.jpg" alt="Video Call" class="screenshot-image">
-                            <img src="assets/screenshots/xchat/x6.jpg" alt="Voice Call" class="screenshot-image">
-                            <img src="assets/screenshots/xchat/x7.jpg" alt="AI Assistant" class="screenshot-image">
-                            <img src="assets/screenshots/xchat/x8.jpg" alt="Call Logs" class="screenshot-image">
-                            <img src="assets/screenshots/xchat/x9.jpg" alt="Settings" class="screenshot-image">
-                        </div>
-
-                        <div class="highlight-box">
-                            <strong>Implementation Highlight:</strong> WebRTC peer connection setup required a custom Socket.IO signaling server to exchange SDP offers/answers and ICE candidates between devices behind NAT. AES encryption keys are derived per-user from a combination of credentials — never stored in plaintext or transmitted over the wire, meaning message content is unreadable even if the Firebase database is compromised. The Gemini AI integration maintains a fully isolated conversation thread so AI context never bleeds into the human chat history.
-                        </div>
-
-                        <div class="future-improvements">
-                            <h4><i class="fas fa-rocket"></i> Future Improvements</h4>
-                            <ul>
-                                <li>Group chat &amp; group calls</li>
-                                <li>Signal-protocol-like double-ratchet key management</li>
-                                <li>TURN server deployment for better NAT traversal</li>
-                            </ul>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- ══ PROJECT 3: HELPHIVE ════════════════════════════════════ -->
-                <div class="project-card">
-                    <div class="project-header">
-                        <div class="project-number">03</div>
-                        <h3>HelpHive</h3>
-                        <div class="subtitle">Community care ecosystem — mood tracking, kindness logging &amp; practical help network</div>
-                    </div>
-                    <div class="project-content">
-
-                        <h4><i class="fas fa-bolt"></i> Elevator Pitch</h4>
-                        <p>HelpHive is a three-app ecosystem designed to combat modern social isolation. <strong>HelpHive Core</strong> matches neighbors for practical assistance. <strong>MoodMosaic</strong> lets users log emotions, visualize aggregated community mood patterns on a neighborhood heat map, and receive clinically-informed AI support messages when negative emotions are detected. <strong>KindConnect</strong> captures everyday acts of kindness and surfaces them in a positive-only community feed — with no leaderboards, only intrinsic recognition. tested with 12+ users. It has offline sync reliability, built on clean architecture with Hilt DI and a layered Room/Firestore repository.</p>
-
-                        <h4><i class="fas fa-star"></i> Key Features</h4>
-                        <div class="features-grid">
-                            <div class="feature-item">Standard Authentication system</div>
-                            <div class="feature-item">Mood Logging (8 emotions)</div>
-                            <div class="feature-item">Neighborhood Mood Map</div>
-                            <div class="feature-item">AI Support Messages</div>
-                            <div class="feature-item">Crisis Resource Access</div>
-                            <div class="feature-item">Kindness Feed</div>
-                            <div class="feature-item">Group Challenges</div>
-                            <div class="feature-item">Mood Statistics</div>
-                            <div class="feature-item">Community Feed</div>
-                            <div class="feature-item">Offline-First Sync</div>
-                            <div class="feature-item">Hilt Dependency Injection</div>
-                        </div>
-
-                        <h4><i class="fas fa-code"></i> Tech Stack</h4>
-                        <div class="tech-stack">
-                            <span class="tech-tag primary">Kotlin</span>
-                            <span class="tech-tag">Clean Architecture</span>
-                            <span class="tech-tag">Room Database</span>
-                            <span class="tech-tag">Firestore</span>
-                            <span class="tech-tag">Hilt DI</span>
-                            <span class="tech-tag">Gemini AI</span>
-                            <span class="tech-tag">MPAndroidChart</span>
-                            <span class="tech-tag">Coroutines &amp; Flow</span>
-                        </div>
-
-                        <h4><i class="fas fa-mobile-alt"></i> Screenshots</h4>
-                        <div class="screenshots-grid">
-                            <img src="assets/screenshots/helphive/h1.jpg" alt="Home Screen" class="screenshot-image">
-                            <img src="assets/screenshots/helphive/h2.jpg" alt="Mood Tracking" class="screenshot-image">
-                            <img src="assets/screenshots/helphive/h3.jpg" alt="Mood Statistics" class="screenshot-image">
-                            <img src="assets/screenshots/helphive/h4.jpg" alt="Kindness Log" class="screenshot-image">
-                            <img src="assets/screenshots/helphive/h5.jpg" alt="Help Requests" class="screenshot-image">
-                            <img src="assets/screenshots/helphive/h6.jpg" alt="Chat Interface" class="screenshot-image">
-                            <img src="assets/screenshots/helphive/h7.jpg" alt="AI Messages" class="screenshot-image">
-                            <img src="assets/screenshots/helphive/h8.jpg" alt="Profile Setup" class="screenshot-image">
-                            <img src="assets/screenshots/helphive/h9.jpg" alt="Settings" class="screenshot-image">
-                            <img src="assets/screenshots/helphive/h10.jpg" alt="Analytics" class="screenshot-image">
-                            <img src="assets/screenshots/helphive/h11.jpg" alt="Notifications" class="screenshot-image">
-                            <img src="assets/screenshots/helphive/h12.jpg" alt="Community Feed" class="screenshot-image">
-                            <img src="assets/screenshots/helphive/h13.jpg" alt="Privacy Settings" class="screenshot-image">
-                            <img src="assets/screenshots/helphive/h14.jpg" alt="Offline Mode" class="screenshot-image">
-                            <img src="assets/screenshots/helphive/15.jpg" alt="Theme Customization" class="screenshot-image">
-                        </div>
-
-                        <div class="highlight-box">
-                            <strong>Implementation Highlight:</strong> The repository layer merges Firestore (online) and Room (offline) data sources transparently — the UI layer never knows which source it is reading from, giving 99.7% offline reliability in beta. Gemini AI is prompted with clinically-informed context when users log negative emotions, with crisis hotline resources surfaced directly in-app rather than redirecting externally. All community mood visualizations apply a minimum-15-user aggregation threshold so no individual's emotional state is ever identifiable — privacy by design, not policy.
-                        </div>
-
-                        <div class="future-improvements">
-                            <h4><i class="fas fa-rocket"></i> Future Improvements</h4>
-                            <ul>
-                                <li>Verified volunteers &amp; human moderation tools</li>
-                                <li>Anonymous mode for sensitive posts</li>
-                                <li>Integration with municipal emergency response systems</li>
-                            </ul>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- ══ PROJECT 4: WEBNOVEL SUMMARIZER ════════════════════════ -->
-                <div class="project-card">
-                    <div class="project-header">
-                        <div class="project-number">04</div>
-                        <h3>WebNovel Summarizer</h3>
-                        <div class="subtitle">AI-powered reading assistant for web novel enthusiasts</div>
-                    </div>
-                    <div class="project-content">
-
-                        <h4><i class="fas fa-bolt"></i> Elevator Pitch</h4>
-                        <p>A specialized Android app that embeds a full-featured web browser — pre-configured for 6+ major novel platforms with a 15+ domain ad blocker and dark-mode CSS injection — and can summarize any chapter with a single tap. Three summary depths (5-second scan, 15-seconds standard, 25-seconds deep dive) are generated by Cerebras GPT-OSS-120B which is very fast and has excellent quality. For fall back, have Groq's Llama 3.3 70B integrated with custom system prompts that preserve honorifics, cultivation terminology, skill names, and character names exactly as written. An offline library organizes saved summaries into a Novels → Volumes → Chapters hierarchy for permanent access — no account, no cloud sync, zero data collection. Text-to-Speech with intelligent sentence-boundary chunking lets users listen to any summary hands-free.</p>
-
-                        <h4><i class="fas fa-star"></i> Key Features</h4>
-                        <div class="features-grid">
-                            <div class="feature-item">Smart WebView Browser</div>
-                            <div class="feature-item">6+ Pre-configured Novel Sites</div>
-                            <div class="feature-item">3-Level AI Summaries</div>
-                            <div class="feature-item">15+ Domain Ad Blocker</div>
-                            <div class="feature-item">Light/Dark Mode CSS Injection</div>
-                            <div class="feature-item">Novel Library (3-tier)</div>
-                            <div class="feature-item">Text-to-Speech (chunked)</div>
-                            <div class="feature-item">Browsing History</div>
-                            <div class="feature-item">Bookmarks</div>
-                            <div class="feature-item">Manual CSS Selector</div>
-                            <div class="feature-item">Offline Access</div>
-                            <div class="feature-item">Cerebras + Groq Fallback</div>
-                        </div>
-
-                        <h4><i class="fas fa-code"></i> Tech Stack</h4>
-                        <div class="tech-stack">
-                            <span class="tech-tag primary">Kotlin</span>
-                            <span class="tech-tag">MVVM</span>
-                            <span class="tech-tag">Room Database</span>
-                            <span class="tech-tag">Groq AI (Llama 3.3 70B)</span>
-                            <span class="tech-tag">Cerebras AI(GPT-OSS-120B)</span>
-                            <span class="tech-tag">Retrofit + OkHttp</span>
-                            <span class="tech-tag">Coroutines &amp; StateFlow</span>
-                            <span class="tech-tag">WebView + JS Injection</span>
-                        </div>
-
-                        <h4><i class="fas fa-mobile-alt"></i> Screenshots</h4>
-                        <div class="screenshots-grid">
-                            <img src="assets/screenshots/webnovel/sum1.jpg" alt="Home Screen" class="screenshot-image">
-                            <img src="assets/screenshots/webnovel/sum2.jpg" alt="Browser View" class="screenshot-image">
-                            <img src="assets/screenshots/webnovel/sum3.jpg" alt="Novel Site Grid" class="screenshot-image">
-                            <img src="assets/screenshots/webnovel/sum4.jpg" alt="Summarize Button" class="screenshot-image">
-                            <img src="assets/screenshots/webnovel/sum5.jpg" alt="Summary Screen" class="screenshot-image">
-                            <img src="assets/screenshots/webnovel/sum6.jpg" alt="Summary Detail" class="screenshot-image">
-                            <img src="assets/screenshots/webnovel/sum7.jpg" alt="Library Screen" class="screenshot-image">
-                            <img src="assets/screenshots/webnovel/sum8.jpg" alt="Volume List" class="screenshot-image">
-                            <img src="assets/screenshots/webnovel/sum9.jpg" alt="Chapter List" class="screenshot-image">
-                            <img src="assets/screenshots/webnovel/sum10.jpg" alt="Bookmarks" class="screenshot-image">
-                            <img src="assets/screenshots/webnovel/sum11.jpg" alt="History" class="screenshot-image">
-                        </div>
-
-                        <div class="highlight-box">
-                            <strong>Implementation Highlight:</strong> Content extraction runs a multi-stage JavaScript pipeline injected into the WebView: it strips scripts, styles, ads, navbars, and iframes; then tries 15+ CSS selectors ranked by text yield; if all fail, it falls back to paragraph-density scoring; and finally exposes a manual CSS selector dialog for edge cases. A <code>ContentHolder</code> singleton bypasses Android's Intent 1MB transaction limit when passing large chapter text to the summary screen. The TTS engine splits summaries at sentence boundaries into 4,000-character chunks with sequential playback and full pause/resume state preserved across chunks.
-                        </div>
-
-                        <div class="future-improvements">
-                            <h4><i class="fas fa-rocket"></i> Future Improvements</h4>
-                            <ul>
-                                <li>Batch summarization across multiple chapters at once</li>
-                                <li>Export library to PDF / EPUB formats</li>
-                                <li>Multi-model AI support (Claude, Gemini, GPT-4)</li>
-                            </ul>
-                        </div>
-                    </div>
-                </div>
-
-            </div>
-        </div>
-    </section>
-
-    <section id="skills" class="skills-section">
-        <div class="container">
-            <div class="section-header">
-                <h2>Technical Expertise</h2>
-                <p>Core competencies and technologies I work with daily</p>
-            </div>
-            <div class="skills-container">
-                <div class="skills-grid">
-                    <div class="skill-category">
-                        <h4><i class="fas fa-language"></i> Languages &amp; Frameworks</h4>
-                        <ul class="skill-list">
-                            <li><i class="fas fa-check-circle"></i> Java (Android SDK)</li>
-                            <li><i class="fas fa-check-circle"></i> Kotlin (Coroutines, Flow)</li>
-                            <li><i class="fas fa-check-circle"></i> XML Layouts</li>
-                            <li><i class="fas fa-check-circle"></i> Jetpack Components</li>
-                            <li><i class="fas fa-check-circle"></i> Room Database</li>
-                        </ul>
-                    </div>
-                    <div class="skill-category">
-                        <h4><i class="fas fa-database"></i> Backend &amp; APIs</h4>
-                        <ul class="skill-list">
-                            <li><i class="fas fa-check-circle"></i> Firebase (Auth / Firestore / Storage / FCM)</li>
-                            <li><i class="fas fa-check-circle"></i> Supabase</li>
-                            <li><i class="fas fa-check-circle"></i> WebRTC (Real-time communication)</li>
-                            <li><i class="fas fa-check-circle"></i> REST APIs (Retrofit / OkHttp)</li>
-                            <li><i class="fas fa-check-circle"></i> Socket.IO (Real-time updates)</li>
-                        </ul>
-                    </div>
-                    <div class="skill-category">
-                        <h4><i class="fas fa-shield-alt"></i> Security &amp; Architecture</h4>
-                        <ul class="skill-list">
-                            <li><i class="fas fa-check-circle"></i> AES Encryption</li>
-                            <li><i class="fas fa-check-circle"></i> Clean Architecture / MVVM</li>
-                            <li><i class="fas fa-check-circle"></i> Hilt Dependency Injection</li>
-                            <li><i class="fas fa-check-circle"></i> Offline-First Design</li>
-                            <li><i class="fas fa-check-circle"></i> Secure Key Management</li>
-                        </ul>
-                    </div>
-                    <div class="skill-category">
-                        <h4><i class="fas fa-brain"></i> AI &amp; Specialized Tech</h4>
-                        <ul class="skill-list">
-                            <li><i class="fas fa-check-circle"></i> Generative AI (Gemini, Groq, Cerebras)</li>
-                            <li><i class="fas fa-check-circle"></i> WebView &amp; JavaScript Injection</li>
-                            <li><i class="fas fa-check-circle"></i> MPAndroidChart (Data Visualization)</li>
-                            <li><i class="fas fa-check-circle"></i> WorkManager (Background Tasks)</li>
-                            <li><i class="fas fa-check-circle"></i> Glide / Picasso (Image Loading)</li>
-                        </ul>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <section id="contact" class="contact-section">
-        <div class="container">
-            <div class="section-header">
-                <h2>Get In Touch</h2>
-                <p>Let's connect and discuss how I can contribute to your next Android project</p>
-            </div>
-            <div class="contact-container">
-                <h2>Let's Build Something Amazing</h2>
-                <div class="contact-details">
-                    <div class="contact-item">
-                        <i class="fas fa-phone-alt"></i>
-                        <h3>Phone</h3>
-                        <a href="tel:+8801928782828">+8801928782828</a>
-                    </div>
-                    <div class="contact-item">
-    <i class="fas fa-envelope"></i>
-    <h3>Email</h3>
-    <a href="mailto:sudiptoroy7666@gmail.com" target="_self">
-        sudiptoroy7666@gmail.com
-    </a>
-                    </div>
-                    <div class="contact-item">
-                        <i class="fas fa-map-marker-alt"></i>
-                        <h3>Location</h3>
-                        <p>Dholaipar, Dhaka 1204</p>
-                    </div>
-
-<div class="contact-item">
-                        <i class="fab fa-linkedin"></i>
-                        <h3>LinkedIn</h3>
-                        <a href="https://www.linkedin.com/in/sudipta-roy-3873512b4/" target="_blank">linkedin.com/in/sudipta-roy</a>
-</div>
-                    
-                
-        
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
-        document.getElementById('mobileToggle').addEventListener('click', function () {
-            const navMenu = document.getElementById('navMenu');
-            navMenu.classList.toggle('active');
-            this.innerHTML = navMenu.classList.contains('active') ? '<i class="fas fa-times"></i>' : '<i class="fas fa-bars"></i>';
-        });
-
-        document.querySelectorAll('nav a').forEach(anchor => {
-            anchor.addEventListener('click', function (e) {
-                e.preventDefault();
-                const navMenu = document.getElementById('navMenu');
-                if (navMenu.classList.contains('active')) {
-                    navMenu.classList.remove('active');
-                    document.getElementById('mobileToggle').innerHTML = '<i class="fas fa-bars"></i>';
-                }
-                const targetElement = document.querySelector(this.getAttribute('href'));
-                if (targetElement) window.scrollTo({ top: targetElement.offsetTop - 80, behavior: 'smooth' });
-                document.querySelectorAll('nav a').forEach(l => l.classList.remove('active'));
-                this.classList.add('active');
-            });
-        });
-
-        window.addEventListener('scroll', function () {
-            const scrollPosition = window.scrollY + 100;
-            let currentSection = '';
-            document.querySelectorAll('section').forEach(section => {
-                if (scrollPosition >= section.offsetTop && scrollPosition < section.offsetTop + section.offsetHeight)
-                    currentSection = section.getAttribute('id');
-            });
-            document.querySelectorAll('nav a').forEach(link => {
-                link.classList.remove('active');
-                if (link.getAttribute('href').substring(1) === currentSection) link.classList.add('active');
-            });
-        });
-
-        document.querySelector('nav a[href="#bio"]').classList.add('active');
-
-        document.addEventListener('DOMContentLoaded', function () {
-            const observer = new IntersectionObserver((entries) => {
-                entries.forEach(entry => {
-                    if (entry.isIntersecting) {
-                        entry.target.style.opacity = 1;
-                        entry.target.style.transform = 'translateY(0)';
-                    }
-                });
-            }, { threshold: 0.1 });
-            document.querySelectorAll('.project-card, .skill-category, .contact-item').forEach(el => {
-                el.style.opacity = 0;
-                el.style.tra
+</script>
+</body>
+</html>
