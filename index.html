@@ -4,6 +4,9 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>SUDIPTA ROY // ANDROID DEVELOPER</title>
+<!-- FIX #2: preconnect hints for faster Google Fonts load -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 <link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@400;500;600;700&family=Orbitron:wght@500;700;900&family=Space+Grotesk:wght@300;400;500;700&family=JetBrains+Mono:wght@400;500&family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
 <style>
@@ -45,8 +48,9 @@
   --body:'Inter', sans-serif;
   --ui:'Space Grotesk', sans-serif;
 }
+/* FIX #1: overflow-x on html prevents iOS Safari horizontal bleed */
 *{margin:0;padding:0;box-sizing:border-box}
-html{scroll-behavior:smooth}
+html{scroll-behavior:smooth;overflow-x:hidden}
 body{
   font-family:var(--body);
   background:var(--bg-void);
@@ -167,6 +171,8 @@ img{max-width:100%;display:block}
   letter-spacing:.25em;text-transform:uppercase;color:var(--text-dim);
   background:linear-gradient(180deg, rgba(3,0,20,0.95), rgba(3,0,20,0.5), transparent);
   border-bottom:1px solid rgba(168,85,247,0.15);
+  /* FIX #3: -webkit-backdrop-filter for Safari/iOS */
+  -webkit-backdrop-filter:blur(12px);
   backdrop-filter:blur(12px);
 }
 .hud-top .live{display:flex;align-items:center;gap:8px}
@@ -215,12 +221,15 @@ nav.side a:hover::before{opacity:1;color:var(--neon-blue)}
 .hero{
   position:relative;min-height:100vh;display:flex;align-items:center;justify-content:center;
   padding:120px 20px 80px;z-index:5;overflow:hidden;
+  /* FIX #7: hero doesn't need scroll-margin since it's the top */
 }
 .hero-frame{
   position:relative;max-width:1200px;width:100%;
   padding:80px 60px;
   border:1px solid rgba(168,85,247,0.2);
   background:linear-gradient(135deg, rgba(15,8,40,0.7), rgba(3,0,20,0.9));
+  /* FIX #3: -webkit prefix for Safari */
+  -webkit-backdrop-filter:blur(20px);
   backdrop-filter:blur(20px);
   clip-path:polygon(0 40px, 40px 0, 100% 0, 100% calc(100% - 40px), calc(100% - 40px) 100%, 0 100%);
   box-shadow:0 0 80px rgba(168,85,247,0.1), inset 0 0 60px rgba(0,212,255,0.03);
@@ -247,6 +256,8 @@ nav.side a:hover::before{opacity:1;color:var(--neon-blue)}
   color:var(--neon-blue);text-transform:uppercase;margin-bottom:28px;
   padding:8px 18px;border:1px solid rgba(0,212,255,0.3);
   background:rgba(0,212,255,0.05);
+  /* FIX #3: -webkit prefix */
+  -webkit-backdrop-filter:blur(8px);
   backdrop-filter:blur(8px);
   clip-path:polygon(10px 0,100% 0,100% calc(100% - 10px),calc(100% - 10px) 100%,0 100%,0 10px);
   box-shadow:0 0 20px rgba(0,212,255,0.1);
@@ -297,7 +308,10 @@ nav.side a:hover::before{opacity:1;color:var(--neon-blue)}
   border:1px solid rgba(168,85,247,0.4);cursor:none;
   transition:all .3s;overflow:hidden;
   clip-path:polygon(12px 0,100% 0,100% calc(100% - 12px),calc(100% - 12px) 100%,0 100%,0 12px);
+  /* FIX #3 & #10: webkit prefix + touch-action */
+  -webkit-backdrop-filter:blur(8px);
   backdrop-filter:blur(8px);
+  touch-action:manipulation;
 }
 .btn::before{
   content:'';position:absolute;inset:0;
@@ -356,7 +370,11 @@ nav.side a:hover::before{opacity:1;color:var(--neon-blue)}
 /* ═══════════════════════════════════════════════════════════
    SECTION BASE
 ═══════════════════════════════════════════════════════════ */
-section{position:relative;padding:140px 20px;z-index:5}
+/* FIX #7: scroll-margin-top so fixed HUD doesn't obscure section tops */
+section{
+  position:relative;padding:140px 20px;z-index:5;
+  scroll-margin-top:70px;
+}
 .container{max-width:1300px;margin:0 auto;position:relative}
 .section-head{display:flex;align-items:flex-end;justify-content:space-between;margin-bottom:80px;flex-wrap:wrap;gap:24px}
 .section-label{
@@ -406,14 +424,20 @@ section{position:relative;padding:140px 20px;z-index:5}
   position:relative;padding:40px;
   background:linear-gradient(135deg, rgba(15,8,40,0.8), rgba(3,0,20,0.6));
   border:1px solid rgba(168,85,247,0.2);
+  /* FIX #3: -webkit prefix */
+  -webkit-backdrop-filter:blur(20px);
   backdrop-filter:blur(20px);
   clip-path:polygon(20px 0,100% 0,100% calc(100% - 20px),calc(100% - 20px) 100%,0 100%,0 20px);
   box-shadow:0 0 60px rgba(168,85,247,0.08), inset 0 0 40px rgba(0,212,255,0.02);
 }
 .dossier-card::before{
   content:'';position:absolute;inset:-1px;z-index:-1;
+  /* FIX #11: linear-gradient fallback before conic-gradient for old browsers */
+  background:linear-gradient(135deg, transparent, var(--neon-blue), var(--neon-purple), var(--neon-pink), transparent);
   background:conic-gradient(from 0deg, transparent, var(--neon-blue), var(--neon-purple), var(--neon-pink), transparent 30%);
   animation:rotate 6s linear infinite;
+  /* FIX: will-change for GPU compositing on rotating element */
+  will-change:transform;
   clip-path:polygon(20px 0,100% 0,100% calc(100% - 20px),calc(100% - 20px) 100%,0 100%,0 20px);
   filter:blur(2px);
 }
@@ -445,6 +469,8 @@ section{position:relative;padding:140px 20px;z-index:5}
   font-family:var(--mono);font-size:.72rem;letter-spacing:.2em;text-transform:uppercase;
   border:1px solid rgba(168,85,247,0.2);transition:all .3s;
   background:rgba(168,85,247,0.03);
+  /* FIX #10 */
+  touch-action:manipulation;
 }
 .dossier .links a:hover{
   border-color:var(--neon-purple);color:var(--neon-purple);
@@ -456,6 +482,8 @@ section{position:relative;padding:140px 20px;z-index:5}
 .spec-card{
   padding:24px;background:var(--bg-glass);border:1px solid rgba(168,85,247,0.15);
   position:relative;overflow:hidden;transition:all .4s;
+  /* FIX #3: -webkit prefix */
+  -webkit-backdrop-filter:blur(12px);
   backdrop-filter:blur(12px);
 }
 .spec-card:hover{
@@ -473,6 +501,8 @@ section{position:relative;padding:140px 20px;z-index:5}
 .spec-card .k{font-family:var(--mono);font-size:.65rem;letter-spacing:.25em;text-transform:uppercase;color:var(--text-mute);margin-bottom:6px}
 .spec-card .v{font-family:var(--display);font-size:1.1rem;font-weight:700;color:var(--text)}
 @media (max-width:900px){.dossier{grid-template-columns:1fr;gap:40px}}
+/* FIX #5: dossier-right collapses to 1 column on very small screens */
+@media (max-width:480px){.dossier-right{grid-template-columns:1fr}}
 
 /* ═══════════════════════════════════════════════════════════
    PROJECTS (FEATURED PROJECTS)
@@ -484,7 +514,10 @@ section{position:relative;padding:140px 20px;z-index:5}
   padding:8px 18px;font-family:var(--mono);font-size:.7rem;letter-spacing:.25em;
   text-transform:uppercase;border:1px solid rgba(168,85,247,0.2);color:var(--text-dim);
   cursor:none;transition:all .3s;background:rgba(168,85,247,0.03);
+  /* FIX #3 & #10 */
+  -webkit-backdrop-filter:blur(8px);
   backdrop-filter:blur(8px);
+  touch-action:manipulation;
 }
 .chip:hover,.chip.active{
   border-color:var(--neon-purple);color:var(--neon-purple);
@@ -492,13 +525,16 @@ section{position:relative;padding:140px 20px;z-index:5}
   box-shadow:0 0 20px rgba(168,85,247,0.2);
 }
 
+/* FIX #4: minmax(min(340px,100%),1fr) prevents overflow on phones < 380px */
 .roster{
-  display:grid;grid-template-columns:repeat(auto-fit,minmax(340px,1fr));gap:28px;
+  display:grid;grid-template-columns:repeat(auto-fit,minmax(min(340px,100%),1fr));gap:28px;
 }
 .card{
   position:relative;background:linear-gradient(135deg, rgba(15,8,40,0.7), rgba(3,0,20,0.8));
   border:1px solid rgba(168,85,247,0.15);overflow:hidden;
   cursor:none;transition:all .5s cubic-bezier(.2,.9,.2,1);
+  /* FIX #3: -webkit prefix */
+  -webkit-backdrop-filter:blur(20px);
   backdrop-filter:blur(20px);
   clip-path:polygon(0 0,100% 0,100% calc(100% - 24px),calc(100% - 24px) 100%,0 100%);
 }
@@ -559,6 +595,8 @@ section{position:relative;padding:140px 20px;z-index:5}
   letter-spacing:.2em;text-transform:uppercase;text-align:center;
   background:transparent;color:var(--text);border:1px solid rgba(168,85,247,0.2);
   cursor:none;transition:all .3s;display:flex;align-items:center;justify-content:center;gap:8px;
+  /* FIX #10 */
+  touch-action:manipulation;
 }
 .card-btn:hover{
   background:var(--accent-color,var(--neon-purple));color:#fff;
@@ -580,7 +618,10 @@ section{position:relative;padding:140px 20px;z-index:5}
    PROJECT MODAL (expanded details)
 ═══════════════════════════════════════════════════════════ */
 .modal-backdrop{
-  position:fixed;inset:0;background:rgba(3,0,20,0.92);backdrop-filter:blur(16px);
+  position:fixed;inset:0;background:rgba(3,0,20,0.92);
+  /* FIX #3: -webkit prefix */
+  -webkit-backdrop-filter:blur(16px);
+  backdrop-filter:blur(16px);
   z-index:500;opacity:0;visibility:hidden;transition:all .4s;
   display:flex;align-items:center;justify-content:center;padding:20px;
 }
@@ -592,6 +633,9 @@ section{position:relative;padding:140px 20px;z-index:5}
   transform:translateY(40px) scale(.96);transition:transform .5s cubic-bezier(.2,.9,.2,1);
   clip-path:polygon(24px 0,100% 0,100% calc(100% - 24px),calc(100% - 24px) 100%,0 100%,0 24px);
   box-shadow:0 0 100px rgba(168,85,247,0.2);
+  /* FIX #8: smooth scrolling inside modal on iOS */
+  -webkit-overflow-scrolling:touch;
+  overscroll-behavior:contain;
 }
 .modal-backdrop.open .modal{transform:translateY(0) scale(1)}
 .modal::-webkit-scrollbar{width:6px}
@@ -604,6 +648,8 @@ section{position:relative;padding:140px 20px;z-index:5}
   color:var(--neon-purple);font-size:1.2rem;cursor:none;
   display:flex;align-items:center;justify-content:center;
   transition:all .3s;clip-path:polygon(50% 0,100% 50%,50% 100%,0 50%);
+  /* FIX #10 */
+  touch-action:manipulation;
 }
 .modal-close:hover{
   background:var(--grad-primary);color:#fff;
@@ -683,7 +729,7 @@ section{position:relative;padding:140px 20px;z-index:5}
 }
 
 /* ═══════════════════════════════════════════════════════════
-   SCREENSHOTS (Hero + Thumbnails) - FIXED
+   SCREENSHOTS (Hero + Thumbnails)
 ═══════════════════════════════════════════════════════════ */
 .ss-hero{
   display:grid;grid-template-columns:1fr;gap:20px;
@@ -697,11 +743,19 @@ section{position:relative;padding:140px 20px;z-index:5}
   box-shadow:0 20px 60px rgba(var(--accent-rgb,168,85,247),0.3), inset 0 0 0 1px rgba(255,255,255,0.05);
   position:relative;
   background:#000;
+  cursor:zoom-in;
+  transition:all .3s;
+}
+.ss-hero .hero-img:hover{
+  border-color:var(--neon-purple);
+  box-shadow:0 20px 60px rgba(var(--accent-rgb,168,85,247),0.5), 0 0 40px rgba(var(--accent-rgb,168,85,247),0.3);
+  transform:scale(1.02);
 }
 .ss-hero .hero-img img{
   width:100%;height:100%;
   object-fit:contain;
   transition:all .5s;
+  pointer-events:none;
 }
 .ss-hero .hero-label{
   position:absolute;bottom:0;left:0;right:0;
@@ -710,6 +764,7 @@ section{position:relative;padding:140px 20px;z-index:5}
   font-family:var(--mono);font-size:.7rem;letter-spacing:.2em;
   color:var(--neon-blue);text-transform:uppercase;
   z-index:2;
+  pointer-events:none;
 }
 .ss-hero .thumbs{
   display:flex;gap:12px;justify-content:center;flex-wrap:wrap;
@@ -721,6 +776,7 @@ section{position:relative;padding:140px 20px;z-index:5}
   border:2px solid transparent;transition:all .3s;cursor:pointer;
   opacity:.5;position:relative;
   background:#000;
+  touch-action:manipulation;
 }
 .ss-hero .thumbs .thumb:hover,.ss-hero .thumbs .thumb.active{
   border-color:var(--neon-purple);opacity:1;
@@ -730,6 +786,8 @@ section{position:relative;padding:140px 20px;z-index:5}
 .ss-hero .thumbs .thumb img{
   width:100%;height:100%;
   object-fit:contain;
+  /* FIX #14: prevent img from intercepting thumb click on mobile */
+  pointer-events:none;
 }
 .ss-hero .thumbs .thumb .thumb-label{
   position:absolute;bottom:0;left:0;right:0;
@@ -739,6 +797,8 @@ section{position:relative;padding:140px 20px;z-index:5}
   color:var(--text-dim);text-transform:uppercase;
   white-space:nowrap;overflow:hidden;text-overflow:ellipsis;
   z-index:2;
+  /* FIX #14: prevent label from intercepting thumb click */
+  pointer-events:none;
 }
 
 /* ═══════════════════════════════════════════════════════════
@@ -789,6 +849,8 @@ section{position:relative;padding:140px 20px;z-index:5}
   background:linear-gradient(135deg, rgba(15,8,40,0.7), rgba(3,0,20,0.6));
   border:1px solid rgba(168,85,247,0.15);
   position:relative;transition:all .4s;
+  /* FIX #3: -webkit prefix */
+  -webkit-backdrop-filter:blur(20px);
   backdrop-filter:blur(20px);
   clip-path:polygon(0 0,100% 0,100% calc(100% - 16px),calc(100% - 16px) 100%,0 100%);
 }
@@ -846,6 +908,8 @@ section{position:relative;padding:140px 20px;z-index:5}
   background:linear-gradient(135deg, rgba(15,8,40,0.8), rgba(3,0,20,0.7));
   border:1px solid rgba(168,85,247,0.2);
   position:relative;overflow:hidden;
+  /* FIX #3: -webkit prefix */
+  -webkit-backdrop-filter:blur(20px);
   backdrop-filter:blur(20px);
   clip-path:polygon(0 0,100% 0,100% calc(100% - 30px),calc(100% - 30px) 100%,0 100%);
   box-shadow:0 0 60px rgba(168,85,247,0.08);
@@ -869,6 +933,7 @@ section{position:relative;padding:140px 20px;z-index:5}
   background:rgba(3,0,20,0.6);
   border:1px solid rgba(168,85,247,0.15);
   transition:all .3s;display:block;
+  touch-action:manipulation;
 }
 .contact-card:hover{
   border-color:var(--neon-purple);transform:translateY(-3px);
@@ -906,10 +971,135 @@ footer{
   width:42px;height:42px;display:flex;align-items:center;justify-content:center;
   border:1px solid rgba(168,85,247,0.2);color:var(--text-dim);transition:all .3s;
   clip-path:polygon(50% 0,100% 25%,100% 75%,50% 100%,0 75%,0 25%);
+  touch-action:manipulation;
 }
 .foot-links a:hover{
   color:#fff;background:var(--grad-primary);border-color:transparent;
   box-shadow:var(--glow-purple);
+}
+/* ═══════════════════════════════════════════════════════════
+   SCREENSHOT LIGHTBOX (Fullscreen View)
+═══════════════════════════════════════════════════════════ */
+.ss-lightbox{
+  position:fixed;inset:0;z-index:2000;
+  background:rgba(3,0,20,0.98);
+  -webkit-backdrop-filter:blur(24px);
+  backdrop-filter:blur(24px);
+  display:flex;align-items:center;justify-content:center;
+  opacity:0;visibility:hidden;
+  transition:opacity .4s ease, visibility .4s;
+  padding:40px;
+}
+.ss-lightbox.open{opacity:1;visibility:visible}
+
+.ss-lightbox .lightbox-img{
+  max-width:95vw;max-height:85vh;
+  object-fit:contain;
+  border-radius:16px;
+  box-shadow:0 30px 100px rgba(0,0,0,0.9), 0 0 80px rgba(var(--lb-accent-rgb,168,85,247),0.3);
+  transform:scale(0.85);
+  transition:transform .4s cubic-bezier(.2,.9,.2,1);
+  cursor:zoom-out;
+  border:2px solid rgba(168,85,247,0.2);
+}
+.ss-lightbox.open .lightbox-img{transform:scale(1)}
+
+.ss-lightbox .lightbox-close{
+  position:absolute;top:24px;right:24px;
+  width:52px;height:52px;
+  border:1.5px solid rgba(168,85,247,0.4);
+  background:rgba(3,0,20,0.85);
+  color:var(--neon-purple);
+  font-size:1.5rem;
+  display:flex;align-items:center;justify-content:center;
+  cursor:pointer;
+  border-radius:50%;
+  transition:all .3s;
+  z-index:10;
+  touch-action:manipulation;
+}
+.ss-lightbox .lightbox-close:hover{
+  background:var(--grad-primary);
+  color:#fff;
+  transform:rotate(90deg) scale(1.1);
+  box-shadow:var(--glow-purple);
+  border-color:transparent;
+}
+
+.ss-lightbox .lightbox-nav{
+  position:absolute;top:50%;transform:translateY(-50%);
+  width:56px;height:56px;
+  border:1.5px solid rgba(168,85,247,0.3);
+  background:rgba(3,0,20,0.7);
+  color:var(--neon-blue);
+  font-size:1.4rem;
+  display:flex;align-items:center;justify-content:center;
+  cursor:pointer;
+  border-radius:50%;
+  transition:all .3s;
+  z-index:10;
+  touch-action:manipulation;
+}
+.ss-lightbox .lightbox-nav:hover{
+  background:var(--grad-primary);
+  color:#fff;
+  box-shadow:var(--glow-blue);
+  border-color:transparent;
+  transform:translateY(-50%) scale(1.1);
+}
+.ss-lightbox .lightbox-nav.prev{left:24px}
+.ss-lightbox .lightbox-nav.next{right:24px}
+.ss-lightbox .lightbox-nav:disabled{
+  opacity:.25;cursor:not-allowed;
+  pointer-events:none;
+}
+
+.ss-lightbox .lightbox-label{
+  position:absolute;bottom:24px;left:50%;transform:translateX(-50%);
+  padding:12px 24px;
+  background:rgba(3,0,20,0.85);
+  border:1px solid rgba(168,85,247,0.3);
+  border-radius:12px;
+  font-family:var(--mono);font-size:.8rem;letter-spacing:.2em;
+  color:var(--neon-blue);text-transform:uppercase;
+  -webkit-backdrop-filter:blur(8px);
+  backdrop-filter:blur(8px);
+  white-space:nowrap;
+  max-width:90vw;
+  overflow:hidden;
+  text-overflow:ellipsis;
+}
+
+.ss-lightbox .lightbox-counter{
+  position:absolute;top:28px;left:50%;transform:translateX(-50%);
+  padding:8px 16px;
+  background:rgba(3,0,20,0.7);
+  border-radius:20px;
+  font-family:var(--mono);font-size:.7rem;letter-spacing:.2em;
+  color:var(--text-dim);
+  border:1px solid rgba(168,85,247,0.2);
+}
+
+.ss-lightbox .lightbox-hint{
+  position:absolute;top:28px;left:24px;
+  padding:8px 14px;
+  background:rgba(3,0,20,0.6);
+  border-radius:6px;
+  font-family:var(--mono);font-size:.6rem;letter-spacing:.15em;
+  color:var(--text-mute);text-transform:uppercase;
+  display:flex;align-items:center;gap:8px;
+}
+.ss-lightbox .lightbox-hint i{color:var(--neon-blue);font-size:.7rem}
+
+@media (max-width:700px){
+  .ss-lightbox{padding:10px}
+  .ss-lightbox .lightbox-close{top:12px;right:12px;width:44px;height:44px;font-size:1.3rem}
+  .ss-lightbox .lightbox-nav{width:44px;height:44px;font-size:1.1rem}
+  .ss-lightbox .lightbox-nav.prev{left:8px}
+  .ss-lightbox .lightbox-nav.next{right:8px}
+  .ss-lightbox .lightbox-label{bottom:12px;font-size:.6rem;padding:8px 14px}
+  .ss-lightbox .lightbox-hint{display:none}
+  .ss-lightbox .lightbox-counter{top:14px;font-size:.6rem;padding:6px 12px}
 }
 
 /* ═══════════════════════════════════════════════════════════
@@ -918,6 +1108,32 @@ footer{
 @media (max-width:700px){
   section{padding:80px 16px}
   .section-head{margin-bottom:40px;flex-direction:column;align-items:flex-start}
+}
+
+/* FIX #6: reset cursor:none for interactive elements on touch/tablet ≤900px */
+@media (max-width:900px){
+  .btn,
+  .chip,
+  .card-btn,
+  .modal-close,
+  .contact-card,
+  .dossier .links a,
+  .foot-links a,
+  .ss-hero .thumbs .thumb{
+    cursor:pointer;
+  }
+}
+
+/* FIX #12: respect prefers-reduced-motion — accessibility & battery */
+@media (prefers-reduced-motion: reduce){
+  *,*::before,*::after{
+    animation-duration:0.01ms !important;
+    animation-iteration-count:1 !important;
+    transition-duration:0.01ms !important;
+    scroll-behavior:auto !important;
+  }
+  .aurora-bg,.dossier-card::before{animation:none !important}
+  .reveal{opacity:1;transform:none}
 }
 </style>
 </head>
@@ -962,7 +1178,7 @@ footer{
 <!-- ═══════ HERO ═══════ -->
 <section id="hero" class="hero">
   <div class="hero-frame">
-    <div class="hero-tag"><span class="dot"></span><span>ANDROID DEVELOPER // JAVA & KOTLIN & FLUTTER</span></div>
+    <div class="hero-tag"><span class="dot"></span><span>Mobile DEVELOPER // FLUTTER & KOTLIN & Java</span></div>
     <h1>
       <div class="line"><span>BUILDING</span></div>
       <div class="line"><span class="gold">MOBILE</span></div>
@@ -1014,17 +1230,17 @@ footer{
           <p>I build practical, user-focused Android and cross-platform apps with <b>clean architecture</b>, <b>zero-knowledge cryptography</b>, <b>AI features</b>, and offline support.</p>
           <p>Below are six polished projects spanning <b>Flutter</b>, <b>Kotlin</b>, and <b>Java</b> — each demonstrates real-world reliability: what happens when the network drops, when the app is killed, or when cryptographic keys must survive hardware resets.</p>
           <div class="links">
-            <a href="https://apkpure.com/p/com.example.novel_summary" target="_blank"><i class="fas fa-download"></i> APKPure</a>
-            <a href="https://github.com/sudiptoroy7666-lgtm" target="_blank"><i class="fab fa-github"></i> GitHub</a>
-            <a href="https://sudiptoroy7666-lgtm.github.io/portfolio/" target="_blank"><i class="fas fa-globe"></i> Portfolio</a>
+            <a href="https://apkpure.com/developer?id=40715406"><i class="fas fa-download"></i> APKPure</a>
+            <a href="https://github.com/sudiptoroy7666-lgtm" target="_blank" rel="noopener noreferrer"><i class="fab fa-github"></i> GitHub</a>
+        <!-- <a href="https://sudiptoroy7666-lgtm.github.io/portfolio/" target="_blank" rel="noopener noreferrer"><i class="fas fa-globe"></i> Portfolio</a>  -->
           </div>
         </div>
       </div>
 
       <div class="dossier-right">
         <div class="spec-card reveal reveal-delay-1"><i class="fas fa-map-marker-alt"></i><div class="k">Location</div><div class="v">Dhaka, BD</div></div>
-        <div class="spec-card reveal reveal-delay-2"><i class="fas fa-graduation-cap"></i><div class="k">Education</div><div class="v">BSc CSE '25</div></div>
-        <div class="spec-card reveal reveal-delay-3"><i class="fas fa-code-branch"></i><div class="k">Stack</div><div class="v">Kotlin / Java / Flutter</div></div>
+        <div class="spec-card reveal reveal-delay-2"><i class="fas fa-graduation-cap"></i><div class="k">Education</div><div class="v">CSE Graduate 2026</div></div>
+        <div class="spec-card reveal reveal-delay-3"><i class="fas fa-code-branch"></i><div class="k">Stack</div><div class="v">Kotlin / Flutter / Java</div></div>
         <div class="spec-card reveal reveal-delay-4"><i class="fas fa-bolt"></i><div class="k">Status</div><div class="v">Open to Work</div></div>
       </div>
     </div>
@@ -1092,7 +1308,7 @@ footer{
         <a class="contact-card" href="tel:+8801928782828"><i class="fas fa-phone-alt"></i><div class="k">Phone</div><div class="v">+880 1928 782828</div></a>
         <a class="contact-card" href="mailto:sudiptoroy7666@gmail.com"><i class="fas fa-envelope"></i><div class="k">Email</div><div class="v">sudiptoroy7666@gmail.com</div></a>
         <div class="contact-card"><i class="fas fa-map-marker-alt"></i><div class="k">Location</div><div class="v">Dholaipar, Dhaka 1204</div></div>
-        <a class="contact-card" href="https://www.linkedin.com/in/sudipta-roy-3873512b4/" target="_blank"><i class="fab fa-linkedin"></i><div class="k">LinkedIn</div><div class="v">sudipta-roy</div></a>
+        <a class="contact-card" href="https://www.linkedin.com/in/sudipta-roy-3873512b4/" target="_blank" rel="noopener noreferrer"><i class="fab fa-linkedin"></i><div class="k">LinkedIn</div><div class="v">sudipta-roy</div></a>
       </div>
     </div>
   </div>
@@ -1103,8 +1319,8 @@ footer{
   <div class="foot">
     <div class="foot-logo">◆ SUDIPTA ROY ◆</div>
     <div class="foot-links">
-      <a href="https://github.com/sudiptoroy7666-lgtm" target="_blank" title="GitHub"><i class="fab fa-github"></i></a>
-      <a href="https://www.linkedin.com/in/sudipta-roy-3873512b4/" target="_blank" title="LinkedIn"><i class="fab fa-linkedin-in"></i></a>
+      <a href="https://github.com/sudiptoroy7666-lgtm" target="_blank" rel="noopener noreferrer" title="GitHub"><i class="fab fa-github"></i></a>
+      <a href="https://www.linkedin.com/in/sudipta-roy-3873512b4/" target="_blank" rel="noopener noreferrer" title="LinkedIn"><i class="fab fa-linkedin-in"></i></a>
       <a href="mailto:sudiptoroy7666@gmail.com" title="Email"><i class="fas fa-envelope"></i></a>
       <a href="tel:+8801928782828" title="Call"><i class="fas fa-phone"></i></a>
     </div>
@@ -1117,6 +1333,17 @@ footer{
     <button class="modal-close" id="modalClose"><i class="fas fa-times"></i></button>
     <div class="modal-body" id="modalBody"></div>
   </div>
+</div>
+
+<!-- ═══════ SCREENSHOT LIGHTBOX ═══════ -->
+<div class="ss-lightbox" id="ssLightbox">
+  <div class="lightbox-hint"><i class="fas fa-keyboard"></i> ← → NAVIGATE · ESC CLOSE</div>
+  <div class="lightbox-counter" id="lbCounter">1 / 1</div>
+  <button class="lightbox-close" id="lbClose"><i class="fas fa-times"></i></button>
+  <button class="lightbox-nav prev" id="lbPrev"><i class="fas fa-chevron-left"></i></button>
+  <button class="lightbox-nav next" id="lbNext"><i class="fas fa-chevron-right"></i></button>
+  <img class="lightbox-img" id="lbImg" src="" alt="" loading="lazy">
+  <div class="lightbox-label" id="lbLabel">Screenshot</div>
 </div>
 
 <script>
@@ -1138,6 +1365,18 @@ const PROJECTS = [
     features:['Per-field AES-256-GCM', 'Argon2id KDF in Isolates', 'HKDF-SHA256 Session Keys', 'Hardware-backed HSM/TPM', 'Cross-Platform PIN Sync', 'Portable .vltx Backups', 'CSV Import/Export', 'HaveIBeenPwned k-anon Check', '10-Attempt PIN Wipe', '30s Auto-Clipboard Clear'],
     stack:[{n:'Flutter',p:1},{n:'Dart'},{n:'Supabase'},{n:'SQLite (Drift)'},{n:'Argon2id'},{n:'AES-256-GCM'},{n:'FFI'}],
     screenshots:[
+        {
+  label: 'Windows version',
+  url: [
+    'https://github.com/sudiptoroy7666-lgtm/portfolio/blob/main/assets/screenshots/vaultx/Screenshot%202026-06-06%20115510.png?raw=true',
+         'https://github.com/sudiptoroy7666-lgtm/portfolio/blob/main/assets/screenshots/vaultx/Screenshot%202026-06-06%20115429.png?raw=true',
+         
+         'https://github.com/sudiptoroy7666-lgtm/portfolio/blob/main/assets/screenshots/vaultx/Screenshot%202026-05-30%20161859.png?raw=true'
+  ]
+},
+
+        
+        
       {label:'Vault List', url:'https://github.com/sudiptoroy7666-lgtm/portfolio/blob/main/assets/screenshots/vaultx/v6.png?raw=true'},
       {label:'Add Entry', url:'https://github.com/sudiptoroy7666-lgtm/portfolio/blob/main/assets/screenshots/vaultx/v7.png?raw=true'},
       {label:'Signup', url:'https://github.com/sudiptoroy7666-lgtm/portfolio/blob/main/assets/screenshots/vaultx/v1.jpg?raw=true'},
@@ -1336,7 +1575,6 @@ function updateHud() {
   const dateStr = now.toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
   const timeStr = now.toLocaleTimeString('en-US', { hour12: false, hour: '2-digit', minute: '2-digit', second: '2-digit' });
   hudTime.textContent = `${dateStr} // ${timeStr}`;
-  
   const elapsed = Math.floor((Date.now() - sessionStart) / 1000);
   const mins = Math.floor(elapsed / 60).toString().padStart(2, '0');
   const secs = (elapsed % 60).toString().padStart(2, '0');
@@ -1351,7 +1589,7 @@ setInterval(updateHud, 1000);
 const rosterGrid = document.getElementById('rosterGrid');
 function renderCards(filter='all'){
   rosterGrid.innerHTML = '';
-  PROJECTS.forEach((p,i) => {
+  PROJECTS.forEach((p) => {
     if(filter !== 'all' && !p.techTags.includes(filter)) return;
     const card = document.createElement('div');
     card.className = 'card reveal';
@@ -1378,10 +1616,7 @@ function renderCards(filter='all'){
     rosterGrid.appendChild(card);
   });
   document.querySelectorAll('[data-open]').forEach(btn => {
-    btn.addEventListener('click', e => {
-      const id = btn.getAttribute('data-open');
-      openModal(id);
-    });
+    btn.addEventListener('click', () => openModal(btn.getAttribute('data-open')));
   });
   observeReveals();
 }
@@ -1406,14 +1641,81 @@ SKILLS.forEach(cat => {
   el.innerHTML = `
     <h4><i class="${cat.icon}"></i> ${cat.title}</h4>
     <div class="skill-list">
-      ${cat.items.map(s => `
-        <div class="skill-item"><span>${s}</span></div>
-      `).join('')}
+      ${cat.items.map(s => `<div class="skill-item"><span>${s}</span></div>`).join('')}
     </div>
   `;
   skillsGrid.appendChild(el);
 });
 
+/* ═══════════════════════════════════════════════════════════
+   LIGHTBOX STATE
+═══════════════════════════════════════════════════════════ */
+const ssLightbox = document.getElementById('ssLightbox');
+const lbImg = document.getElementById('lbImg');
+const lbLabel = document.getElementById('lbLabel');
+const lbCounter = document.getElementById('lbCounter');
+const lbClose = document.getElementById('lbClose');
+const lbPrev = document.getElementById('lbPrev');
+const lbNext = document.getElementById('lbNext');
+
+let lbImages = [];
+let lbCurrentIndex = 0;
+let lbAccentRGB = '168,85,247';
+
+function openLightbox(images, index, accentRGB) {
+  lbImages = images;
+  lbCurrentIndex = index;
+  lbAccentRGB = accentRGB || '168,85,247';
+  ssLightbox.style.setProperty('--lb-accent-rgb', lbAccentRGB);
+  updateLightboxImage();
+  ssLightbox.classList.add('open');
+  document.body.style.overflow = 'hidden';
+}
+
+function closeLightbox() {
+  ssLightbox.classList.remove('open');
+  if (!document.getElementById('modalBackdrop').classList.contains('open')) {
+    document.body.style.overflow = '';
+  }
+}
+
+function updateLightboxImage() {
+  const shot = lbImages[lbCurrentIndex];
+  if (!shot) return;
+  lbImg.src = shot.url;
+  lbImg.alt = shot.label;
+  lbLabel.textContent = shot.label;
+  lbCounter.textContent = `${lbCurrentIndex + 1} / ${lbImages.length}`;
+  
+  lbPrev.disabled = lbCurrentIndex === 0;
+  lbNext.disabled = lbCurrentIndex === lbImages.length - 1;
+}
+
+function lbGoPrev() {
+  if (lbCurrentIndex > 0) {
+    lbCurrentIndex--;
+    updateLightboxImage();
+  }
+}
+
+function lbGoNext() {
+  if (lbCurrentIndex < lbImages.length - 1) {
+    lbCurrentIndex++;
+    updateLightboxImage();
+  }
+}
+
+lbClose.addEventListener('click', closeLightbox);
+lbPrev.addEventListener('click', lbGoPrev);
+lbNext.addEventListener('click', lbGoNext);
+lbImg.addEventListener('click', closeLightbox);
+ssLightbox.addEventListener('click', (e) => {
+  if (e.target === ssLightbox) closeLightbox();
+});
+
+/* ═══════════════════════════════════════════════════════════
+   MODAL
+═══════════════════════════════════════════════════════════ */
 /* ═══════════════════════════════════════════════════════════
    MODAL
 ═══════════════════════════════════════════════════════════ */
@@ -1422,7 +1724,7 @@ const modalBody = document.getElementById('modalBody');
 const modalClose = document.getElementById('modalClose');
 
 function buildScreenshotSection(p) {
-  const shots = p.screenshots;
+  let shots = p.screenshots;
   if (!shots || shots.length === 0) {
     return `
       <div class="modal-section">
@@ -1432,12 +1734,29 @@ function buildScreenshotSection(p) {
     `;
   }
 
+  // ✨ MAGIC FLATTEN: Converts arrays of URLs into individual thumbnails
+  const flatShots = [];
+  shots.forEach(s => {
+    if (Array.isArray(s.url)) {
+      s.url.forEach((u, idx) => {
+        flatShots.push({ 
+          label: `${s.label} ${idx + 1}`,
+          url: u 
+        });
+      });
+    } else {
+      flatShots.push(s);
+    }
+  });
+  shots = flatShots;
+
   const heroShot = shots[0];
   
   const thumbItems = shots.map((s, i) => `
     <div class="thumb ${i===0?'active':''}" 
          data-url="${s.url}" 
-         data-label="${s.label}">
+         data-label="${s.label}"
+         data-index="${i}">
       <img src="${s.url}" alt="${s.label}" loading="lazy" 
            onerror="this.parentElement.style.background='linear-gradient(135deg, ${p.accent}, #1a1a2e)';this.style.display='none'">
       <span class="thumb-label">${s.label}</span>
@@ -1446,9 +1765,9 @@ function buildScreenshotSection(p) {
 
   return `
     <div class="modal-section">
-      <h3><i class="fas fa-mobile-alt"></i> Screenshots (${shots.length})</h3>
+      <h3><i class="fas fa-mobile-alt"></i> Screenshots (${shots.length}) <span style="font-size:.65rem;color:var(--text-mute);font-weight:400;margin-left:12px;letter-spacing:.1em">CLICK TO ENLARGE</span></h3>
       <div class="ss-hero">
-        <div class="hero-img">
+        <div class="hero-img" id="heroImgWrap">
           <img id="heroMainImg" 
                src="${heroShot.url}" 
                alt="${heroShot.label}" 
@@ -1462,12 +1781,16 @@ function buildScreenshotSection(p) {
   `;
 }
 
+let _currentProjectShots = [];
+let _currentProjectAccentRGB = '168,85,247';
+
 function openModal(id){
   const p = PROJECTS.find(x => x.id === id);
   if(!p) return;
   modalBody.style.setProperty('--accent-color', p.accent);
   modalBody.style.setProperty('--accent-rgb', p.accentRGB);
-  
+  _currentProjectAccentRGB = p.accentRGB;
+
   const screenshotSection = buildScreenshotSection(p);
 
   modalBody.innerHTML = `
@@ -1478,28 +1801,23 @@ function openModal(id){
         <div class="sub">${p.subtitle}</div>
       </div>
     </div>
-
     <div class="modal-section">
       <h3><i class="fas fa-bolt"></i> Elevator Pitch</h3>
       <p class="modal-pitch">${p.pitch}</p>
     </div>
-
     ${screenshotSection}
-
     <div class="modal-section">
       <h3><i class="fas fa-star"></i> Key Features</h3>
       <div class="feature-list">
         ${p.features.map(f=>`<div>${f}</div>`).join('')}
       </div>
     </div>
-
     <div class="modal-section">
       <h3><i class="fas fa-code"></i> Tech Stack</h3>
       <div class="tech-list">
         ${p.stack.map(t=>`<span class="${t.p?'primary':''}">${t.n}</span>`).join('')}
       </div>
     </div>
-
     <div class="modal-section">
       <h3><i class="fas fa-terminal"></i> ${p.highlight.title}</h3>
       <div class="modal-highlight">
@@ -1507,7 +1825,6 @@ function openModal(id){
         ${p.highlight.text}
       </div>
     </div>
-
     <div class="modal-section">
       <h3><i class="fas fa-rocket"></i> Future Roadmap</h3>
       <ul class="future-list">
@@ -1515,37 +1832,100 @@ function openModal(id){
       </ul>
     </div>
   `;
-  
-  // Wire up hero thumbnail click handlers
+
+  /* Flatten screenshots for lightbox */
+  let flatShots = [];
+  p.screenshots.forEach(s => {
+    if (Array.isArray(s.url)) {
+      s.url.forEach((u, idx) => {
+        flatShots.push({ label: `${s.label} ${idx + 1}`, url: u });
+      });
+    } else {
+      flatShots.push(s);
+    }
+  });
+  _currentProjectShots = flatShots;
+
+  /* Wire thumbnail click handlers */
   const heroMain = modalBody.querySelector('#heroMainImg');
   const heroLabel = modalBody.querySelector('#heroLabel');
-  const thumbs = modalBody.querySelectorAll('#heroThumbs .thumb');
+  const heroImgWrap = modalBody.querySelector('#heroImgWrap');
   
-  thumbs.forEach(thumb => {
+  modalBody.querySelectorAll('#heroThumbs .thumb').forEach(thumb => {
     thumb.addEventListener('click', () => {
-      thumbs.forEach(t => t.classList.remove('active'));
+      modalBody.querySelectorAll('#heroThumbs .thumb').forEach(t=>t.classList.remove('active'));
       thumb.classList.add('active');
-      if(heroMain) {
-        heroMain.src = thumb.dataset.url;
-        heroMain.alt = thumb.dataset.label;
-      }
-      if(heroLabel) {
-        heroLabel.textContent = thumb.dataset.label;
-      }
+      if(heroMain){ heroMain.src = thumb.dataset.url; heroMain.alt = thumb.dataset.label; }
+      if(heroLabel){ heroLabel.textContent = thumb.dataset.label; }
     });
   });
 
-  modalBackdrop.classList.add('open');
+  /* Wire hero image click to open lightbox */
+  if (heroImgWrap) {
+    heroImgWrap.addEventListener('click', () => {
+      const activeThumb = modalBody.querySelector('#heroThumbs .thumb.active');
+      const idx = activeThumb ? parseInt(activeThumb.dataset.index) : 0;
+      openLightbox(_currentProjectShots, idx, _currentProjectAccentRGB);
+    });
+  }
+
+  /* Wire thumbnail double-click or long-press to open lightbox directly */
+  modalBody.querySelectorAll('#heroThumbs .thumb').forEach(thumb => {
+    thumb.addEventListener('dblclick', (e) => {
+      e.preventDefault();
+      e.stopPropagation();
+      const idx = parseInt(thumb.dataset.index);
+      openLightbox(_currentProjectShots, idx, _currentProjectAccentRGB);
+    });
+  });
+
+  /* Simple overflow lock - no scroll position manipulation */
   document.body.style.overflow = 'hidden';
+  modalBackdrop.classList.add('open');
+}
+
+function closeModal(){
+  modalBackdrop.classList.remove('open');
+  /* Simply restore overflow - no scroll jumping */
+  document.body.style.overflow = '';
 }
 
 modalClose.addEventListener('click', closeModal);
 modalBackdrop.addEventListener('click', e => { if(e.target === modalBackdrop) closeModal(); });
-document.addEventListener('keydown', e => { if(e.key === 'Escape') closeModal(); });
-function closeModal(){
-  modalBackdrop.classList.remove('open');
-  document.body.style.overflow = '';
-}
+
+/* ═══════════════════════════════════════════════════════════
+   KEYBOARD NAVIGATION
+═══════════════════════════════════════════════════════════ */
+document.addEventListener('keydown', e => {
+  /* Lightbox takes priority */
+  if (ssLightbox.classList.contains('open')) {
+    if (e.key === 'Escape') { closeLightbox(); e.preventDefault(); }
+    else if (e.key === 'ArrowLeft') { lbGoPrev(); e.preventDefault(); }
+    else if (e.key === 'ArrowRight') { lbGoNext(); e.preventDefault(); }
+    return;
+  }
+  /* Modal controls */
+  if (e.key === 'Escape' && modalBackdrop.classList.contains('open')) {
+    closeModal();
+  }
+});
+
+/* Touch swipe support for lightbox */
+let touchStartX = 0;
+let touchEndX = 0;
+
+ssLightbox.addEventListener('touchstart', (e) => {
+  touchStartX = e.changedTouches[0].screenX;
+}, {passive: true});
+
+ssLightbox.addEventListener('touchend', (e) => {
+  touchEndX = e.changedTouches[0].screenX;
+  const diff = touchStartX - touchEndX;
+  if (Math.abs(diff) > 60) {
+    if (diff > 0) lbGoNext();
+    else lbGoPrev();
+  }
+}, {passive: true});
 
 /* ═══════════════════════════════════════════════════════════
    SCROLL REVEAL OBSERVER
@@ -1553,22 +1933,16 @@ function closeModal(){
 function observeReveals(){
   const io = new IntersectionObserver((entries) => {
     entries.forEach(e => {
-      if(e.isIntersecting){
-        e.target.classList.add('in');
-        io.unobserve(e.target);
-      }
+      if(e.isIntersecting){ e.target.classList.add('in'); io.unobserve(e.target); }
     });
-  }, {threshold: 0.12, rootMargin:'0px 0px -60px 0px'});
+  }, {threshold:0.12, rootMargin:'0px 0px -60px 0px'});
   document.querySelectorAll('.reveal:not(.in)').forEach(el => io.observe(el));
 
   const skillIO = new IntersectionObserver((entries) => {
     entries.forEach(e => {
-      if(e.isIntersecting){
-        e.target.classList.add('in');
-        skillIO.unobserve(e.target);
-      }
+      if(e.isIntersecting){ e.target.classList.add('in'); skillIO.unobserve(e.target); }
     });
-  }, {threshold: 0.2});
+  }, {threshold:0.2});
   document.querySelectorAll('.skill-cat:not(.in)').forEach(el => skillIO.observe(el));
 }
 observeReveals();
@@ -1584,8 +1958,8 @@ const counterIO = new IntersectionObserver((entries) => {
       const dur = 1800;
       const start = performance.now();
       function tick(t){
-        const p = Math.min((t-start)/dur, 1);
-        const eased = 1 - Math.pow(1-p, 3);
+        const p = Math.min((t-start)/dur,1);
+        const eased = 1 - Math.pow(1-p,3);
         el.textContent = Math.round(eased * to);
         if(p < 1) requestAnimationFrame(tick);
       }
@@ -1593,11 +1967,12 @@ const counterIO = new IntersectionObserver((entries) => {
       counterIO.unobserve(el);
     }
   });
-}, {threshold: 0.5});
+}, {threshold:0.5});
 document.querySelectorAll('.count').forEach(el => counterIO.observe(el));
 
 /* ═══════════════════════════════════════════════════════════
    SIDE NAV ACTIVE
+   FIX #15: increase offset to 80px to match HUD height
 ═══════════════════════════════════════════════════════════ */
 const sideLinks = document.querySelectorAll('nav.side a');
 const sections = ['hero','dossier','roster','arsenal','link'].map(id => document.getElementById(id));
@@ -1606,11 +1981,12 @@ window.addEventListener('scroll', () => {
   let current = 0;
   sections.forEach((s,i) => { if(s && y >= s.offsetTop) current = i; });
   sideLinks.forEach((l,i) => l.classList.toggle('active', i === current));
-});
+}, {passive:true});
 sideLinks.forEach(l => l.addEventListener('click', e => {
   e.preventDefault();
   const target = document.querySelector(l.getAttribute('href'));
-  if(target) window.scrollTo({top: target.offsetTop - 20, behavior:'smooth'});
+  /* FIX #15: account for full HUD height (50px) + buffer */
+  if(target) window.scrollTo({top: target.offsetTop - 80, behavior:'smooth'});
 }));
 
 /* ═══════════════════════════════════════════════════════════
@@ -1638,56 +2014,77 @@ type();
 const dot = document.querySelector('.cursor-dot');
 const ring = document.querySelector('.cursor-ring');
 let mx=0,my=0,rx=0,ry=0;
-window.addEventListener('mousemove', e => { mx=e.clientX; my=e.clientY; dot.style.left=mx+'px'; dot.style.top=my+'px'; });
-function follow(){ rx += (mx-rx)*0.18; ry += (my-ry)*0.18; ring.style.left=rx+'px'; ring.style.top=ry+'px'; requestAnimationFrame(follow); }
+window.addEventListener('mousemove', e => {
+  mx=e.clientX; my=e.clientY;
+  dot.style.left=mx+'px'; dot.style.top=my+'px';
+}, {passive:true});
+function follow(){
+  rx += (mx-rx)*0.18; ry += (my-ry)*0.18;
+  ring.style.left=rx+'px'; ring.style.top=ry+'px';
+  requestAnimationFrame(follow);
+}
 follow();
 document.addEventListener('mouseover', e => {
-  if(e.target.closest('a, button, .card, .chip, .contact-card, img, .ss-hero .thumb')) ring.classList.add('hover');
+  if(e.target.closest('a, button, .card, .chip, .contact-card, img, .ss-hero .thumb, .ss-hero .hero-img, .lightbox-nav, .lightbox-close')) ring.classList.add('hover');
 });
 document.addEventListener('mouseout', e => {
-  if(e.target.closest('a, button, .card, .chip, .contact-card, img, .ss-hero .thumb')) ring.classList.remove('hover');
+  if(e.target.closest('a, button, .card, .chip, .contact-card, img, .ss-hero .thumb, .ss-hero .hero-img, .lightbox-nav, .lightbox-close')) ring.classList.remove('hover');
 });
 
 /* ═══════════════════════════════════════════════════════════
    STARFIELD CANVAS
+   FIX #13: reduce star count & skip shadowBlur on mobile for GPU savings
 ═══════════════════════════════════════════════════════════ */
 const canvas = document.getElementById('starfield');
 const ctx = canvas.getContext('2d');
 let stars = [];
-function resize(){ canvas.width = innerWidth; canvas.height = innerHeight; initStars(); }
+const isMobileDevice = () => canvas.width < 768;
+
+function resize(){
+  canvas.width = innerWidth;
+  canvas.height = innerHeight;
+  initStars();
+}
 function initStars(){
   stars = [];
-  const count = Math.floor((canvas.width*canvas.height)/8000);
+  /* FIX #13: fewer stars on mobile */
+  const density = isMobileDevice() ? 18000 : 8000;
+  const count = Math.floor((canvas.width * canvas.height) / density);
   for(let i=0;i<count;i++){
     stars.push({
       x: Math.random()*canvas.width,
       y: Math.random()*canvas.height,
       r: Math.random()*1.4 + 0.2,
-      vx: (Math.random()-0.5)*0.05,
-      vy: (Math.random()-0.5)*0.05,
+      vx:(Math.random()-0.5)*0.05,
+      vy:(Math.random()-0.5)*0.05,
       a: Math.random()*0.6 + 0.2,
-      hue: [195, 270, 330, 160][Math.floor(Math.random()*4)],
-      tw: Math.random()*Math.PI*2
+      hue:[195,270,330,160][Math.floor(Math.random()*4)],
+      tw:Math.random()*Math.PI*2
     });
   }
 }
 resize();
-window.addEventListener('resize', resize);
+window.addEventListener('resize', resize, {passive:true});
+
 function draw(){
   ctx.clearRect(0,0,canvas.width,canvas.height);
+  const mobile = isMobileDevice();
   stars.forEach(s => {
-    s.x += s.vx; s.y += s.vy; s.tw += 0.04;
+    s.x+=s.vx; s.y+=s.vy; s.tw+=0.04;
     if(s.x<0) s.x=canvas.width; if(s.x>canvas.width) s.x=0;
     if(s.y<0) s.y=canvas.height; if(s.y>canvas.height) s.y=0;
     const flicker = 0.6 + Math.sin(s.tw)*0.4;
     ctx.beginPath();
     ctx.arc(s.x, s.y, s.r, 0, Math.PI*2);
-    ctx.fillStyle = `hsla(${s.hue}, 100%, 70%, ${s.a*flicker})`;
-    ctx.shadowBlur = s.r*6;
-    ctx.shadowColor = `hsla(${s.hue}, 100%, 70%, 0.8)`;
+    ctx.fillStyle = `hsla(${s.hue},100%,70%,${s.a*flicker})`;
+    /* FIX #13: skip expensive shadowBlur on mobile */
+    if(!mobile){
+      ctx.shadowBlur = s.r*6;
+      ctx.shadowColor = `hsla(${s.hue},100%,70%,0.8)`;
+    }
     ctx.fill();
   });
-  ctx.shadowBlur = 0;
+  if(!mobile) ctx.shadowBlur = 0;
   requestAnimationFrame(draw);
 }
 draw();
@@ -1700,10 +2097,13 @@ const loadPct = document.getElementById('loadPct');
 let pct = 0;
 const loadInt = setInterval(() => {
   pct += Math.random()*12 + 4;
-  if(pct >= 100){ pct = 100; clearInterval(loadInt); setTimeout(()=>loader.classList.add('done'), 300); }
+  if(pct >= 100){
+    pct = 100;
+    clearInterval(loadInt);
+    setTimeout(() => loader.classList.add('done'), 300);
+  }
   loadPct.textContent = Math.floor(pct);
 }, 120);
-
 </script>
 </body>
 </html>
