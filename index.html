@@ -1012,7 +1012,7 @@ footer{
   color:var(--neon-purple);
   font-size:1.5rem;
   display:flex;align-items:center;justify-content:center;
-  cursor:pointer;
+  cursor:none;
   border-radius:50%;
   transition:all .3s;
   z-index:10;
@@ -1034,7 +1034,7 @@ footer{
   color:var(--neon-blue);
   font-size:1.4rem;
   display:flex;align-items:center;justify-content:center;
-  cursor:pointer;
+  cursor:none;
   border-radius:50%;
   transition:all .3s;
   z-index:10;
@@ -1114,12 +1114,15 @@ footer{
 @media (max-width:900px){
   .btn,
   .chip,
+  .card,
   .card-btn,
   .modal-close,
   .contact-card,
   .dossier .links a,
   .foot-links a,
-  .ss-hero .thumbs .thumb{
+  .ss-hero .thumbs .thumb,
+  .ss-lightbox .lightbox-close,
+  .ss-lightbox .lightbox-nav{
     cursor:pointer;
   }
 }
@@ -1230,7 +1233,7 @@ footer{
           <p>I build practical, user-focused Android and cross-platform apps with <b>clean architecture</b>, <b>zero-knowledge cryptography</b>, <b>AI features</b>, and offline support.</p>
           <p>Below are six polished projects spanning <b>Flutter</b>, <b>Kotlin</b>, and <b>Java</b> — each demonstrates real-world reliability: what happens when the network drops, when the app is killed, or when cryptographic keys must survive hardware resets.</p>
           <div class="links">
-            <a href="https://apkpure.com/developer?id=40715406"><i class="fas fa-download"></i> APKPure</a>
+            <a href="https://apkpure.com/developer?id=40715406" target="_blank" rel="noopener noreferrer"><i class="fas fa-download"></i> APKPure</a>
             <a href="https://github.com/sudiptoroy7666-lgtm" target="_blank" rel="noopener noreferrer"><i class="fab fa-github"></i> GitHub</a>
         <!-- <a href="https://sudiptoroy7666-lgtm.github.io/portfolio/" target="_blank" rel="noopener noreferrer"><i class="fas fa-globe"></i> Portfolio</a>  -->
           </div>
@@ -1674,7 +1677,7 @@ function openLightbox(images, index, accentRGB) {
 
 function closeLightbox() {
   ssLightbox.classList.remove('open');
-  if (!document.getElementById('modalBackdrop').classList.contains('open')) {
+  if (!modalBackdrop.classList.contains('open')) {
     document.body.style.overflow = '';
   }
 }
@@ -1713,9 +1716,6 @@ ssLightbox.addEventListener('click', (e) => {
   if (e.target === ssLightbox) closeLightbox();
 });
 
-/* ═══════════════════════════════════════════════════════════
-   MODAL
-═══════════════════════════════════════════════════════════ */
 /* ═══════════════════════════════════════════════════════════
    MODAL
 ═══════════════════════════════════════════════════════════ */
@@ -2038,17 +2038,18 @@ document.addEventListener('mouseout', e => {
 const canvas = document.getElementById('starfield');
 const ctx = canvas.getContext('2d');
 let stars = [];
-const isMobileDevice = () => canvas.width < 768;
+let isMobile = false; // cached & updated in resize()
 
 function resize(){
   canvas.width = innerWidth;
   canvas.height = innerHeight;
+  isMobile = canvas.width < 768;
   initStars();
 }
 function initStars(){
   stars = [];
   /* FIX #13: fewer stars on mobile */
-  const density = isMobileDevice() ? 18000 : 8000;
+  const density = isMobile ? 18000 : 8000;
   const count = Math.floor((canvas.width * canvas.height) / density);
   for(let i=0;i<count;i++){
     stars.push({
@@ -2068,7 +2069,6 @@ window.addEventListener('resize', resize, {passive:true});
 
 function draw(){
   ctx.clearRect(0,0,canvas.width,canvas.height);
-  const mobile = isMobileDevice();
   stars.forEach(s => {
     s.x+=s.vx; s.y+=s.vy; s.tw+=0.04;
     if(s.x<0) s.x=canvas.width; if(s.x>canvas.width) s.x=0;
@@ -2077,14 +2077,13 @@ function draw(){
     ctx.beginPath();
     ctx.arc(s.x, s.y, s.r, 0, Math.PI*2);
     ctx.fillStyle = `hsla(${s.hue},100%,70%,${s.a*flicker})`;
-    /* FIX #13: skip expensive shadowBlur on mobile */
-    if(!mobile){
+    if(!isMobile){
       ctx.shadowBlur = s.r*6;
       ctx.shadowColor = `hsla(${s.hue},100%,70%,0.8)`;
     }
     ctx.fill();
   });
-  if(!mobile) ctx.shadowBlur = 0;
+  if(!isMobile) ctx.shadowBlur = 0;
   requestAnimationFrame(draw);
 }
 draw();
