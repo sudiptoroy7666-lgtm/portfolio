@@ -7,6 +7,10 @@
 <!-- FIX #2: preconnect hints for faster Google Fonts load -->
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="dns-prefetch" href="https://cdnjs.cloudflare.com">
+<link rel="preconnect" href="https://cdnjs.cloudflare.com" crossorigin>
+<link rel="preload" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/webfonts/fa-solid-900.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/webfonts/fa-brands-400.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 <link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@400;500;600;700&family=Orbitron:wght@500;700;900&family=Space+Grotesk:wght@300;400;500;700&family=JetBrains+Mono:wght@400;500&family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
 <style>
@@ -81,13 +85,14 @@ img{max-width:100%;display:block}
 /* ═══════════════════════════════════════════════════════════
    BACKGROUND LAYERS
 ═══════════════════════════════════════════════════════════ */
-#starfield{position:fixed;inset:0;z-index:0;pointer-events:none}
+#starfield{position:fixed;inset:0;z-index:0;pointer-events:none;transform:translateZ(0);will-change:transform}
 .grid-overlay{
   position:fixed;inset:0;z-index:1;pointer-events:none;
   background-image:
     linear-gradient(rgba(168,85,247,0.03) 1px,transparent 1px),
     linear-gradient(90deg,rgba(0,212,255,0.03) 1px,transparent 1px);
   background-size:60px 60px;
+  -webkit-mask-image:radial-gradient(ellipse at center, black 30%, transparent 80%);
   mask-image:radial-gradient(ellipse at center, black 30%, transparent 80%);
 }
 .aurora-bg{
@@ -96,6 +101,7 @@ img{max-width:100%;display:block}
     radial-gradient(ellipse 80% 50% at 20% 40%, rgba(168,85,247,0.08) 0%, transparent 50%),
     radial-gradient(ellipse 60% 40% at 80% 20%, rgba(0,212,255,0.06) 0%, transparent 50%),
     radial-gradient(ellipse 70% 50% at 50% 80%, rgba(236,72,153,0.05) 0%, transparent 50%);
+  will-change:transform,opacity;
   animation:auroraShift 20s ease-in-out infinite alternate;
 }
 @keyframes auroraShift{
@@ -198,7 +204,8 @@ nav.side{
 }
 nav.side a{
   width:14px;height:14px;border:1.5px solid rgba(168,85,247,0.4);
-  background:transparent;position:relative;transition:all .3s;
+  background:transparent;position:relative;transition:box-shadow .3s,transform .3s,border-color .3s;
+  -webkit-clip-path:polygon(50% 0,100% 50%,50% 100%,0 50%);
   clip-path:polygon(50% 0,100% 50%,50% 100%,0 50%);
 }
 nav.side a.active,nav.side a:hover{
@@ -231,6 +238,7 @@ nav.side a:hover::before{opacity:1;color:var(--neon-blue)}
   /* FIX #3: -webkit prefix for Safari */
   -webkit-backdrop-filter:blur(20px);
   backdrop-filter:blur(20px);
+  -webkit-clip-path:polygon(0 40px, 40px 0, 100% 0, 100% calc(100% - 40px), calc(100% - 40px) 100%, 0 100%);
   clip-path:polygon(0 40px, 40px 0, 100% 0, 100% calc(100% - 40px), calc(100% - 40px) 100%, 0 100%);
   box-shadow:0 0 80px rgba(168,85,247,0.1), inset 0 0 60px rgba(0,212,255,0.03);
 }
@@ -259,6 +267,7 @@ nav.side a:hover::before{opacity:1;color:var(--neon-blue)}
   /* FIX #3: -webkit prefix */
   -webkit-backdrop-filter:blur(8px);
   backdrop-filter:blur(8px);
+  -webkit-clip-path:polygon(10px 0,100% 0,100% calc(100% - 10px),calc(100% - 10px) 100%,0 100%,0 10px);
   clip-path:polygon(10px 0,100% 0,100% calc(100% - 10px),calc(100% - 10px) 100%,0 100%,0 10px);
   box-shadow:0 0 20px rgba(0,212,255,0.1);
 }
@@ -306,7 +315,8 @@ nav.side a:hover::before{opacity:1;color:var(--neon-blue)}
   letter-spacing:.25em;text-transform:uppercase;
   background:transparent;color:var(--text);
   border:1px solid rgba(168,85,247,0.4);cursor:none;
-  transition:all .3s;overflow:hidden;
+  transition:color .3s,box-shadow .3s,border-color .3s;overflow:hidden;
+  -webkit-clip-path:polygon(12px 0,100% 0,100% calc(100% - 12px),calc(100% - 12px) 100%,0 100%,0 12px);
   clip-path:polygon(12px 0,100% 0,100% calc(100% - 12px),calc(100% - 12px) 100%,0 100%,0 12px);
   /* FIX #3 & #10: webkit prefix + touch-action */
   -webkit-backdrop-filter:blur(8px);
@@ -427,6 +437,7 @@ section{
   /* FIX #3: -webkit prefix */
   -webkit-backdrop-filter:blur(20px);
   backdrop-filter:blur(20px);
+  -webkit-clip-path:polygon(20px 0,100% 0,100% calc(100% - 20px),calc(100% - 20px) 100%,0 100%,0 20px);
   clip-path:polygon(20px 0,100% 0,100% calc(100% - 20px),calc(100% - 20px) 100%,0 100%,0 20px);
   box-shadow:0 0 60px rgba(168,85,247,0.08), inset 0 0 40px rgba(0,212,255,0.02);
 }
@@ -436,8 +447,10 @@ section{
   background:linear-gradient(135deg, transparent, var(--neon-blue), var(--neon-purple), var(--neon-pink), transparent);
   background:conic-gradient(from 0deg, transparent, var(--neon-blue), var(--neon-purple), var(--neon-pink), transparent 30%);
   animation:rotate 6s linear infinite;
-  /* FIX: will-change for GPU compositing on rotating element */
+  /* FIX: will-change + backface-visibility for smooth GPU rotation */
   will-change:transform;
+  backface-visibility:hidden;
+  -webkit-clip-path:polygon(20px 0,100% 0,100% calc(100% - 20px),calc(100% - 20px) 100%,0 100%,0 20px);
   clip-path:polygon(20px 0,100% 0,100% calc(100% - 20px),calc(100% - 20px) 100%,0 100%,0 20px);
   filter:blur(2px);
 }
@@ -448,6 +461,7 @@ section{
   background:var(--grad-primary);
   display:flex;align-items:center;justify-content:center;
   font-family:var(--display);font-weight:900;font-size:1.8rem;color:#fff;
+  -webkit-clip-path:polygon(50% 0,100% 25%,100% 75%,50% 100%,0 75%,0 25%);
   clip-path:polygon(50% 0,100% 25%,100% 75%,50% 100%,0 75%,0 25%);
   box-shadow:0 0 20px rgba(168,85,247,0.4);
 }
@@ -467,7 +481,7 @@ section{
 .dossier .links a{
   display:inline-flex;align-items:center;gap:8px;padding:10px 18px;
   font-family:var(--mono);font-size:.72rem;letter-spacing:.2em;text-transform:uppercase;
-  border:1px solid rgba(168,85,247,0.2);transition:all .3s;
+  border:1px solid rgba(168,85,247,0.2);transition:border-color .3s,color .3s,background-color .3s,box-shadow .3s;
   background:rgba(168,85,247,0.03);
   /* FIX #10 */
   touch-action:manipulation;
@@ -481,7 +495,9 @@ section{
 .dossier-right{display:grid;grid-template-columns:1fr 1fr;gap:16px}
 .spec-card{
   padding:24px;background:var(--bg-glass);border:1px solid rgba(168,85,247,0.15);
-  position:relative;overflow:hidden;transition:all .4s;
+  position:relative;overflow:hidden;
+  transition:transform .4s,border-color .4s,box-shadow .4s;
+  will-change:transform;
   /* FIX #3: -webkit prefix */
   -webkit-backdrop-filter:blur(12px);
   backdrop-filter:blur(12px);
@@ -513,7 +529,7 @@ section{
 .chip{
   padding:8px 18px;font-family:var(--mono);font-size:.7rem;letter-spacing:.25em;
   text-transform:uppercase;border:1px solid rgba(168,85,247,0.2);color:var(--text-dim);
-  cursor:none;transition:all .3s;background:rgba(168,85,247,0.03);
+  cursor:none;transition:border-color .3s,color .3s,background-color .3s,box-shadow .3s;background:rgba(168,85,247,0.03);
   /* FIX #3 & #10 */
   -webkit-backdrop-filter:blur(8px);
   backdrop-filter:blur(8px);
@@ -532,10 +548,13 @@ section{
 .card{
   position:relative;background:linear-gradient(135deg, rgba(15,8,40,0.7), rgba(3,0,20,0.8));
   border:1px solid rgba(168,85,247,0.15);overflow:hidden;
-  cursor:none;transition:all .5s cubic-bezier(.2,.9,.2,1);
+  cursor:none;
+  transition:transform .5s cubic-bezier(.2,.9,.2,1),border-color .5s,box-shadow .5s;
+  will-change:transform;
   /* FIX #3: -webkit prefix */
   -webkit-backdrop-filter:blur(20px);
   backdrop-filter:blur(20px);
+  -webkit-clip-path:polygon(0 0,100% 0,100% calc(100% - 24px),calc(100% - 24px) 100%,0 100%);
   clip-path:polygon(0 0,100% 0,100% calc(100% - 24px),calc(100% - 24px) 100%,0 100%);
 }
 .card::before{
@@ -547,6 +566,7 @@ section{
   content:'';position:absolute;inset:-1px;z-index:0;pointer-events:none;
   background:linear-gradient(135deg,var(--accent-color,var(--neon-purple)),transparent 50%);
   opacity:0;transition:opacity .4s;
+  -webkit-clip-path:polygon(0 0,100% 0,100% calc(100% - 24px),calc(100% - 24px) 100%,0 100%);
   clip-path:polygon(0 0,100% 0,100% calc(100% - 24px),calc(100% - 24px) 100%,0 100%);
   mix-blend-mode:overlay;
 }
@@ -571,6 +591,7 @@ section{
   background:rgba(var(--accent-rgb,168,85,247),0.1);
   border:1px solid rgba(var(--accent-rgb,168,85,247),0.3);
   font-size:1.3rem;color:var(--accent-color,var(--neon-purple));
+  -webkit-clip-path:polygon(50% 0,100% 25%,100% 75%,50% 100%,0 75%,0 25%);
   clip-path:polygon(50% 0,100% 25%,100% 75%,50% 100%,0 75%,0 25%);
 }
 .card-title{font-family:var(--display);font-weight:900;font-size:1.6rem;text-transform:uppercase;letter-spacing:.02em;line-height:1.1;margin-bottom:8px}
@@ -594,7 +615,7 @@ section{
   flex:1;padding:12px 16px;font-family:var(--display);font-size:.75rem;font-weight:700;
   letter-spacing:.2em;text-transform:uppercase;text-align:center;
   background:transparent;color:var(--text);border:1px solid rgba(168,85,247,0.2);
-  cursor:none;transition:all .3s;display:flex;align-items:center;justify-content:center;gap:8px;
+  cursor:none;transition:background-color .3s,color .3s,border-color .3s,box-shadow .3s;display:flex;align-items:center;justify-content:center;gap:8px;
   /* FIX #10 */
   touch-action:manipulation;
 }
@@ -622,7 +643,7 @@ section{
   /* FIX #3: -webkit prefix */
   -webkit-backdrop-filter:blur(16px);
   backdrop-filter:blur(16px);
-  z-index:500;opacity:0;visibility:hidden;transition:all .4s;
+  z-index:500;opacity:0;visibility:hidden;transition:opacity .4s,visibility .4s;
   display:flex;align-items:center;justify-content:center;padding:20px;
 }
 .modal-backdrop.open{opacity:1;visibility:visible}
@@ -631,6 +652,7 @@ section{
   background:linear-gradient(135deg,rgba(15,8,40,0.95),rgba(3,0,20,0.98));
   border:1px solid rgba(168,85,247,0.3);position:relative;
   transform:translateY(40px) scale(.96);transition:transform .5s cubic-bezier(.2,.9,.2,1);
+  -webkit-clip-path:polygon(24px 0,100% 0,100% calc(100% - 24px),calc(100% - 24px) 100%,0 100%,0 24px);
   clip-path:polygon(24px 0,100% 0,100% calc(100% - 24px),calc(100% - 24px) 100%,0 100%,0 24px);
   box-shadow:0 0 100px rgba(168,85,247,0.2);
   /* FIX #8: smooth scrolling inside modal on iOS */
@@ -647,7 +669,7 @@ section{
   background:rgba(3,0,20,0.8);
   color:var(--neon-purple);font-size:1.2rem;cursor:none;
   display:flex;align-items:center;justify-content:center;
-  transition:all .3s;clip-path:polygon(50% 0,100% 50%,50% 100%,0 50%);
+  transition:color .3s,transform .3s,box-shadow .3s,border-color .3s;clip-path:polygon(50% 0,100% 50%,50% 100%,0 50%);
   /* FIX #10 */
   touch-action:manipulation;
 }
@@ -690,7 +712,7 @@ section{
   padding:10px 14px;font-size:.88rem;
   background:rgba(168,85,247,0.05);
   border:1px solid rgba(168,85,247,0.15);color:var(--text-dim);
-  display:flex;align-items:center;gap:10px;transition:all .3s;
+  display:flex;align-items:center;gap:10px;transition:border-color .3s,color .3s,transform .3s,box-shadow .3s;
 }
 .feature-list div::before{content:'▸';color:var(--neon-purple)}
 .feature-list div:hover{
@@ -744,7 +766,7 @@ section{
   position:relative;
   background:#000;
   cursor:zoom-in;
-  transition:all .3s;
+  transition:border-color .3s,box-shadow .3s,transform .3s;
 }
 .ss-hero .hero-img:hover{
   border-color:var(--neon-purple);
@@ -754,7 +776,7 @@ section{
 .ss-hero .hero-img img{
   width:100%;height:100%;
   object-fit:contain;
-  transition:all .5s;
+  transition:opacity .5s;
   pointer-events:none;
 }
 .ss-hero .hero-label{
@@ -773,7 +795,7 @@ section{
 .ss-hero .thumbs .thumb{
   width:60px;aspect-ratio:9/19.5;
   border-radius:10px;overflow:hidden;
-  border:2px solid transparent;transition:all .3s;cursor:pointer;
+  border:2px solid transparent;transition:border-color .3s,opacity .3s,box-shadow .3s,transform .3s;cursor:pointer;
   opacity:.5;position:relative;
   background:#000;
   touch-action:manipulation;
@@ -848,10 +870,13 @@ section{
   padding:30px;
   background:linear-gradient(135deg, rgba(15,8,40,0.7), rgba(3,0,20,0.6));
   border:1px solid rgba(168,85,247,0.15);
-  position:relative;transition:all .4s;
+  position:relative;
+  transition:transform .4s,border-color .4s,box-shadow .4s;
+  will-change:transform;
   /* FIX #3: -webkit prefix */
   -webkit-backdrop-filter:blur(20px);
   backdrop-filter:blur(20px);
+  -webkit-clip-path:polygon(0 0,100% 0,100% calc(100% - 16px),calc(100% - 16px) 100%,0 100%);
   clip-path:polygon(0 0,100% 0,100% calc(100% - 16px),calc(100% - 16px) 100%,0 100%);
 }
 .skill-cat:hover{
@@ -884,7 +909,7 @@ section{
   background:rgba(168,85,247,0.04);
   border:1px solid rgba(168,85,247,0.1);
   border-radius:4px;
-  transition:all .3s;
+  transition:border-color .3s,background-color .3s,transform .3s;
 }
 .skill-item:hover{
   border-color:rgba(168,85,247,0.3);
@@ -911,6 +936,7 @@ section{
   /* FIX #3: -webkit prefix */
   -webkit-backdrop-filter:blur(20px);
   backdrop-filter:blur(20px);
+  -webkit-clip-path:polygon(0 0,100% 0,100% calc(100% - 30px),calc(100% - 30px) 100%,0 100%);
   clip-path:polygon(0 0,100% 0,100% calc(100% - 30px),calc(100% - 30px) 100%,0 100%);
   box-shadow:0 0 60px rgba(168,85,247,0.08);
 }
@@ -932,7 +958,7 @@ section{
   padding:20px;
   background:rgba(3,0,20,0.6);
   border:1px solid rgba(168,85,247,0.15);
-  transition:all .3s;display:block;
+  transition:transform .3s,border-color .3s,box-shadow .3s;display:block;
   touch-action:manipulation;
 }
 .contact-card:hover{
@@ -969,7 +995,8 @@ footer{
 .foot-links{display:flex;gap:16px}
 .foot-links a{
   width:42px;height:42px;display:flex;align-items:center;justify-content:center;
-  border:1px solid rgba(168,85,247,0.2);color:var(--text-dim);transition:all .3s;
+  border:1px solid rgba(168,85,247,0.2);color:var(--text-dim);transition:color .3s,border-color .3s,box-shadow .3s;
+  -webkit-clip-path:polygon(50% 0,100% 25%,100% 75%,50% 100%,0 75%,0 25%);
   clip-path:polygon(50% 0,100% 25%,100% 75%,50% 100%,0 75%,0 25%);
   touch-action:manipulation;
 }
@@ -1014,7 +1041,7 @@ footer{
   display:flex;align-items:center;justify-content:center;
   cursor:none;
   border-radius:50%;
-  transition:all .3s;
+  transition:color .3s,transform .3s,box-shadow .3s,border-color .3s;
   z-index:10;
   touch-action:manipulation;
 }
@@ -1036,7 +1063,7 @@ footer{
   display:flex;align-items:center;justify-content:center;
   cursor:none;
   border-radius:50%;
-  transition:all .3s;
+  transition:color .3s,transform .3s,box-shadow .3s,border-color .3s;
   z-index:10;
   touch-action:manipulation;
 }
@@ -1138,6 +1165,58 @@ footer{
   .aurora-bg,.dossier-card::before{animation:none !important}
   .reveal{opacity:1;transform:none}
 }
+
+/* ═══════════════════════════════════════════════════════════
+   COMPATIBILITY + ADAPTIVE PERFORMANCE LAYER
+═══════════════════════════════════════════════════════════ */
+
+/* CSS Containment — guarded so Safari <15.4 partial support cannot cause rendering bugs */
+@supports (contain:style){
+  .card{contain:layout style paint}
+  .skill-cat{contain:style paint}
+}
+
+/* Remove will-change on touch devices — prevents GPU memory exhaustion on ≤4 GB RAM phones */
+@media (hover:none) and (pointer:coarse){
+  .card,.spec-card,.skill-cat,.contact-card{will-change:auto}
+  .aurora-bg,.dossier-card::before{will-change:auto}
+  #starfield{will-change:auto;transform:none}
+}
+
+/* Reduced backdrop-filter blur on small screens — same glass look, half the GPU fill-rate */
+@media (max-width:768px){
+  .hud-top,.hero-tag,.card,.spec-card,.skill-cat,
+  .contact-main,.chip,.dossier-card{
+    -webkit-backdrop-filter:blur(8px);
+    backdrop-filter:blur(8px)
+  }
+}
+
+/* Solid fallback for browsers that support neither backdrop-filter nor -webkit-backdrop-filter */
+@supports not ((backdrop-filter:blur(1px)) or (-webkit-backdrop-filter:blur(1px))){
+  .hud-top{background:rgba(3,0,20,0.97)}
+  .card{background:rgba(10,5,35,0.97)}
+  .spec-card,.skill-cat{background:rgba(10,5,35,0.97)}
+  .chip{background:rgba(168,85,247,0.18)}
+  .modal-backdrop .modal{background:rgba(3,0,20,0.99)}
+  .ss-lightbox{background:rgba(3,0,20,0.97)}
+}
+
+/* prefers-reduced-motion — pause all looping animations, keep reveal + hover transitions */
+@media (prefers-reduced-motion:reduce){
+  .aurora-bg{animation-play-state:paused}
+  .dossier-card::before{animation-play-state:paused}
+  .loader-rune{animation-play-state:paused}
+  .cursor-ring{display:none!important}
+  .card:hover,.spec-card:hover,.skill-cat:hover,.contact-card:hover{transform:none}
+  .reveal{transition:opacity .1s;transform:none!important}
+  .reveal.in{transform:none!important}
+}
+
+/* Low-end device class (added by JS) — pause expensive looping background effects */
+[data-low-end] .aurora-bg{animation-play-state:paused;opacity:.35}
+[data-low-end] .dossier-card::before{animation-play-state:paused}
+[data-low-end] .scanlines{opacity:.06}
 </style>
 </head>
 <body>
@@ -1350,6 +1429,17 @@ footer{
 </div>
 
 <script>
+/* ═══════════════════════════════════════════════════════════
+   DEVICE CAPABILITY DETECTION — runs before everything else
+═══════════════════════════════════════════════════════════ */
+const prefersReducedMotion = matchMedia('(prefers-reduced-motion: reduce)').matches;
+const isLowEndDevice = prefersReducedMotion ||
+  navigator.hardwareConcurrency <= 2 ||
+  (typeof navigator.deviceMemory !== 'undefined' && navigator.deviceMemory <= 2) ||
+  (navigator.connection != null && (navigator.connection.saveData ||
+    ['slow-2g','2g'].includes(navigator.connection.effectiveType)));
+if(isLowEndDevice) document.documentElement.setAttribute('data-low-end','1');
+
 /* ═══════════════════════════════════════════════════════════
    PROJECT DATA
 ═══════════════════════════════════════════════════════════ */
@@ -1618,12 +1708,21 @@ function renderCards(filter='all'){
     `;
     rosterGrid.appendChild(card);
   });
-  document.querySelectorAll('[data-open]').forEach(btn => {
-    btn.addEventListener('click', () => openModal(btn.getAttribute('data-open')));
-  });
   observeReveals();
 }
+/* Single persistent observers — created once, reused across every renderCards() call */
+const revealObserver = new IntersectionObserver(entries => {
+  entries.forEach(e => { if(e.isIntersecting){ e.target.classList.add('in'); revealObserver.unobserve(e.target); } });
+}, {threshold:0.12, rootMargin:'0px 0px -60px 0px'});
+const skillObserver = new IntersectionObserver(entries => {
+  entries.forEach(e => { if(e.isIntersecting){ e.target.classList.add('in'); skillObserver.unobserve(e.target); } });
+}, {threshold:0.2});
 renderCards();
+/* Event delegation — single listener on container handles all card buttons across re-renders */
+rosterGrid.addEventListener('click', e => {
+  const btn = e.target.closest('[data-open]');
+  if(btn) openModal(btn.getAttribute('data-open'));
+});
 
 document.querySelectorAll('.chip').forEach(chip => {
   chip.addEventListener('click', () => {
@@ -1931,19 +2030,8 @@ ssLightbox.addEventListener('touchend', (e) => {
    SCROLL REVEAL OBSERVER
 ═══════════════════════════════════════════════════════════ */
 function observeReveals(){
-  const io = new IntersectionObserver((entries) => {
-    entries.forEach(e => {
-      if(e.isIntersecting){ e.target.classList.add('in'); io.unobserve(e.target); }
-    });
-  }, {threshold:0.12, rootMargin:'0px 0px -60px 0px'});
-  document.querySelectorAll('.reveal:not(.in)').forEach(el => io.observe(el));
-
-  const skillIO = new IntersectionObserver((entries) => {
-    entries.forEach(e => {
-      if(e.isIntersecting){ e.target.classList.add('in'); skillIO.unobserve(e.target); }
-    });
-  }, {threshold:0.2});
-  document.querySelectorAll('.skill-cat:not(.in)').forEach(el => skillIO.observe(el));
+  document.querySelectorAll('.reveal:not(.in)').forEach(el => revealObserver.observe(el));
+  document.querySelectorAll('.skill-cat:not(.in)').forEach(el => skillObserver.observe(el));
 }
 observeReveals();
 
@@ -2018,12 +2106,15 @@ window.addEventListener('mousemove', e => {
   mx=e.clientX; my=e.clientY;
   dot.style.left=mx+'px'; dot.style.top=my+'px';
 }, {passive:true});
+let followRAF;
 function follow(){
   rx += (mx-rx)*0.18; ry += (my-ry)*0.18;
   ring.style.left=rx+'px'; ring.style.top=ry+'px';
-  requestAnimationFrame(follow);
+  followRAF = requestAnimationFrame(follow);
 }
-follow();
+if(!prefersReducedMotion){
+  followRAF = requestAnimationFrame(follow);
+}
 document.addEventListener('mouseover', e => {
   if(e.target.closest('a, button, .card, .chip, .contact-card, img, .ss-hero .thumb, .ss-hero .hero-img, .lightbox-nav, .lightbox-close')) ring.classList.add('hover');
 });
@@ -2049,7 +2140,7 @@ function resize(){
 function initStars(){
   stars = [];
   /* FIX #13: fewer stars on mobile */
-  const density = isMobile ? 18000 : 8000;
+  const density = isLowEndDevice ? 35000 : (isMobile ? 18000 : 8000);
   const count = Math.floor((canvas.width * canvas.height) / density);
   for(let i=0;i<count;i++){
     stars.push({
@@ -2065,7 +2156,18 @@ function initStars(){
   }
 }
 resize();
-window.addEventListener('resize', resize, {passive:true});
+/* Debounced resize: canvas dimensions update immediately, star recreation waits 150 ms */
+let _resizeTimer;
+window.addEventListener('resize', () => {
+  canvas.width = innerWidth;
+  canvas.height = innerHeight;
+  isMobile = canvas.width < 768;
+  clearTimeout(_resizeTimer);
+  _resizeTimer = setTimeout(() => {
+    initStars();
+    if(prefersReducedMotion) draw(); /* Redraw static frame after resize */
+  }, 150);
+}, {passive:true});
 
 function draw(){
   ctx.clearRect(0,0,canvas.width,canvas.height);
@@ -2077,16 +2179,33 @@ function draw(){
     ctx.beginPath();
     ctx.arc(s.x, s.y, s.r, 0, Math.PI*2);
     ctx.fillStyle = `hsla(${s.hue},100%,70%,${s.a*flicker})`;
-    if(!isMobile){
+    if(!isMobile && !isLowEndDevice){
       ctx.shadowBlur = s.r*6;
       ctx.shadowColor = `hsla(${s.hue},100%,70%,0.8)`;
     }
     ctx.fill();
   });
-  if(!isMobile) ctx.shadowBlur = 0;
-  requestAnimationFrame(draw);
+  if(!isMobile && !isLowEndDevice) ctx.shadowBlur = 0;
+  if(!prefersReducedMotion) drawRAF = requestAnimationFrame(draw);
 }
-draw();
+let drawRAF;
+/* For reduced-motion users: draw stars once (static field), skip the loop */
+if(prefersReducedMotion){
+  draw();
+} else {
+  drawRAF = requestAnimationFrame(draw);
+}
+/* Page Visibility API — cancel all RAF loops when tab is hidden, restart on focus */
+document.addEventListener('visibilitychange', () => {
+  if(prefersReducedMotion) return; /* static canvas — nothing to pause/resume */
+  if(document.hidden){
+    cancelAnimationFrame(drawRAF);
+    cancelAnimationFrame(followRAF);
+  } else {
+    drawRAF = requestAnimationFrame(draw);
+    followRAF = requestAnimationFrame(follow);
+  }
+});
 
 /* ═══════════════════════════════════════════════════════════
    LOADER
