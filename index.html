@@ -2820,18 +2820,9 @@ footer{
   }
 
   let savedTheme = 'dynamic';
-  try {
-    savedTheme = localStorage.getItem('portfolio-theme');
-    if (!savedTheme) {
-      if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
-        savedTheme = 'dark';
-      } else if (window.matchMedia('(prefers-color-scheme: light)').matches) {
-        savedTheme = 'light';
-      } else {
-        savedTheme = 'dynamic';
-      }
-    }
-  } catch (e) {}
+try {
+  savedTheme = localStorage.getItem('portfolio-theme') || 'dynamic';
+} catch (e) {}
 
   document.querySelectorAll('.theme-btn').forEach(btn => {
     btn.addEventListener('click', () => {
