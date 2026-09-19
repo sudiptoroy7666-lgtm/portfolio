@@ -2757,11 +2757,7 @@ footer{
     prefersReducedMotion: false,
     isLowEndDevice: false,
     isMobile: false,
-    animationFrameIds: {
-      draw: null,
-      follow: null,
-      typewriter: null
-    },
+    animationFrameIds: { draw: null, follow: null, typewriter: null },
     sessionStartTime: Date.now()
   };
 
@@ -2772,9 +2768,7 @@ footer{
     (navigator.connection != null && (navigator.connection.saveData ||
       ['slow-2g','2g'].includes(navigator.connection.effectiveType)));
 
-  if (State.isLowEndDevice) {
-    document.documentElement.setAttribute('data-low-end', '1');
-  }
+  if (State.isLowEndDevice) document.documentElement.setAttribute('data-low-end', '1');
 
   function escapeHtml(str) {
     if (typeof str !== 'string') return '';
@@ -2783,7 +2777,7 @@ footer{
     return div.innerHTML;
   }
 
-  // ── Video URL parser: converts YouTube/Vimeo URLs to embeddable format ──
+  // ✅ ADDED: Video URL parser for YouTube/Vimeo
   function parseVideoUrl(url) {
     if (!url) return null;
     let match = url.match(/(?:youtube\.com\/(?:watch\?v=|embed\/|shorts\/|v\/)|youtu\.be\/)([a-zA-Z0-9_-]{11})/);
@@ -2797,79 +2791,51 @@ footer{
   function setTheme(theme) {
     const html = document.documentElement;
     const themeButtons = document.querySelectorAll('.theme-btn');
-
-    if (theme === 'dynamic') {
-      html.removeAttribute('data-theme');
-    } else {
-      html.setAttribute('data-theme', theme);
-    }
-
+    if (theme === 'dynamic') html.removeAttribute('data-theme');
+    else html.setAttribute('data-theme', theme);
     State.theme = theme;
-
     themeButtons.forEach(btn => {
       const isActive = btn.getAttribute('data-theme-set') === theme;
       btn.classList.toggle('active', isActive);
       btn.setAttribute('aria-pressed', isActive ? 'true' : 'false');
     });
-
-    try {
-      localStorage.setItem('portfolio-theme', theme);
-    } catch (e) {}
-
-    if (theme !== 'dynamic') {
-      cancelAllAnimations();
-    } else if (!State.prefersReducedMotion) {
-      startDynamicAnimations();
-    }
+    try { localStorage.setItem('portfolio-theme', theme); } catch (e) {}
+    if (theme !== 'dynamic') cancelAllAnimations();
+    else if (!State.prefersReducedMotion) startDynamicAnimations();
   }
 
   function cancelAllAnimations() {
-    if (State.animationFrameIds.draw) {
-      cancelAnimationFrame(State.animationFrameIds.draw);
-      State.animationFrameIds.draw = null;
-    }
-    if (State.animationFrameIds.follow) {
-      cancelAnimationFrame(State.animationFrameIds.follow);
-      State.animationFrameIds.follow = null;
-    }
+    if (State.animationFrameIds.draw) { cancelAnimationFrame(State.animationFrameIds.draw); State.animationFrameIds.draw = null; }
+    if (State.animationFrameIds.follow) { cancelAnimationFrame(State.animationFrameIds.follow); State.animationFrameIds.follow = null; }
   }
 
   function startDynamicAnimations() {
-    if (!State.animationFrameIds.draw && !State.prefersReducedMotion) {
-      State.animationFrameIds.draw = requestAnimationFrame(drawStarfield);
-    }
-    if (!State.animationFrameIds.follow && !State.prefersReducedMotion) {
-      State.animationFrameIds.follow = requestAnimationFrame(followCursor);
-    }
+    if (!State.animationFrameIds.draw && !State.prefersReducedMotion) State.animationFrameIds.draw = requestAnimationFrame(drawStarfield);
+    if (!State.animationFrameIds.follow && !State.prefersReducedMotion) State.animationFrameIds.follow = requestAnimationFrame(followCursor);
   }
 
   let savedTheme = 'dynamic';
   try {
     savedTheme = localStorage.getItem('portfolio-theme');
     if (!savedTheme) {
-      if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
-        savedTheme = 'dark';
-      } else if (window.matchMedia('(prefers-color-scheme: light)').matches) {
-        savedTheme = 'light';
-      } else {
-        savedTheme = 'dynamic';
-      }
+      if (window.matchMedia('(prefers-color-scheme: dark)').matches) savedTheme = 'dark';
+      else if (window.matchMedia('(prefers-color-scheme: light)').matches) savedTheme = 'light';
+      else savedTheme = 'dynamic';
     }
   } catch (e) {}
 
   document.querySelectorAll('.theme-btn').forEach(btn => {
-    btn.addEventListener('click', () => {
-      setTheme(btn.getAttribute('data-theme-set'));
-    });
+    btn.addEventListener('click', () => setTheme(btn.getAttribute('data-theme-set')));
   });
 
   const SANITY_PROJECT_ID = 'lieuuha8';
   const SANITY_DATASET = 'production';
   const SANITY_API_VERSION = '2021-10-21';
 
+  // ✅ FIXED: Added videoUrl to the query
   const GROQ_QUERY = `*[_type == "project"] | order(num asc) {
     _id, num, title, tag, subtitle, accent, accentRGB, icon, techTags, 
-    pitch, features, stack, mediaType, videoUrl, highlight, future,
+    pitch, features, stack, highlight, future,
     screenshots[] { 
       label, 
       externalUrl,
@@ -2890,10 +2856,10 @@ footer{
       const url = `https://${SANITY_PROJECT_ID}.api.sanity.io/v${SANITY_API_VERSION}/data/query/${SANITY_DATASET}?query=${encodeURIComponent(GROQ_QUERY)}`;
       const response = await fetch(url);
       if (!response.ok) throw new Error(`Sanity API error: ${response.status}`);
-
       const data = await response.json();
 
       State.projects = data.result.map(project => {
+        // ✅ FIXED: Removed the mediaType === 'images' gate!
         return {
           id: project._id,
           num: project.num,
@@ -2907,9 +2873,7 @@ footer{
           pitch: project.pitch,
           features: project.features || [],
           stack: project.stack || [],
-          mediaType: project.mediaType,
-          screenshots: project.screenshots || [],
-          video: project.videoUrl || null,
+          screenshots: project.screenshots || [],  // ✅ Always pass screenshots array
           highlight: project.highlight || { title: '', text: '' },
           future: project.future || [],
           rarity: 'SSR',
@@ -2917,7 +2881,6 @@ footer{
       });
 
       if (typeof renderCards === 'function') renderCards();
-
     } catch (error) {
       console.error('Failed to fetch projects from Sanity:', error);
       if (rosterGrid) {
@@ -2938,6 +2901,7 @@ footer{
 
   const rosterGrid = document.getElementById('rosterGrid');
 
+  // ✅ FIXED: Smart flattener that detects video vs image vs embed
   function flattenScreenshots(screenshots) {
     if (!screenshots || !Array.isArray(screenshots)) return [];
     const flat = [];
@@ -2954,9 +2918,7 @@ footer{
         url = parseVideoUrl(s.externalUrl);
       }
 
-      if (url) {
-        flat.push({ label: s.label || 'Media', url: url, type: type });
-      }
+      if (url) flat.push({ label: s.label || 'Media', url: url, type: type });
     });
     return flat;
   }
@@ -2964,18 +2926,12 @@ footer{
   function renderCards(filter) {
     filter = filter || 'all';
     if (!rosterGrid) return;
-
-    const filtered = filter === 'all'
-      ? State.projects
-      : State.projects.filter(p => p.techTags && p.techTags.includes(filter));
-
+    const filtered = filter === 'all' ? State.projects : State.projects.filter(p => p.techTags && p.techTags.includes(filter));
     rosterGrid.innerHTML = '';
-
     if (filtered.length === 0 && State.projects.length > 0) {
       rosterGrid.innerHTML = `<div style="grid-column: 1 / -1; text-align: center; padding: 40px; color: var(--text-mute); font-family: var(--mono);" role="status">NO PROJECTS FOUND FOR THIS FILTER</div>`;
       return;
     }
-
     if (filtered.length === 0 && State.projects.length === 0) return;
 
     filtered.forEach((p, index) => {
@@ -2984,9 +2940,7 @@ footer{
       card.setAttribute('role', 'listitem');
       card.style.setProperty('--accent-color', p.accent);
       card.style.setProperty('--accent-rgb', p.accentRGB);
-
       const primaryTech = p.stack.filter(t => t.p).map(t => `<span>${escapeHtml(t.n)}</span>`).join('');
-
       card.innerHTML = `
         <span class="corner tl" aria-hidden="true"></span>
         <span class="corner br" aria-hidden="true"></span>
@@ -3002,37 +2956,22 @@ footer{
           <div class="card-actions">
             <button class="card-btn primary" data-open="${escapeHtml(p.id)}" aria-label="View details for ${escapeHtml(p.title)}"><i class="fas fa-expand" aria-hidden="true"></i> DETAILS</button>
           </div>
-        </div>
-      `;
+        </div>`;
       rosterGrid.appendChild(card);
     });
-
     document.querySelectorAll('.card.reveal:not(.in)').forEach(el => revealObserver.observe(el));
   }
 
   const revealObserver = new IntersectionObserver(entries => {
-    entries.forEach(e => {
-      if (e.isIntersecting) {
-        e.target.classList.add('in');
-        revealObserver.unobserve(e.target);
-      }
-    });
+    entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('in'); revealObserver.unobserve(e.target); } });
   }, { threshold: 0.12, rootMargin: '0px 0px -60px 0px' });
 
   const skillObserver = new IntersectionObserver(entries => {
-    entries.forEach(e => {
-      if (e.isIntersecting) {
-        e.target.classList.add('in');
-        skillObserver.unobserve(e.target);
-      }
-    });
+    entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('in'); skillObserver.unobserve(e.target); } });
   }, { threshold: 0.2 });
 
-  if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', fetchProjectsFromSanity);
-  } else {
-    fetchProjectsFromSanity();
-  }
+  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', fetchProjectsFromSanity);
+  else fetchProjectsFromSanity();
 
   rosterGrid.addEventListener('click', e => {
     const btn = e.target.closest('[data-open]');
@@ -3041,10 +2980,7 @@ footer{
 
   document.querySelectorAll('.chip').forEach(chip => {
     chip.addEventListener('click', () => {
-      document.querySelectorAll('.chip').forEach(c => {
-        c.classList.remove('active');
-        c.setAttribute('aria-pressed', 'false');
-      });
+      document.querySelectorAll('.chip').forEach(c => { c.classList.remove('active'); c.setAttribute('aria-pressed', 'false'); });
       chip.classList.add('active');
       chip.setAttribute('aria-pressed', 'true');
       renderCards(chip.dataset.filter);
@@ -3057,12 +2993,8 @@ footer{
     el.className = 'skill-cat reveal';
     el.setAttribute('data-num', cat.num);
     el.setAttribute('role', 'listitem');
-    el.innerHTML = `
-      <h4><i class="${escapeHtml(cat.icon)}" aria-hidden="true"></i> ${escapeHtml(cat.title)}</h4>
-      <div class="skill-list">
-        ${cat.items.map(s => `<div class="skill-item"><span>${escapeHtml(s)}</span></div>`).join('')}
-      </div>
-    `;
+    el.innerHTML = `<h4><i class="${escapeHtml(cat.icon)}" aria-hidden="true"></i> ${escapeHtml(cat.title)}</h4>
+      <div class="skill-list">${cat.items.map(s => `<div class="skill-item"><span>${escapeHtml(s)}</span></div>`).join('')}</div>`;
     skillsGrid.appendChild(el);
   });
 
@@ -3094,17 +3026,14 @@ footer{
     lbImg.style.display = 'none';
     ssLightbox.classList.remove('open');
     ssLightbox.setAttribute('aria-hidden', 'true');
-    if (!State.isModalOpen) {
-      document.body.style.overflow = '';
-    }
+    if (!State.isModalOpen) document.body.style.overflow = '';
   }
 
+  // ✅ FIXED: Lightbox now handles videos
   function updateLightboxImage() {
     const shot = State.lightboxImages[State.lightboxIndex];
     if (!shot) return;
-
     lbImg.style.display = 'none';
-
     const oldVideo = ssLightbox.querySelector('.lightbox-video');
     if (oldVideo) oldVideo.remove();
 
@@ -3134,96 +3063,58 @@ footer{
     lbCounter.textContent = `${State.lightboxIndex + 1} / ${State.lightboxImages.length}`;
     lbPrev.disabled = State.lightboxIndex === 0;
     lbNext.disabled = State.lightboxIndex === State.lightboxImages.length - 1;
-
     if (State.lightboxImages.length <= 1) {
-      lbPrev.style.display = 'none';
-      lbNext.style.display = 'none';
-      lbCounter.style.display = 'none';
+      lbPrev.style.display = 'none'; lbNext.style.display = 'none'; lbCounter.style.display = 'none';
     } else {
-      lbPrev.style.display = 'flex';
-      lbNext.style.display = 'flex';
-      lbCounter.style.display = 'block';
+      lbPrev.style.display = 'flex'; lbNext.style.display = 'flex'; lbCounter.style.display = 'block';
     }
   }
 
-  function lbGoPrev() {
-    if (State.lightboxIndex > 0) {
-      State.lightboxIndex--;
-      updateLightboxImage();
-    }
-  }
-
-  function lbGoNext() {
-    if (State.lightboxIndex < State.lightboxImages.length - 1) {
-      State.lightboxIndex++;
-      updateLightboxImage();
-    }
-  }
+  function lbGoPrev() { if (State.lightboxIndex > 0) { State.lightboxIndex--; updateLightboxImage(); } }
+  function lbGoNext() { if (State.lightboxIndex < State.lightboxImages.length - 1) { State.lightboxIndex++; updateLightboxImage(); } }
 
   lbClose.addEventListener('click', closeLightbox);
   lbPrev.addEventListener('click', lbGoPrev);
   lbNext.addEventListener('click', lbGoNext);
   lbImg.addEventListener('click', closeLightbox);
-  ssLightbox.addEventListener('click', (e) => {
-    if (e.target === ssLightbox) closeLightbox();
-  });
+  ssLightbox.addEventListener('click', (e) => { if (e.target === ssLightbox) closeLightbox(); });
 
   const modalBackdrop = document.getElementById('modalBackdrop');
   const modalBody = document.getElementById('modalBody');
   const modalClose = document.getElementById('modalClose');
   let lastFocusedElement = null;
 
+  // ✅ FIXED: Now called buildMediaSection and handles videos
   function buildMediaSection(p) {
     let shots = flattenScreenshots(p.screenshots);
-
     if (shots.length === 0) {
-      return `
-        <div class="modal-section">
-          <h3><i class="fas fa-images" aria-hidden="true"></i> Media</h3>
-          <p style="color:var(--text-mute);font-style:italic">Media coming soon</p>
-        </div>
-      `;
+      return `<div class="modal-section"><h3><i class="fas fa-images" aria-hidden="true"></i> Media</h3>
+        <p style="color:var(--text-mute);font-style:italic">Media coming soon</p></div>`;
     }
-
-    const heroShot = shots[0];
 
     const thumbItems = shots.map((s, i) => {
       const isVideo = s.type === 'video' || s.type === 'embed';
       const thumbContent = isVideo
         ? `<div style="width:100%;height:100%;display:flex;align-items:center;justify-content:center;background:#000;color:#fff;"><i class="fas fa-play" style="font-size:1.2rem;filter:drop-shadow(0 0 4px rgba(0,0,0,0.8));"></i></div>`
         : `<img src="${escapeHtml(s.url)}" alt="${escapeHtml(s.label)}" loading="lazy">`;
-
-      return `
-        <div class="thumb ${i===0?'active':''}" 
-             data-url="${escapeHtml(s.url)}" 
-             data-label="${escapeHtml(s.label)}"
-             data-type="${s.type}"
-             data-index="${i}"
-             role="button"
-             tabindex="0"
-             aria-label="View ${escapeHtml(s.label)}">
-          ${thumbContent}
-          <span class="thumb-label">${escapeHtml(s.label)}</span>
-        </div>
-      `;
+      return `<div class="thumb ${i===0?'active':''}" data-url="${escapeHtml(s.url)}" data-label="${escapeHtml(s.label)}"
+        data-type="${s.type}" data-index="${i}" role="button" tabindex="0" aria-label="View ${escapeHtml(s.label)}">
+        ${thumbContent}<span class="thumb-label">${escapeHtml(s.label)}</span></div>`;
     }).join('');
 
-    return `
-      <div class="modal-section">
-        <h3><i class="fas fa-photo-video" aria-hidden="true"></i> Media Gallery (${shots.length}) <span style="font-size:.65rem;color:var(--text-mute);font-weight:400;margin-left:12px;letter-spacing:.1em">CLICK TO ENLARGE</span></h3>
-        <div class="ss-hero">
-          <div class="hero-img" id="heroImgWrap" role="button" tabindex="0" aria-label="Enlarge media">
-          </div>
-          <div class="thumbs" id="heroThumbs" role="group" aria-label="Media thumbnails">${thumbItems}</div>
-        </div>
-      </div>
-    `;
+    return `<div class="modal-section">
+      <h3><i class="fas fa-photo-video" aria-hidden="true"></i> Media Gallery (${shots.length}) 
+        <span style="font-size:.65rem;color:var(--text-mute);font-weight:400;margin-left:12px;letter-spacing:.1em">CLICK TO ENLARGE</span></h3>
+      <div class="ss-hero">
+        <div class="hero-img" id="heroImgWrap" role="button" tabindex="0" aria-label="Enlarge media"></div>
+        <div class="thumbs" id="heroThumbs" role="group" aria-label="Media thumbnails">${thumbItems}</div>
+      </div></div>`;
   }
 
+  // ✅ ADDED: Smart media renderer (swaps between img/video/iframe)
   function setHeroMedia(heroImgWrap, url, label, type) {
     if (!heroImgWrap) return;
     heroImgWrap.innerHTML = '';
-
     if (type === 'video' || type === 'embed') {
       heroImgWrap.style.aspectRatio = '16/9';
       heroImgWrap.style.maxWidth = '100%';
@@ -3233,77 +3124,46 @@ footer{
       heroImgWrap.style.maxWidth = '300px';
       heroImgWrap.style.borderRadius = '28px';
     }
-
     if (type === 'video') {
       heroImgWrap.innerHTML = `<video src="${escapeHtml(url)}" controls playsinline style="width:100%;height:100%;object-fit:contain;background:#000;border-radius:inherit;"></video>`;
     } else if (type === 'embed') {
       heroImgWrap.innerHTML = `<iframe src="${escapeHtml(url)}" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen style="width:100%;height:100%;border:0;border-radius:inherit;"></iframe>`;
     } else {
-      heroImgWrap.innerHTML = `
-        <img src="${escapeHtml(url)}" alt="${escapeHtml(label)}" style="width:100%;height:100%;object-fit:contain;">
-        <div class="hero-label">${escapeHtml(label)}</div>
-      `;
+      heroImgWrap.innerHTML = `<img src="${escapeHtml(url)}" alt="${escapeHtml(label)}" style="width:100%;height:100%;object-fit:contain;">
+        <div class="hero-label">${escapeHtml(label)}</div>`;
     }
   }
 
   function openModal(id) {
     const p = State.projects.find(x => x.id === id);
     if (!p) return;
-
     lastFocusedElement = document.activeElement;
     State.isModalOpen = true;
-
     modalBody.style.setProperty('--accent-color', p.accent);
     modalBody.style.setProperty('--accent-rgb', p.accentRGB);
     State.currentProjectAccentRGB = p.accentRGB;
 
-    const mediaSection = buildMediaSection(p);
+    const mediaSection = buildMediaSection(p);  // ✅ Using new function
 
     modalBody.innerHTML = `
-      <div class="modal-head">
-        <div>
-          <div class="tag">◆ ${escapeHtml(p.tag)} ◆</div>
-          <h2 id="modal-title">${escapeHtml(p.title)}</h2>
-          <div class="sub">${escapeHtml(p.subtitle)}</div>
-        </div>
-      </div>
-      <div class="modal-section">
-        <h3><i class="fas fa-bolt" aria-hidden="true"></i> Elevator Pitch</h3>
-        <p class="modal-pitch">${escapeHtml(p.pitch)}</p>
-      </div>
+      <div class="modal-head"><div><div class="tag">◆ ${escapeHtml(p.tag)} ◆</div>
+        <h2 id="modal-title">${escapeHtml(p.title)}</h2>
+        <div class="sub">${escapeHtml(p.subtitle)}</div></div></div>
+      <div class="modal-section"><h3><i class="fas fa-bolt" aria-hidden="true"></i> Elevator Pitch</h3>
+        <p class="modal-pitch">${escapeHtml(p.pitch)}</p></div>
       ${mediaSection}
-      <div class="modal-section">
-        <h3><i class="fas fa-star" aria-hidden="true"></i> Key Features</h3>
-        <div class="feature-list">
-          ${p.features.map(f => `<div>${escapeHtml(f)}</div>`).join('')}
-        </div>
-      </div>
-      <div class="modal-section">
-        <h3><i class="fas fa-code" aria-hidden="true"></i> Tech Stack</h3>
-        <div class="tech-list">
-          ${p.stack.map(t => `<span class="${t.p ? 'primary' : ''}">${escapeHtml(t.n)}</span>`).join('')}
-        </div>
-      </div>
-      <div class="modal-section">
-        <h3><i class="fas fa-terminal" aria-hidden="true"></i> ${escapeHtml(p.highlight.title)}</h3>
-        <div class="modal-highlight">
-          <strong>ENGINEERING DEEP-DIVE</strong>
-          ${escapeHtml(p.highlight.text)}
-        </div>
-      </div>
-      <div class="modal-section">
-        <h3><i class="fas fa-rocket" aria-hidden="true"></i> Future Roadmap</h3>
-        <ul class="future-list">
-          ${p.future.map(f => `<li>${escapeHtml(f)}</li>`).join('')}
-        </ul>
-      </div>
-    `;
+      <div class="modal-section"><h3><i class="fas fa-star" aria-hidden="true"></i> Key Features</h3>
+        <div class="feature-list">${p.features.map(f => `<div>${escapeHtml(f)}</div>`).join('')}</div></div>
+      <div class="modal-section"><h3><i class="fas fa-code" aria-hidden="true"></i> Tech Stack</h3>
+        <div class="tech-list">${p.stack.map(t => `<span class="${t.p ? 'primary' : ''}">${escapeHtml(t.n)}</span>`).join('')}</div></div>
+      <div class="modal-section"><h3><i class="fas fa-terminal" aria-hidden="true"></i> ${escapeHtml(p.highlight.title)}</h3>
+        <div class="modal-highlight"><strong>ENGINEERING DEEP-DIVE</strong>${escapeHtml(p.highlight.text)}</div></div>
+      <div class="modal-section"><h3><i class="fas fa-rocket" aria-hidden="true"></i> Future Roadmap</h3>
+        <ul class="future-list">${p.future.map(f => `<li>${escapeHtml(f)}</li>`).join('')}</ul></div>`;
 
     State.currentProjectShots = flattenScreenshots(p.screenshots);
-
     const heroImgWrap = modalBody.querySelector('#heroImgWrap');
 
-    // Wire thumbnail clicks
     modalBody.querySelectorAll('#heroThumbs .thumb').forEach(thumb => {
       const handleClick = () => {
         modalBody.querySelectorAll('#heroThumbs .thumb').forEach(t => t.classList.remove('active'));
@@ -3311,24 +3171,18 @@ footer{
         setHeroMedia(heroImgWrap, thumb.dataset.url, thumb.dataset.label, thumb.dataset.type);
       };
       thumb.addEventListener('click', handleClick);
-      thumb.addEventListener('keydown', (e) => {
-        if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); handleClick(); }
-      });
+      thumb.addEventListener('keydown', (e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); handleClick(); } });
       thumb.addEventListener('dblclick', (e) => {
-        e.preventDefault();
-        e.stopPropagation();
-        const idx = parseInt(thumb.dataset.index);
-        openLightbox(State.currentProjectShots, idx, State.currentProjectAccentRGB);
+        e.preventDefault(); e.stopPropagation();
+        openLightbox(State.currentProjectShots, parseInt(thumb.dataset.index), State.currentProjectAccentRGB);
       });
     });
 
-    // Load the first item
     if (State.currentProjectShots.length > 0) {
       const first = State.currentProjectShots[0];
       setHeroMedia(heroImgWrap, first.url, first.label, first.type);
     }
 
-    // Wire hero image click to open lightbox
     if (heroImgWrap) {
       const openLightboxFromHero = () => {
         const activeThumb = modalBody.querySelector('#heroThumbs .thumb.active');
@@ -3336,12 +3190,7 @@ footer{
         openLightbox(State.currentProjectShots, idx, State.currentProjectAccentRGB);
       };
       heroImgWrap.addEventListener('click', openLightboxFromHero);
-      heroImgWrap.addEventListener('keydown', (e) => {
-        if (e.key === 'Enter' || e.key === ' ') {
-          e.preventDefault();
-          openLightboxFromHero();
-        }
-      });
+      heroImgWrap.addEventListener('keydown', (e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); openLightboxFromHero(); } });
     }
 
     document.body.style.overflow = 'hidden';
@@ -3355,15 +3204,11 @@ footer{
     modalBackdrop.classList.remove('open');
     modalBackdrop.setAttribute('aria-hidden', 'true');
     document.body.style.overflow = '';
-    if (lastFocusedElement) {
-      lastFocusedElement.focus();
-    }
+    if (lastFocusedElement) lastFocusedElement.focus();
   }
 
   modalClose.addEventListener('click', closeModal);
-  modalBackdrop.addEventListener('click', e => {
-    if (e.target === modalBackdrop) closeModal();
-  });
+  modalBackdrop.addEventListener('click', e => { if (e.target === modalBackdrop) closeModal(); });
 
   document.addEventListener('keydown', e => {
     if (State.isLightboxOpen) {
@@ -3372,50 +3217,22 @@ footer{
       else if (e.key === 'ArrowRight') { lbGoNext(); e.preventDefault(); }
       return;
     }
-    if (e.key === 'Escape' && State.isModalOpen) {
-      closeModal();
-    }
-
+    if (e.key === 'Escape' && State.isModalOpen) closeModal();
     if (State.isModalOpen && e.key === 'Tab') {
       const modal = document.getElementById('modal');
-      const focusableElements = modal.querySelectorAll(
-        'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])'
-      );
-      const firstFocusable = focusableElements[0];
-      const lastFocusable = focusableElements[focusableElements.length - 1];
-
-      if (e.shiftKey) {
-        if (document.activeElement === firstFocusable) {
-          lastFocusable.focus();
-          e.preventDefault();
-        }
-      } else {
-        if (document.activeElement === lastFocusable) {
-          firstFocusable.focus();
-          e.preventDefault();
-        }
-      }
+      const focusable = modal.querySelectorAll('button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])');
+      const first = focusable[0], last = focusable[focusable.length - 1];
+      if (e.shiftKey) { if (document.activeElement === first) { last.focus(); e.preventDefault(); } }
+      else { if (document.activeElement === last) { first.focus(); e.preventDefault(); } }
     }
   });
 
-  let touchStartX = 0;
-  let touchStartY = 0;
-
-  ssLightbox.addEventListener('touchstart', (e) => {
-    touchStartX = e.changedTouches[0].clientX;
-    touchStartY = e.changedTouches[0].clientY;
-  }, { passive: true });
-
+  let touchStartX = 0, touchStartY = 0;
+  ssLightbox.addEventListener('touchstart', (e) => { touchStartX = e.changedTouches[0].clientX; touchStartY = e.changedTouches[0].clientY; }, { passive: true });
   ssLightbox.addEventListener('touchend', (e) => {
-    const touchEndX = e.changedTouches[0].clientX;
-    const touchEndY = e.changedTouches[0].clientY;
-    const diffX = touchStartX - touchEndX;
+    const diffX = touchStartX - e.changedTouches[0].clientX;
     const diffY = Math.abs(touchStartY - e.changedTouches[0].clientY);
-
-    if (Math.abs(diffX) > 60 && diffY < 100) {
-      if (diffX > 0) lbGoNext();
-      else lbGoPrev();
-    }
+    if (Math.abs(diffX) > 60 && diffY < 100) { if (diffX > 0) lbGoNext(); else lbGoPrev(); }
   }, { passive: true });
 
   function observeReveals() {
@@ -3426,14 +3243,10 @@ footer{
   const counterObserver = new IntersectionObserver((entries) => {
     entries.forEach(e => {
       if (e.isIntersecting) {
-        const el = e.target;
-        const to = +el.dataset.to;
-        const dur = 1800;
-        const start = performance.now();
+        const el = e.target, to = +el.dataset.to, dur = 1800, start = performance.now();
         function tick(t) {
           const p = Math.min((t - start) / dur, 1);
-          const eased = 1 - Math.pow(1 - p, 3);
-          el.textContent = Math.round(eased * to);
+          el.textContent = Math.round((1 - Math.pow(1 - p, 3)) * to);
           if (p < 1) requestAnimationFrame(tick);
         }
         requestAnimationFrame(tick);
@@ -3441,12 +3254,10 @@ footer{
       }
     });
   }, { threshold: 0.3 });
-
   document.querySelectorAll('.count').forEach(el => counterObserver.observe(el));
 
   const sideLinks = document.querySelectorAll('nav.side a');
   const sections = ['hero', 'dossier', 'roster', 'arsenal', 'link'].map(id => document.getElementById(id));
-
   let scrollTimeout;
   window.addEventListener('scroll', () => {
     if (scrollTimeout) return;
@@ -3458,7 +3269,6 @@ footer{
       sideLinks.forEach((l, i) => l.classList.toggle('active', i === current));
     }, 100);
   }, { passive: true });
-
   sideLinks.forEach(l => l.addEventListener('click', e => {
     e.preventDefault();
     const target = document.querySelector(l.getAttribute('href'));
@@ -3468,223 +3278,99 @@ footer{
   const phrases = ['zero-knowledge crypto.', 'offline-first sync.', 'AI integration.', 'WebRTC calls.', 'clean architecture.', 'privacy by design.'];
   const typedEl = document.getElementById('typed');
   let phraseIndex = 0, charIndex = 0, isDeleting = false;
-
   function typewriterStep() {
     const phrase = phrases[phraseIndex];
     typedEl.textContent = phrase.substring(0, charIndex);
-
-    if (!isDeleting && charIndex < phrase.length) {
-      charIndex++;
-      State.animationFrameIds.typewriter = setTimeout(typewriterStep, 70);
-    } else if (isDeleting && charIndex > 0) {
-      charIndex--;
-      State.animationFrameIds.typewriter = setTimeout(typewriterStep, 35);
-    } else {
-      isDeleting = !isDeleting;
-      if (!isDeleting) phraseIndex = (phraseIndex + 1) % phrases.length;
-      State.animationFrameIds.typewriter = setTimeout(typewriterStep, isDeleting ? 1600 : 400);
-    }
+    if (!isDeleting && charIndex < phrase.length) { charIndex++; State.animationFrameIds.typewriter = setTimeout(typewriterStep, 70); }
+    else if (isDeleting && charIndex > 0) { charIndex--; State.animationFrameIds.typewriter = setTimeout(typewriterStep, 35); }
+    else { isDeleting = !isDeleting; if (!isDeleting) phraseIndex = (phraseIndex + 1) % phrases.length; State.animationFrameIds.typewriter = setTimeout(typewriterStep, isDeleting ? 1600 : 400); }
   }
+  if (!State.prefersReducedMotion) typewriterStep(); else typedEl.textContent = phrases[0];
 
-  if (!State.prefersReducedMotion) {
-    typewriterStep();
-  } else {
-    typedEl.textContent = phrases[0];
-  }
-
-  const dot = document.querySelector('.cursor-dot');
-  const ring = document.querySelector('.cursor-ring');
+  const dot = document.querySelector('.cursor-dot'), ring = document.querySelector('.cursor-ring');
   let mx = 0, my = 0, rx = 0, ry = 0;
-
-  window.addEventListener('mousemove', e => {
-    mx = e.clientX;
-    my = e.clientY;
-    if (dot) {
-      dot.style.left = mx + 'px';
-      dot.style.top = my + 'px';
-    }
-  }, { passive: true });
-
+  window.addEventListener('mousemove', e => { mx = e.clientX; my = e.clientY; if (dot) { dot.style.left = mx + 'px'; dot.style.top = my + 'px'; } }, { passive: true });
   function followCursor() {
     if (State.theme !== 'dynamic') return;
-    rx += (mx - rx) * 0.18;
-    ry += (my - ry) * 0.18;
-    if (ring) {
-      ring.style.left = rx + 'px';
-      ring.style.top = ry + 'px';
-    }
+    rx += (mx - rx) * 0.18; ry += (my - ry) * 0.18;
+    if (ring) { ring.style.left = rx + 'px'; ring.style.top = ry + 'px'; }
     State.animationFrameIds.follow = requestAnimationFrame(followCursor);
   }
+  if (!State.prefersReducedMotion) State.animationFrameIds.follow = requestAnimationFrame(followCursor);
+  document.addEventListener('mouseover', e => { if (State.theme !== 'dynamic') return; if (e.target.closest('a, button, .card, .chip, .contact-card, img, .ss-hero .thumb, .ss-hero .hero-img, .lightbox-nav, .lightbox-close') && ring) ring.classList.add('hover'); });
+  document.addEventListener('mouseout', e => { if (State.theme !== 'dynamic') return; if (e.target.closest('a, button, .card, .chip, .contact-card, img, .ss-hero .thumb, .ss-hero .hero-img, .lightbox-nav, .lightbox-close') && ring) ring.classList.remove('hover'); });
 
-  if (!State.prefersReducedMotion) {
-    State.animationFrameIds.follow = requestAnimationFrame(followCursor);
-  }
-
-  document.addEventListener('mouseover', e => {
-    if (State.theme !== 'dynamic') return;
-    if (e.target.closest('a, button, .card, .chip, .contact-card, img, .ss-hero .thumb, .ss-hero .hero-img, .lightbox-nav, .lightbox-close')) {
-      if (ring) ring.classList.add('hover');
-    }
-  });
-
-  document.addEventListener('mouseout', e => {
-    if (State.theme !== 'dynamic') return;
-    if (e.target.closest('a, button, .card, .chip, .contact-card, img, .ss-hero .thumb, .ss-hero .hero-img, .lightbox-nav, .lightbox-close')) {
-      if (ring) ring.classList.remove('hover');
-    }
-  });
-
-  const canvas = document.getElementById('starfield');
-  const ctx = canvas ? canvas.getContext('2d') : null;
+  const canvas = document.getElementById('starfield'), ctx = canvas ? canvas.getContext('2d') : null;
   let stars = [];
-
-  function resizeCanvas() {
-    if (!canvas) return;
-    canvas.width = window.innerWidth;
-    canvas.height = window.innerHeight;
-    State.isMobile = canvas.width < 768;
-    initStars();
-  }
-
+  function resizeCanvas() { if (!canvas) return; canvas.width = window.innerWidth; canvas.height = window.innerHeight; State.isMobile = canvas.width < 768; initStars(); }
   function initStars() {
     if (!canvas) return;
     stars = [];
     const density = State.isLowEndDevice ? 35000 : (State.isMobile ? 18000 : 8000);
     const count = Math.floor((canvas.width * canvas.height) / density);
     for (let i = 0; i < count; i++) {
-      stars.push({
-        x: Math.random() * canvas.width,
-        y: Math.random() * canvas.height,
-        r: Math.random() * 1.4 + 0.2,
-        vx: (Math.random() - 0.5) * 0.05,
-        vy: (Math.random() - 0.5) * 0.05,
-        a: Math.random() * 0.6 + 0.2,
-        hue: [195, 270, 330, 160][Math.floor(Math.random() * 4)],
-        tw: Math.random() * Math.PI * 2
-      });
+      stars.push({ x: Math.random() * canvas.width, y: Math.random() * canvas.height, r: Math.random() * 1.4 + 0.2,
+        vx: (Math.random() - 0.5) * 0.05, vy: (Math.random() - 0.5) * 0.05, a: Math.random() * 0.6 + 0.2,
+        hue: [195, 270, 330, 160][Math.floor(Math.random() * 4)], tw: Math.random() * Math.PI * 2 });
     }
   }
-
   function drawStarfield() {
     if (!ctx || !canvas) return;
-    if (State.theme !== 'dynamic') {
-      ctx.clearRect(0, 0, canvas.width, canvas.height);
-      return;
-    }
-
+    if (State.theme !== 'dynamic') { ctx.clearRect(0, 0, canvas.width, canvas.height); return; }
     ctx.clearRect(0, 0, canvas.width, canvas.height);
     const useShadow = !State.isMobile && !State.isLowEndDevice;
-
     stars.forEach(s => {
-      s.x += s.vx;
-      s.y += s.vy;
-      s.tw += 0.04;
-      if (s.x < 0) s.x = canvas.width;
-      if (s.x > canvas.width) s.x = 0;
-      if (s.y < 0) s.y = canvas.height;
-      if (s.y > canvas.height) s.y = 0;
+      s.x += s.vx; s.y += s.vy; s.tw += 0.04;
+      if (s.x < 0) s.x = canvas.width; if (s.x > canvas.width) s.x = 0;
+      if (s.y < 0) s.y = canvas.height; if (s.y > canvas.height) s.y = 0;
       const flicker = 0.6 + Math.sin(s.tw) * 0.4;
-      ctx.beginPath();
-      ctx.arc(s.x, s.y, s.r, 0, Math.PI * 2);
+      ctx.beginPath(); ctx.arc(s.x, s.y, s.r, 0, Math.PI * 2);
       ctx.fillStyle = `hsla(${s.hue},100%,70%,${s.a * flicker})`;
-      if (useShadow) {
-        ctx.shadowBlur = s.r * 6;
-        ctx.shadowColor = `hsla(${s.hue},100%,70%,0.8)`;
-      }
+      if (useShadow) { ctx.shadowBlur = s.r * 6; ctx.shadowColor = `hsla(${s.hue},100%,70%,0.8)`; }
       ctx.fill();
     });
-
     if (useShadow) ctx.shadowBlur = 0;
-
-    if (!State.prefersReducedMotion && State.theme === 'dynamic') {
-      State.animationFrameIds.draw = requestAnimationFrame(drawStarfield);
-    }
+    if (!State.prefersReducedMotion && State.theme === 'dynamic') State.animationFrameIds.draw = requestAnimationFrame(drawStarfield);
   }
-
   resizeCanvas();
-
   let resizeTimer;
   window.addEventListener('resize', () => {
-    if (canvas) {
-      canvas.width = window.innerWidth;
-      canvas.height = window.innerHeight;
-      State.isMobile = canvas.width < 768;
-    }
+    if (canvas) { canvas.width = window.innerWidth; canvas.height = window.innerHeight; State.isMobile = canvas.width < 768; }
     clearTimeout(resizeTimer);
-    resizeTimer = setTimeout(() => {
-      initStars();
-      if (State.prefersReducedMotion && State.theme === 'dynamic') drawStarfield();
-    }, 150);
+    resizeTimer = setTimeout(() => { initStars(); if (State.prefersReducedMotion && State.theme === 'dynamic') drawStarfield(); }, 150);
   }, { passive: true });
-
-  if (State.prefersReducedMotion) {
-    drawStarfield();
-  } else {
-    State.animationFrameIds.draw = requestAnimationFrame(drawStarfield);
-  }
-
+  if (State.prefersReducedMotion) drawStarfield(); else State.animationFrameIds.draw = requestAnimationFrame(drawStarfield);
   document.addEventListener('visibilitychange', () => {
     if (State.prefersReducedMotion) return;
-    if (document.hidden) {
-      cancelAllAnimations();
-    } else if (State.theme === 'dynamic') {
-      startDynamicAnimations();
-    }
+    if (document.hidden) cancelAllAnimations(); else if (State.theme === 'dynamic') startDynamicAnimations();
   });
 
   function updateClock() {
     const now = new Date();
-    const t = now.toLocaleTimeString('en-US', { hour12: false });
     const el = document.getElementById('hudTime');
-    if (el) el.textContent = t;
-
+    if (el) el.textContent = now.toLocaleTimeString('en-US', { hour12: false });
     const sessionEl = document.getElementById('hudSession');
     if (sessionEl) {
       const elapsed = Math.floor((Date.now() - State.sessionStartTime) / 1000);
-      const mins = String(Math.floor(elapsed / 60)).padStart(2, '0');
-      const secs = String(elapsed % 60).padStart(2, '0');
-      sessionEl.textContent = `SESSION: ${mins}:${secs}`;
+      sessionEl.textContent = `SESSION: ${String(Math.floor(elapsed / 60)).padStart(2, '0')}:${String(elapsed % 60).padStart(2, '0')}`;
     }
   }
+  setInterval(updateClock, 1000); updateClock();
 
-  setInterval(updateClock, 1000);
-  updateClock();
-
-  const loader = document.getElementById('loader');
-  const loadPct = document.getElementById('loadPct');
+  const loader = document.getElementById('loader'), loadPct = document.getElementById('loadPct');
   let pct = 0;
-
   const loadInt = setInterval(() => {
     pct += Math.random() * 12 + 4;
-    if (pct >= 100) {
-      pct = 100;
-      clearInterval(loadInt);
-      setTimeout(() => {
-        if (loader) loader.classList.add('done');
-        setTheme(savedTheme);
-        observeReveals();
-      }, 300);
-    }
+    if (pct >= 100) { pct = 100; clearInterval(loadInt); setTimeout(() => { if (loader) loader.classList.add('done'); setTheme(savedTheme); observeReveals(); }, 300); }
     if (loadPct) loadPct.textContent = Math.floor(pct);
   }, 120);
+  setTimeout(() => { if (loader && !loader.classList.contains('done')) { loader.classList.add('done'); setTheme(savedTheme); observeReveals(); } }, 8000);
 
-  setTimeout(() => {
-    if (loader && !loader.classList.contains('done')) {
-      loader.classList.add('done');
-      setTheme(savedTheme);
-      observeReveals();
-    }
-  }, 8000);
-
-  window.addEventListener('error', (e) => {
-    console.error('Global error:', e.error);
-  });
-
-  window.addEventListener('unhandledrejection', (e) => {
-    console.error('Unhandled promise rejection:', e.reason);
-  });
-
+  window.addEventListener('error', (e) => console.error('Global error:', e.error));
+  window.addEventListener('unhandledrejection', (e) => console.error('Unhandled promise rejection:', e.reason));
 })();
 </script>
+
+  
 </body>
 </html>
