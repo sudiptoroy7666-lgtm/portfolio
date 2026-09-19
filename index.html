@@ -830,17 +830,19 @@ section{
 .modal-video{
   position:relative;aspect-ratio:16/9;background:#000;
   border:1px solid rgba(168,85,247,0.2);overflow:hidden;
+  border-radius:12px;
+  box-shadow:0 8px 32px rgba(0,0,0,0.4);
 }
-.modal-video iframe,.modal-video video{width:100%;height:100%;border:0}
+.modal-video iframe,.modal-video video{
+  width:100%;height:100%;border:0;display:block;
+}
 .modal-video .placeholder{
-  position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:12px;
-  background:linear-gradient(135deg,rgba(15,8,40,0.8),rgba(3,0,20,0.9));
+  text-decoration:none;
 }
-.modal-video .placeholder i{font-size:2.4rem;
-  background:var(--grad-primary);
-  -webkit-background-clip:text;background-clip:text;color:transparent;
+.modal-video .placeholder:hover i,
+.modal-video .placeholder:hover span{
+  color:var(--neon-purple);
 }
-.modal-video .placeholder span{font-family:var(--mono);font-size:.75rem;color:var(--text-mute);letter-spacing:.25em;text-transform:uppercase}
 
 @media (max-width:700px){
   .modal-body{padding:40px 24px}
@@ -1675,6 +1677,11 @@ footer{
   box-shadow:0 0 12px rgba(139,92,246,0.3);
 }
 
+[data-theme="dark"] .modal-video{
+  border-color:#27272a;
+  box-shadow:0 8px 24px rgba(0,0,0,0.5);
+}
+
 [data-theme="dark"] .skill-cat{
   background:#18181b;
   border:1px solid #27272a;
@@ -2350,6 +2357,12 @@ footer{
   box-shadow:0 0 12px rgba(99,102,241,0.2);
 }
 
+[data-theme="light"] .modal-video{
+  border-color:#e2e8f0;
+  box-shadow:0 4px 24px rgba(0,0,0,0.08);
+  background:#0f172a;
+}
+
 [data-theme="light"] .skill-cat{
   background:#ffffff;
   border:1px solid #e2e8f0;
@@ -2770,6 +2783,17 @@ footer{
     return div.innerHTML;
   }
 
+  // ── Video URL parser: converts YouTube/Vimeo URLs to embeddable format ──
+  function parseVideoUrl(url) {
+    if (!url) return null;
+    let match = url.match(/(?:youtube\.com\/(?:watch\?v=|embed\/|shorts\/|v\/)|youtu\.be\/)([a-zA-Z0-9_-]{11})/);
+    if (match) return `https://www.youtube.com/embed/${match[1]}?rel=0&modestbranding=1`;
+    match = url.match(/vimeo\.com\/(?:video\/)?(\d+)/);
+    if (match) return `https://player.vimeo.com/video/${match[1]}?title=0&byline=0&portrait=0`;
+    if (/\.(mp4|webm|mov|m4v|ogg)(\?.*)?$/i.test(url)) return null;
+    return null;
+  }
+
   function setTheme(theme) {
     const html = document.documentElement;
     const themeButtons = document.querySelectorAll('.theme-btn');
@@ -2820,9 +2844,18 @@ footer{
   }
 
   let savedTheme = 'dynamic';
-try {
-  savedTheme = localStorage.getItem('portfolio-theme') || 'dynamic';
-} catch (e) {}
+  try {
+    savedTheme = localStorage.getItem('portfolio-theme');
+    if (!savedTheme) {
+      if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+        savedTheme = 'dark';
+      } else if (window.matchMedia('(prefers-color-scheme: light)').matches) {
+        savedTheme = 'light';
+      } else {
+        savedTheme = 'dynamic';
+      }
+    }
+  } catch (e) {}
 
   document.querySelectorAll('.theme-btn').forEach(btn => {
     btn.addEventListener('click', () => {
@@ -2840,7 +2873,8 @@ try {
     screenshots[] { 
       label, 
       externalUrl,
-      "imageUrl": image.asset->url 
+      "imageUrl": image.asset->url,
+      "videoUrl": videoFile.asset->url
     }
   }`;
 
@@ -2860,14 +2894,6 @@ try {
       const data = await response.json();
 
       State.projects = data.result.map(project => {
-        let screenshots = [];
-        if (project.mediaType === 'images' && project.screenshots) {
-          screenshots = project.screenshots.map(s => {
-            const url = s.externalUrl || s.imageUrl;
-            return { label: s.label || 'Screenshot', url: url };
-          }).filter(s => s.url);
-        }
-
         return {
           id: project._id,
           num: project.num,
@@ -2882,8 +2908,8 @@ try {
           features: project.features || [],
           stack: project.stack || [],
           mediaType: project.mediaType,
-          screenshots: screenshots,
-          video: project.mediaType === 'video' ? project.videoUrl : null,
+          screenshots: project.screenshots || [],
+          video: project.videoUrl || null,
           highlight: project.highlight || { title: '', text: '' },
           future: project.future || [],
           rarity: 'SSR',
@@ -2916,12 +2942,20 @@ try {
     if (!screenshots || !Array.isArray(screenshots)) return [];
     const flat = [];
     screenshots.forEach(s => {
-      if (Array.isArray(s.url)) {
-        s.url.forEach((u, idx) => {
-          flat.push({ label: `${s.label} ${idx + 1}`, url: u });
-        });
-      } else if (s.url) {
-        flat.push(s);
+      let url = s.externalUrl || s.imageUrl || s.videoUrl;
+      let type = 'image';
+
+      if (s.videoUrl) {
+        type = 'video';
+      } else if (s.externalUrl && /\.(mp4|webm|mov|m4v)(\?.*)?$/i.test(s.externalUrl)) {
+        type = 'video';
+      } else if (s.externalUrl && /youtube\.com|youtu\.be|vimeo\.com/i.test(s.externalUrl)) {
+        type = 'embed';
+        url = parseVideoUrl(s.externalUrl);
+      }
+
+      if (url) {
+        flat.push({ label: s.label || 'Media', url: url, type: type });
       }
     });
     return flat;
@@ -3055,6 +3089,9 @@ try {
 
   function closeLightbox() {
     State.isLightboxOpen = false;
+    const oldVid = ssLightbox.querySelector('.lightbox-video');
+    if (oldVid) oldVid.remove();
+    lbImg.style.display = 'none';
     ssLightbox.classList.remove('open');
     ssLightbox.setAttribute('aria-hidden', 'true');
     if (!State.isModalOpen) {
@@ -3065,11 +3102,36 @@ try {
   function updateLightboxImage() {
     const shot = State.lightboxImages[State.lightboxIndex];
     if (!shot) return;
-    lbImg.src = shot.url;
-    lbImg.alt = shot.label;
+
+    lbImg.style.display = 'none';
+
+    const oldVideo = ssLightbox.querySelector('.lightbox-video');
+    if (oldVideo) oldVideo.remove();
+
+    if (shot.type === 'video') {
+      const vid = document.createElement('video');
+      vid.className = 'lightbox-video lightbox-img';
+      vid.src = shot.url;
+      vid.controls = true;
+      vid.playsInline = true;
+      vid.style.cssText = 'max-width:95vw;max-height:85vh;border-radius:16px;background:#000;';
+      ssLightbox.insertBefore(vid, lbImg);
+    } else if (shot.type === 'embed') {
+      const iframe = document.createElement('iframe');
+      iframe.className = 'lightbox-video lightbox-img';
+      iframe.src = shot.url;
+      iframe.frameBorder = '0';
+      iframe.allowFullscreen = true;
+      iframe.style.cssText = 'width:90vw;height:80vh;max-width:1200px;border-radius:16px;border:2px solid rgba(168,85,247,0.2);';
+      ssLightbox.insertBefore(iframe, lbImg);
+    } else {
+      lbImg.src = shot.url;
+      lbImg.alt = shot.label;
+      lbImg.style.display = 'block';
+    }
+
     lbLabel.textContent = shot.label;
     lbCounter.textContent = `${State.lightboxIndex + 1} / ${State.lightboxImages.length}`;
-
     lbPrev.disabled = State.lightboxIndex === 0;
     lbNext.disabled = State.lightboxIndex === State.lightboxImages.length - 1;
 
@@ -3111,45 +3173,77 @@ try {
   const modalClose = document.getElementById('modalClose');
   let lastFocusedElement = null;
 
-  function buildScreenshotSection(p) {
+  function buildMediaSection(p) {
     let shots = flattenScreenshots(p.screenshots);
 
     if (shots.length === 0) {
       return `
         <div class="modal-section">
-          <h3><i class="fas fa-images" aria-hidden="true"></i> Screenshots</h3>
-          <p style="color:var(--text-mute);font-style:italic">Screenshots coming soon</p>
+          <h3><i class="fas fa-images" aria-hidden="true"></i> Media</h3>
+          <p style="color:var(--text-mute);font-style:italic">Media coming soon</p>
         </div>
       `;
     }
 
     const heroShot = shots[0];
 
-    const thumbItems = shots.map((s, i) => `
-      <div class="thumb ${i===0?'active':''}" 
-           data-url="${escapeHtml(s.url)}" 
-           data-label="${escapeHtml(s.label)}"
-           data-index="${i}"
-           role="button"
-           tabindex="0"
-           aria-label="View ${escapeHtml(s.label)}">
-        <img src="${escapeHtml(s.url)}" alt="${escapeHtml(s.label)}" loading="lazy">
-        <span class="thumb-label">${escapeHtml(s.label)}</span>
-      </div>
-    `).join('');
+    const thumbItems = shots.map((s, i) => {
+      const isVideo = s.type === 'video' || s.type === 'embed';
+      const thumbContent = isVideo
+        ? `<div style="width:100%;height:100%;display:flex;align-items:center;justify-content:center;background:#000;color:#fff;"><i class="fas fa-play" style="font-size:1.2rem;filter:drop-shadow(0 0 4px rgba(0,0,0,0.8));"></i></div>`
+        : `<img src="${escapeHtml(s.url)}" alt="${escapeHtml(s.label)}" loading="lazy">`;
+
+      return `
+        <div class="thumb ${i===0?'active':''}" 
+             data-url="${escapeHtml(s.url)}" 
+             data-label="${escapeHtml(s.label)}"
+             data-type="${s.type}"
+             data-index="${i}"
+             role="button"
+             tabindex="0"
+             aria-label="View ${escapeHtml(s.label)}">
+          ${thumbContent}
+          <span class="thumb-label">${escapeHtml(s.label)}</span>
+        </div>
+      `;
+    }).join('');
 
     return `
       <div class="modal-section">
-        <h3><i class="fas fa-mobile-alt" aria-hidden="true"></i> Screenshots (${shots.length}) <span style="font-size:.65rem;color:var(--text-mute);font-weight:400;margin-left:12px;letter-spacing:.1em">CLICK TO ENLARGE</span></h3>
+        <h3><i class="fas fa-photo-video" aria-hidden="true"></i> Media Gallery (${shots.length}) <span style="font-size:.65rem;color:var(--text-mute);font-weight:400;margin-left:12px;letter-spacing:.1em">CLICK TO ENLARGE</span></h3>
         <div class="ss-hero">
-          <div class="hero-img" id="heroImgWrap" role="button" tabindex="0" aria-label="Enlarge screenshot">
-            <img id="heroMainImg" alt="${escapeHtml(heroShot.label)}">
-            <div class="hero-label" id="heroLabel">${escapeHtml(heroShot.label)}</div>
+          <div class="hero-img" id="heroImgWrap" role="button" tabindex="0" aria-label="Enlarge media">
           </div>
-          <div class="thumbs" id="heroThumbs" role="group" aria-label="Screenshot thumbnails">${thumbItems}</div>
+          <div class="thumbs" id="heroThumbs" role="group" aria-label="Media thumbnails">${thumbItems}</div>
         </div>
       </div>
     `;
+  }
+
+  function setHeroMedia(heroImgWrap, url, label, type) {
+    if (!heroImgWrap) return;
+    heroImgWrap.innerHTML = '';
+
+    if (type === 'video' || type === 'embed') {
+      heroImgWrap.style.aspectRatio = '16/9';
+      heroImgWrap.style.maxWidth = '100%';
+      heroImgWrap.style.borderRadius = '12px';
+    } else {
+      heroImgWrap.style.aspectRatio = '9/19.5';
+      heroImgWrap.style.maxWidth = '300px';
+      heroImgWrap.style.borderRadius = '28px';
+    }
+
+    if (type === 'video') {
+      heroImgWrap.innerHTML = `<video src="${escapeHtml(url)}" controls playsinline style="width:100%;height:100%;object-fit:contain;background:#000;border-radius:inherit;"></video>`;
+    } else if (type === 'embed') {
+      heroImgWrap.innerHTML = `<iframe src="${escapeHtml(url)}" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen style="width:100%;height:100%;border:0;border-radius:inherit;"></iframe>`;
+    } else {
+      heroImgWrap.innerHTML = `
+        <img src="${escapeHtml(url)}" alt="${escapeHtml(label)}" style="width:100%;height:100%;object-fit:contain;">
+        <div class="hero-label">${escapeHtml(label)}</div>
+      `;
+    }
   }
 
   function openModal(id) {
@@ -3163,7 +3257,7 @@ try {
     modalBody.style.setProperty('--accent-rgb', p.accentRGB);
     State.currentProjectAccentRGB = p.accentRGB;
 
-    const screenshotSection = buildScreenshotSection(p);
+    const mediaSection = buildMediaSection(p);
 
     modalBody.innerHTML = `
       <div class="modal-head">
@@ -3177,7 +3271,7 @@ try {
         <h3><i class="fas fa-bolt" aria-hidden="true"></i> Elevator Pitch</h3>
         <p class="modal-pitch">${escapeHtml(p.pitch)}</p>
       </div>
-      ${screenshotSection}
+      ${mediaSection}
       <div class="modal-section">
         <h3><i class="fas fa-star" aria-hidden="true"></i> Key Features</h3>
         <div class="feature-list">
@@ -3207,71 +3301,40 @@ try {
 
     State.currentProjectShots = flattenScreenshots(p.screenshots);
 
-    const heroMain = modalBody.querySelector('#heroMainImg');
-    const heroLabel = modalBody.querySelector('#heroLabel');
     const heroImgWrap = modalBody.querySelector('#heroImgWrap');
 
-    function setHeroImage(url, label) {
-      if (!heroMain || !heroImgWrap) return;
-      heroMain.style.cssText = '';
-      heroImgWrap.style.background = '#000';
-
-      heroMain.onload = () => {
-        heroImgWrap.style.background = 'transparent';
-      };
-
-      heroMain.onerror = () => {
-        const isDark = State.theme === 'dark';
-        const isLight = State.theme === 'light';
-        if (isDark) {
-          heroImgWrap.style.background = 'linear-gradient(135deg, #27272a, #18181b)';
-        } else if (isLight) {
-          heroImgWrap.style.background = 'linear-gradient(135deg, #e2e8f0, #f8fafc)';
-        } else {
-          heroImgWrap.style.background = 'linear-gradient(135deg, ' + p.accent + ', #1a1a2e)';
-        }
-      };
-
-      heroMain.src = url;
-      heroMain.alt = label || '';
-    }
-
+    // Wire thumbnail clicks
     modalBody.querySelectorAll('#heroThumbs .thumb').forEach(thumb => {
-      const handleThumbClick = () => {
+      const handleClick = () => {
         modalBody.querySelectorAll('#heroThumbs .thumb').forEach(t => t.classList.remove('active'));
         thumb.classList.add('active');
-
-        const imgEl = thumb.querySelector('img');
-        if (imgEl) {
-          imgEl.onerror = () => {
-            thumb.classList.add('img-error');
-          };
-        }
-
-        setHeroImage(thumb.dataset.url, thumb.dataset.label);
-        if (heroLabel) { heroLabel.textContent = thumb.dataset.label; }
+        setHeroMedia(heroImgWrap, thumb.dataset.url, thumb.dataset.label, thumb.dataset.type);
       };
-
-      thumb.addEventListener('click', handleThumbClick);
+      thumb.addEventListener('click', handleClick);
       thumb.addEventListener('keydown', (e) => {
-        if (e.key === 'Enter' || e.key === ' ') {
-          e.preventDefault();
-          handleThumbClick();
-        }
+        if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); handleClick(); }
+      });
+      thumb.addEventListener('dblclick', (e) => {
+        e.preventDefault();
+        e.stopPropagation();
+        const idx = parseInt(thumb.dataset.index);
+        openLightbox(State.currentProjectShots, idx, State.currentProjectAccentRGB);
       });
     });
 
+    // Load the first item
     if (State.currentProjectShots.length > 0) {
-      setHeroImage(State.currentProjectShots[0].url, State.currentProjectShots[0].label);
+      const first = State.currentProjectShots[0];
+      setHeroMedia(heroImgWrap, first.url, first.label, first.type);
     }
 
+    // Wire hero image click to open lightbox
     if (heroImgWrap) {
       const openLightboxFromHero = () => {
         const activeThumb = modalBody.querySelector('#heroThumbs .thumb.active');
         const idx = activeThumb ? parseInt(activeThumb.dataset.index) : 0;
         openLightbox(State.currentProjectShots, idx, State.currentProjectAccentRGB);
       };
-
       heroImgWrap.addEventListener('click', openLightboxFromHero);
       heroImgWrap.addEventListener('keydown', (e) => {
         if (e.key === 'Enter' || e.key === ' ') {
@@ -3280,15 +3343,6 @@ try {
         }
       });
     }
-
-    modalBody.querySelectorAll('#heroThumbs .thumb').forEach(thumb => {
-      thumb.addEventListener('dblclick', (e) => {
-        e.preventDefault();
-        e.stopPropagation();
-        const idx = parseInt(thumb.dataset.index);
-        openLightbox(State.currentProjectShots, idx, State.currentProjectAccentRGB);
-      });
-    });
 
     document.body.style.overflow = 'hidden';
     modalBackdrop.classList.add('open');
