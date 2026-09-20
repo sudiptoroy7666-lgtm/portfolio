@@ -2901,7 +2901,7 @@ footer{
     }
   }
 
-  let savedTheme = 'dynamic';
+  let savedTheme = localStorage.getItem('portfolio-theme') || 'dynamic';
   try {
     savedTheme = localStorage.getItem('portfolio-theme');
     if (!savedTheme) {
