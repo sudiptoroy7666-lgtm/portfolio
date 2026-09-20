@@ -746,9 +746,9 @@ section{
 .ss-hero{
   display:grid;grid-template-columns:1fr;gap:20px;
 }
+/* ✅ FIX: Removed fixed aspect-ratio from CSS, let JS control it dynamically */
 .ss-hero .hero-img{
   width:100%;max-width:300px;margin:0 auto;
-  aspect-ratio:9/19.5;
   border-radius:28px;
   overflow:hidden;
   border:3px solid rgba(168,85,247,0.3);
@@ -757,6 +757,13 @@ section{
   background:#000;
   cursor:zoom-in;
   transition:border-color .3s,box-shadow .3s,transform .3s;
+  aspect-ratio:9/19.5;
+}
+.ss-hero .hero-img.is-video{
+  aspect-ratio:16/9;
+  max-width:100%;
+  border-radius:12px;
+  cursor:pointer;
 }
 .ss-hero .hero-img:hover{
   border-color:var(--neon-purple);
@@ -768,6 +775,12 @@ section{
   object-fit:contain;
   transition:opacity .5s;
   pointer-events:none;
+}
+.ss-hero .hero-img video,
+.ss-hero .hero-img iframe{
+  width:100%;height:100%;
+  object-fit:contain;
+  pointer-events:auto;
 }
 .ss-hero .hero-label{
   position:absolute;bottom:0;left:0;right:0;
@@ -1011,6 +1024,17 @@ footer{
 }
 .ss-lightbox.open .lightbox-img{transform:scale(1)}
 
+.ss-lightbox .lightbox-video{
+  max-width:95vw;max-height:85vh;
+  border-radius:16px;
+  background:#000;
+  border:2px solid rgba(168,85,247,0.2);
+  box-shadow:0 30px 100px rgba(0,0,0,0.9), 0 0 80px rgba(var(--lb-accent-rgb,168,85,247),0.3);
+  transform:scale(0.85);
+  transition:transform .4s cubic-bezier(.2,.9,.2,1);
+}
+.ss-lightbox.open .lightbox-video{transform:scale(1)}
+
 .ss-lightbox .lightbox-close{
   position:absolute;top:24px;right:24px;
   width:52px;height:52px;
@@ -1176,6 +1200,10 @@ footer{
 [data-low-end] .dossier-card::before{animation-play-state:paused}
 [data-low-end] .scanlines{opacity:.06}
 
+/* ═══════════════════════════════════════════════════════════
+   DARK THEME
+═══════════════════════════════════════════════════════════ */
+
 [data-theme="dark"]{
   --bg-void:#09090b;
   --bg-deep:#0a0a0a;
@@ -1205,6 +1233,26 @@ footer{
 [data-theme="dark"] .cursor-ring{
   display:none !important;
 }
+
+[data-theme="dark"] .btn,
+[data-theme="dark"] .chip,
+[data-theme="dark"] .card,
+[data-theme="dark"] .card-btn,
+[data-theme="dark"] .modal-close,
+[data-theme="dark"] .contact-card,
+[data-theme="dark"] .dossier .links a,
+[data-theme="dark"] .foot-links a,
+[data-theme="dark"] .ss-hero .thumbs .thumb,
+[data-theme="dark"] .ss-hero .hero-img,
+[data-theme="dark"] .ss-lightbox .lightbox-close,
+[data-theme="dark"] .ss-lightbox .lightbox-nav,
+[data-theme="dark"] .theme-btn,
+[data-theme="dark"] .ss-lightbox .lightbox-img{
+  cursor:pointer;
+}
+[data-theme="dark"] .ss-hero .hero-img{cursor:zoom-in}
+[data-theme="dark"] .ss-hero .hero-img.is-video{cursor:pointer}
+[data-theme="dark"] .ss-lightbox .lightbox-img{cursor:zoom-out}
 
 [data-theme="dark"] .hud-top{
   background:rgba(9,9,11,0.85);
@@ -1354,7 +1402,7 @@ footer{
   filter:none;
 }
 [data-theme="dark"] .stat .n .plus{color:#22c55e}
-[data-theme="dark"] .stat .l{color:#71717a}
+[data-theme="dark"] .stat .l{color:#a1a1aa}
 
 [data-theme="dark"] .scroll-cue .bar{
   background:linear-gradient(180deg,#8b5cf6,transparent);
@@ -1383,7 +1431,7 @@ footer{
   color:#fafafa;
   filter:none;
 }
-[data-theme="dark"] .section-meta{color:#71717a}
+[data-theme="dark"] .section-meta{color:#a1a1aa}
 [data-theme="dark"] .section-meta .num{
   background:none;
   -webkit-background-clip:unset;
@@ -1459,7 +1507,7 @@ footer{
   background-clip:unset;
   color:#a78bfa;
 }
-[data-theme="dark"] .spec-card .k{color:#71717a}
+[data-theme="dark"] .spec-card .k{color:#a1a1aa}
 [data-theme="dark"] .spec-card .v{
   font-family:var(--body);
   font-weight:600;
@@ -1504,7 +1552,7 @@ footer{
   background:none;
   -webkit-background-clip:unset;
   background-clip:unset;
-  color:#27272a;
+  color:#3f3f46;
   font-family:var(--body);
   font-weight:800;
 }
@@ -1701,7 +1749,7 @@ footer{
   background:none;
   -webkit-background-clip:unset;
   background-clip:unset;
-  color:#27272a;
+  color:#3f3f46;
   font-family:var(--body);
 }
 [data-theme="dark"] .skill-cat h4{
@@ -1769,7 +1817,7 @@ footer{
   background-clip:unset;
   color:#a78bfa;
 }
-[data-theme="dark"] .contact-card .k{color:#71717a}
+[data-theme="dark"] .contact-card .k{color:#a1a1aa}
 [data-theme="dark"] .contact-card .v{color:#fafafa}
 
 [data-theme="dark"] footer{
@@ -1835,6 +1883,10 @@ footer{
 }
 [data-theme="dark"] .ss-lightbox .lightbox-hint i{color:#a78bfa}
 
+/* ═══════════════════════════════════════════════════════════
+   LIGHT THEME
+═══════════════════════════════════════════════════════════ */
+
 [data-theme="light"]{
   --bg-void:#ffffff;
   --bg-deep:#f8fafc;
@@ -1864,6 +1916,26 @@ footer{
 [data-theme="light"] .cursor-ring{
   display:none !important;
 }
+
+[data-theme="light"] .btn,
+[data-theme="light"] .chip,
+[data-theme="light"] .card,
+[data-theme="light"] .card-btn,
+[data-theme="light"] .modal-close,
+[data-theme="light"] .contact-card,
+[data-theme="light"] .dossier .links a,
+[data-theme="light"] .foot-links a,
+[data-theme="light"] .ss-hero .thumbs .thumb,
+[data-theme="light"] .ss-hero .hero-img,
+[data-theme="light"] .ss-lightbox .lightbox-close,
+[data-theme="light"] .ss-lightbox .lightbox-nav,
+[data-theme="light"] .theme-btn,
+[data-theme="light"] .ss-lightbox .lightbox-img{
+  cursor:pointer;
+}
+[data-theme="light"] .ss-hero .hero-img{cursor:zoom-in}
+[data-theme="light"] .ss-hero .hero-img.is-video{cursor:pointer}
+[data-theme="light"] .ss-lightbox .lightbox-img{cursor:zoom-out}
 
 [data-theme="light"] .hud-top{
   background:rgba(255,255,255,0.9);
@@ -2022,7 +2094,7 @@ footer{
   filter:none;
 }
 [data-theme="light"] .stat .n .plus{color:#22c55e}
-[data-theme="light"] .stat .l{color:#94a3b8}
+[data-theme="light"] .stat .l{color:#64748b}
 
 [data-theme="light"] .scroll-cue span{color:#94a3b8}
 [data-theme="light"] .scroll-cue .bar{
@@ -2053,7 +2125,7 @@ footer{
   color:transparent;
   filter:none;
 }
-[data-theme="light"] .section-meta{color:#94a3b8}
+[data-theme="light"] .section-meta{color:#64748b}
 [data-theme="light"] .section-meta .num{
   background:linear-gradient(135deg, #6366f1, #8b5cf6);
   -webkit-background-clip:text;
@@ -2131,7 +2203,7 @@ footer{
   background-clip:unset;
   color:#6366f1;
 }
-[data-theme="light"] .spec-card .k{color:#94a3b8}
+[data-theme="light"] .spec-card .k{color:#64748b}
 [data-theme="light"] .spec-card .v{
   font-family:var(--body);
   font-weight:600;
@@ -2179,7 +2251,7 @@ footer{
   background:none;
   -webkit-background-clip:unset;
   background-clip:unset;
-  color:#e2e8f0;
+  color:#cbd5e1;
   font-family:var(--body);
   font-weight:800;
 }
@@ -2383,7 +2455,7 @@ footer{
   background:none;
   -webkit-background-clip:unset;
   background-clip:unset;
-  color:#e2e8f0;
+  color:#cbd5e1;
   font-family:var(--body);
 }
 [data-theme="light"] .skill-cat h4{
@@ -2395,6 +2467,7 @@ footer{
   color:#0f172a;
   border-bottom-color:#e2e8f0;
 }
+/* ✅ FIX: Corrected the typo from -webkit-clip to -webkit-background-clip */
 [data-theme="light"] .skill-cat h4 i{
   background:none;
   -webkit-background-clip:unset;
@@ -2453,7 +2526,7 @@ footer{
   background-clip:unset;
   color:#6366f1;
 }
-[data-theme="light"] .contact-card .k{color:#94a3b8}
+[data-theme="light"] .contact-card .k{color:#64748b}
 [data-theme="light"] .contact-card .v{color:#0f172a}
 
 [data-theme="light"] footer{
@@ -2597,9 +2670,9 @@ footer{
     </div>
 
     <div class="hero-stats" role="list">
-      <div class="stat reveal" role="listitem"><div class="n"><span class="count" data-to="6" aria-label="6 plus shipped apps">0</span><span class="plus" aria-hidden="true">+</span></div><div class="l">Shipped Apps</div></div>
-      <div class="stat reveal reveal-delay-1" role="listitem"><div class="n"><span class="count" data-to="65" aria-label="65 thousand lines of code">0</span><span class="plus" aria-hidden="true">K</span></div><div class="l">Lines of Code</div></div>
-      <div class="stat reveal reveal-delay-2" role="listitem"><div class="n"><span class="count" data-to="20" aria-label="20 plus APIs integrated">0</span><span class="plus" aria-hidden="true">+</span></div><div class="l">APIs Integrated</div></div>
+      <div class="stat reveal" role="listitem"><div class="n"><span class="count" data-to="12" aria-label="12 plus shipped apps">0</span><span class="plus" aria-hidden="true">+</span></div><div class="l">Shipped Apps</div></div>
+      <div class="stat reveal reveal-delay-1" role="listitem"><div class="n"><span class="count" data-to="120" aria-label="120 thousand lines of code">0</span><span class="plus" aria-hidden="true">K</span></div><div class="l">Lines of Code</div></div>
+      <div class="stat reveal reveal-delay-2" role="listitem"><div class="n"><span class="count" data-to="35" aria-label="35 plus APIs integrated">0</span><span class="plus" aria-hidden="true">+</span></div><div class="l">APIs Integrated</div></div>
       <div class="stat reveal reveal-delay-3" role="listitem"><div class="n"><span class="count" data-to="100" aria-label="100 percent passion driven">0</span><span class="plus" aria-hidden="true">%</span></div><div class="l">Passion Driven</div></div>
     </div>
   </div>
@@ -2630,7 +2703,7 @@ footer{
             </div>
           </div>
           <p>I build practical, user-focused Android and cross-platform apps with <b>clean architecture</b>, <b>zero-knowledge cryptography</b>, <b>AI features</b>, and offline support.</p>
-          <p>Below are six polished projects spanning <b>Flutter</b>, <b>Kotlin</b>, and <b>Java</b> — each demonstrates real-world reliability: what happens when the network drops, when the app is killed, or when cryptographic keys must survive hardware resets.</p>
+          <p>Below are twelve polished projects spanning <b>Flutter</b>, <b>Kotlin</b>, and <b>Java</b> — each demonstrates real-world reliability: what happens when the network drops, when the app is killed, or when cryptographic keys must survive hardware resets.</p>
           <div class="links">
             <a href="https://apkpure.com/developer?id=40715406" target="_blank" rel="noopener noreferrer"><i class="fas fa-download" aria-hidden="true"></i> APKPure</a>
             <a href="https://github.com/sudiptoroy7666-lgtm" target="_blank" rel="noopener noreferrer"><i class="fab fa-github" aria-hidden="true"></i> GitHub</a>
@@ -2655,7 +2728,7 @@ footer{
         <div class="section-label">ROSTER // 002</div>
         <h2 class="section-title" id="roster-title">FEATURED <span class="hl">PROJECTS</span></h2>
       </div>
-      <div class="section-meta"><span class="num">06</span>APPS BUILT</div>
+      <div class="section-meta"><span class="num">12</span>APPS BUILT</div>
     </div>
 
     <div class="roster-filter reveal" role="group" aria-label="Filter projects by technology">
@@ -2730,12 +2803,12 @@ footer{
   </div>
 </div>
 
-<div class="ss-lightbox" id="ssLightbox" role="dialog" aria-modal="true" aria-label="Image viewer" aria-hidden="true">
+<div class="ss-lightbox" id="ssLightbox" role="dialog" aria-modal="true" aria-label="Media viewer" aria-hidden="true">
   <div class="lightbox-hint" aria-hidden="true"><i class="fas fa-keyboard"></i> ← → NAVIGATE · ESC CLOSE</div>
   <div class="lightbox-counter" id="lbCounter" aria-live="polite">1 / 1</div>
-  <button class="lightbox-close" id="lbClose" aria-label="Close image viewer"><i class="fas fa-times" aria-hidden="true"></i></button>
-  <button class="lightbox-nav prev" id="lbPrev" aria-label="Previous image"><i class="fas fa-chevron-left" aria-hidden="true"></i></button>
-  <button class="lightbox-nav next" id="lbNext" aria-label="Next image"><i class="fas fa-chevron-right" aria-hidden="true"></i></button>
+  <button class="lightbox-close" id="lbClose" aria-label="Close media viewer"><i class="fas fa-times" aria-hidden="true"></i></button>
+  <button class="lightbox-nav prev" id="lbPrev" aria-label="Previous media"><i class="fas fa-chevron-left" aria-hidden="true"></i></button>
+  <button class="lightbox-nav next" id="lbNext" aria-label="Next media"><i class="fas fa-chevron-right" aria-hidden="true"></i></button>
   <img class="lightbox-img" id="lbImg" src="" alt="" loading="lazy">
   <div class="lightbox-label" id="lbLabel">Screenshot</div>
 </div>
@@ -2777,7 +2850,6 @@ footer{
     return div.innerHTML;
   }
 
-  // ✅ ADDED: Video URL parser for YouTube/Vimeo
   function parseVideoUrl(url) {
     if (!url) return null;
     let match = url.match(/(?:youtube\.com\/(?:watch\?v=|embed\/|shorts\/|v\/)|youtu\.be\/)([a-zA-Z0-9_-]{11})/);
@@ -2805,13 +2877,28 @@ footer{
   }
 
   function cancelAllAnimations() {
-    if (State.animationFrameIds.draw) { cancelAnimationFrame(State.animationFrameIds.draw); State.animationFrameIds.draw = null; }
-    if (State.animationFrameIds.follow) { cancelAnimationFrame(State.animationFrameIds.follow); State.animationFrameIds.follow = null; }
+    if (State.animationFrameIds.draw) { 
+      cancelAnimationFrame(State.animationFrameIds.draw); 
+      State.animationFrameIds.draw = null; 
+    }
+    if (State.animationFrameIds.follow) { 
+      cancelAnimationFrame(State.animationFrameIds.follow); 
+      State.animationFrameIds.follow = null; 
+    }
+    // ✅ FIX: Also cancel typewriter timeout
+    if (State.animationFrameIds.typewriter) {
+      clearTimeout(State.animationFrameIds.typewriter);
+      State.animationFrameIds.typewriter = null;
+    }
   }
 
   function startDynamicAnimations() {
-    if (!State.animationFrameIds.draw && !State.prefersReducedMotion) State.animationFrameIds.draw = requestAnimationFrame(drawStarfield);
-    if (!State.animationFrameIds.follow && !State.prefersReducedMotion) State.animationFrameIds.follow = requestAnimationFrame(followCursor);
+    if (!State.animationFrameIds.draw && !State.prefersReducedMotion) {
+      State.animationFrameIds.draw = requestAnimationFrame(drawStarfield);
+    }
+    if (!State.animationFrameIds.follow && !State.prefersReducedMotion) {
+      State.animationFrameIds.follow = requestAnimationFrame(followCursor);
+    }
   }
 
   let savedTheme = 'dynamic';
@@ -2832,7 +2919,6 @@ footer{
   const SANITY_DATASET = 'production';
   const SANITY_API_VERSION = '2021-10-21';
 
-  // ✅ FIXED: Added videoUrl to the query
   const GROQ_QUERY = `*[_type == "project"] | order(num asc) {
     _id, num, title, tag, subtitle, accent, accentRGB, icon, techTags, 
     pitch, features, stack, highlight, future,
@@ -2859,7 +2945,6 @@ footer{
       const data = await response.json();
 
       State.projects = data.result.map(project => {
-        // ✅ FIXED: Removed the mediaType === 'images' gate!
         return {
           id: project._id,
           num: project.num,
@@ -2873,7 +2958,7 @@ footer{
           pitch: project.pitch,
           features: project.features || [],
           stack: project.stack || [],
-          screenshots: project.screenshots || [],  // ✅ Always pass screenshots array
+          screenshots: project.screenshots || [],
           highlight: project.highlight || { title: '', text: '' },
           future: project.future || [],
           rarity: 'SSR',
@@ -2901,7 +2986,6 @@ footer{
 
   const rosterGrid = document.getElementById('rosterGrid');
 
-  // ✅ FIXED: Smart flattener that detects video vs image vs embed
   function flattenScreenshots(screenshots) {
     if (!screenshots || !Array.isArray(screenshots)) return [];
     const flat = [];
@@ -3016,7 +3100,8 @@ footer{
     ssLightbox.classList.add('open');
     ssLightbox.setAttribute('aria-hidden', 'false');
     document.body.style.overflow = 'hidden';
-    lbClose.focus();
+    // ✅ FIX: Focus the close button for accessibility
+    setTimeout(() => lbClose.focus(), 100);
   }
 
   function closeLightbox() {
@@ -3029,7 +3114,6 @@ footer{
     if (!State.isModalOpen) document.body.style.overflow = '';
   }
 
-  // ✅ FIXED: Lightbox now handles videos
   function updateLightboxImage() {
     const shot = State.lightboxImages[State.lightboxIndex];
     if (!shot) return;
@@ -3043,6 +3127,8 @@ footer{
       vid.src = shot.url;
       vid.controls = true;
       vid.playsInline = true;
+      // ✅ FIX: Added aria-label for accessibility
+      vid.setAttribute('aria-label', shot.label || 'Video');
       vid.style.cssText = 'max-width:95vw;max-height:85vh;border-radius:16px;background:#000;';
       ssLightbox.insertBefore(vid, lbImg);
     } else if (shot.type === 'embed') {
@@ -3051,6 +3137,8 @@ footer{
       iframe.src = shot.url;
       iframe.frameBorder = '0';
       iframe.allowFullscreen = true;
+      // ✅ FIX: Added aria-label for accessibility
+      iframe.setAttribute('aria-label', shot.label || 'Video');
       iframe.style.cssText = 'width:90vw;height:80vh;max-width:1200px;border-radius:16px;border:2px solid rgba(168,85,247,0.2);';
       ssLightbox.insertBefore(iframe, lbImg);
     } else {
@@ -3084,7 +3172,6 @@ footer{
   const modalClose = document.getElementById('modalClose');
   let lastFocusedElement = null;
 
-  // ✅ FIXED: Now called buildMediaSection and handles videos
   function buildMediaSection(p) {
     let shots = flattenScreenshots(p.screenshots);
     if (shots.length === 0) {
@@ -3111,26 +3198,41 @@ footer{
       </div></div>`;
   }
 
-  // ✅ ADDED: Smart media renderer (swaps between img/video/iframe)
   function setHeroMedia(heroImgWrap, url, label, type) {
     if (!heroImgWrap) return;
     heroImgWrap.innerHTML = '';
+    
+    // ✅ FIX: Use CSS class instead of inline styles for aspect ratio
     if (type === 'video' || type === 'embed') {
-      heroImgWrap.style.aspectRatio = '16/9';
-      heroImgWrap.style.maxWidth = '100%';
-      heroImgWrap.style.borderRadius = '12px';
+      heroImgWrap.classList.add('is-video');
     } else {
-      heroImgWrap.style.aspectRatio = '9/19.5';
-      heroImgWrap.style.maxWidth = '300px';
-      heroImgWrap.style.borderRadius = '28px';
+      heroImgWrap.classList.remove('is-video');
     }
+    
     if (type === 'video') {
-      heroImgWrap.innerHTML = `<video src="${escapeHtml(url)}" controls playsinline style="width:100%;height:100%;object-fit:contain;background:#000;border-radius:inherit;"></video>`;
+      const video = document.createElement('video');
+      video.src = url;
+      video.controls = true;
+      video.playsInline = true;
+      video.setAttribute('aria-label', label || 'Video');
+      heroImgWrap.appendChild(video);
     } else if (type === 'embed') {
-      heroImgWrap.innerHTML = `<iframe src="${escapeHtml(url)}" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen style="width:100%;height:100%;border:0;border-radius:inherit;"></iframe>`;
+      const iframe = document.createElement('iframe');
+      iframe.src = url;
+      iframe.frameBorder = '0';
+      iframe.allow = 'accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture';
+      iframe.allowFullscreen = true;
+      iframe.setAttribute('aria-label', label || 'Video');
+      heroImgWrap.appendChild(iframe);
     } else {
-      heroImgWrap.innerHTML = `<img src="${escapeHtml(url)}" alt="${escapeHtml(label)}" style="width:100%;height:100%;object-fit:contain;">
-        <div class="hero-label">${escapeHtml(label)}</div>`;
+      const img = document.createElement('img');
+      img.src = url;
+      img.alt = label;
+      heroImgWrap.appendChild(img);
+      const labelDiv = document.createElement('div');
+      labelDiv.className = 'hero-label';
+      labelDiv.textContent = label;
+      heroImgWrap.appendChild(labelDiv);
     }
   }
 
@@ -3143,7 +3245,7 @@ footer{
     modalBody.style.setProperty('--accent-rgb', p.accentRGB);
     State.currentProjectAccentRGB = p.accentRGB;
 
-    const mediaSection = buildMediaSection(p);  // ✅ Using new function
+    const mediaSection = buildMediaSection(p);
 
     modalBody.innerHTML = `
       <div class="modal-head"><div><div class="tag">◆ ${escapeHtml(p.tag)} ◆</div>
@@ -3184,13 +3286,23 @@ footer{
     }
 
     if (heroImgWrap) {
-      const openLightboxFromHero = () => {
+      // ✅ FIX: Only open lightbox on click if it's an image, not video
+      heroImgWrap.addEventListener('click', (e) => {
+        // Don't open lightbox if clicking on video controls
+        if (e.target.tagName === 'VIDEO' || e.target.tagName === 'IFRAME') return;
+        
         const activeThumb = modalBody.querySelector('#heroThumbs .thumb.active');
         const idx = activeThumb ? parseInt(activeThumb.dataset.index) : 0;
         openLightbox(State.currentProjectShots, idx, State.currentProjectAccentRGB);
-      };
-      heroImgWrap.addEventListener('click', openLightboxFromHero);
-      heroImgWrap.addEventListener('keydown', (e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); openLightboxFromHero(); } });
+      });
+      heroImgWrap.addEventListener('keydown', (e) => { 
+        if (e.key === 'Enter' || e.key === ' ') { 
+          e.preventDefault();
+          const activeThumb = modalBody.querySelector('#heroThumbs .thumb.active');
+          const idx = activeThumb ? parseInt(activeThumb.dataset.index) : 0;
+          openLightbox(State.currentProjectShots, idx, State.currentProjectAccentRGB);
+        } 
+      });
     }
 
     document.body.style.overflow = 'hidden';
@@ -3316,7 +3428,12 @@ footer{
   }
   function drawStarfield() {
     if (!ctx || !canvas) return;
-    if (State.theme !== 'dynamic') { ctx.clearRect(0, 0, canvas.width, canvas.height); return; }
+    // ✅ FIX: Fully stop RAF loop when not in dynamic theme
+    if (State.theme !== 'dynamic') { 
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      State.animationFrameIds.draw = null;
+      return; 
+    }
     ctx.clearRect(0, 0, canvas.width, canvas.height);
     const useShadow = !State.isMobile && !State.isLowEndDevice;
     stars.forEach(s => {
@@ -3330,7 +3447,11 @@ footer{
       ctx.fill();
     });
     if (useShadow) ctx.shadowBlur = 0;
-    if (!State.prefersReducedMotion && State.theme === 'dynamic') State.animationFrameIds.draw = requestAnimationFrame(drawStarfield);
+    if (!State.prefersReducedMotion && State.theme === 'dynamic') {
+      State.animationFrameIds.draw = requestAnimationFrame(drawStarfield);
+    } else {
+      State.animationFrameIds.draw = null;
+    }
   }
   resizeCanvas();
   let resizeTimer;
@@ -3342,7 +3463,8 @@ footer{
   if (State.prefersReducedMotion) drawStarfield(); else State.animationFrameIds.draw = requestAnimationFrame(drawStarfield);
   document.addEventListener('visibilitychange', () => {
     if (State.prefersReducedMotion) return;
-    if (document.hidden) cancelAllAnimations(); else if (State.theme === 'dynamic') startDynamicAnimations();
+    if (document.hidden) cancelAllAnimations(); 
+    else if (State.theme === 'dynamic') startDynamicAnimations();
   });
 
   function updateClock() {
@@ -3370,7 +3492,5 @@ footer{
   window.addEventListener('unhandledrejection', (e) => console.error('Unhandled promise rejection:', e.reason));
 })();
 </script>
-
-  
 </body>
 </html>
