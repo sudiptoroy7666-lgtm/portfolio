@@ -156,6 +156,169 @@ img{max-width:100%;display:block}
 }
 @keyframes slide{0%{left:-40%}100%{left:100%}}
 
+/* ═══════════════════════════════════════════════════════════
+   THEME SELECTION POPUP
+═══════════════════════════════════════════════════════════ */
+.theme-popup-backdrop{
+  position:fixed;inset:0;z-index:9998;
+  background:rgba(3,0,20,0.85);
+  -webkit-backdrop-filter:blur(12px);
+  backdrop-filter:blur(12px);
+  opacity:0;visibility:hidden;
+  transition:opacity .4s ease, visibility .4s;
+}
+.theme-popup-backdrop.open{opacity:1;visibility:visible}
+
+.theme-popup{
+  position:fixed;top:50%;left:50%;transform:translate(-50%,-50%) scale(0.9);
+  z-index:9999;
+  width:90%;max-width:480px;
+  background:linear-gradient(135deg, rgba(15,8,40,0.95), rgba(3,0,20,0.98));
+  border:1px solid rgba(168,85,247,0.3);
+  border-radius:20px;
+  padding:40px 32px;
+  box-shadow:0 30px 80px rgba(0,0,0,0.6), 0 0 60px rgba(168,85,247,0.15);
+  opacity:0;visibility:hidden;
+  transition:opacity .4s ease, visibility .4s, transform .4s cubic-bezier(.2,.9,.2,1);
+}
+.theme-popup.open{opacity:1;visibility:visible;transform:translate(-50%,-50%) scale(1)}
+
+.theme-popup-close{
+  position:absolute;top:16px;right:16px;
+  width:36px;height:36px;
+  border:1px solid rgba(168,85,247,0.3);
+  background:rgba(3,0,20,0.6);
+  color:var(--neon-purple);
+  font-size:1rem;
+  display:flex;align-items:center;justify-content:center;
+  border-radius:50%;
+  cursor:none;
+  transition:all .3s ease;
+  touch-action:manipulation;
+}
+.theme-popup-close:hover{
+  background:var(--grad-primary);
+  color:#fff;
+  transform:rotate(90deg);
+  box-shadow:var(--glow-purple);
+  border-color:transparent;
+}
+
+.theme-popup-title{
+  font-family:var(--display);
+  font-size:1.4rem;
+  font-weight:900;
+  text-transform:uppercase;
+  letter-spacing:0.05em;
+  margin-bottom:8px;
+  background:var(--grad-primary);
+  -webkit-background-clip:text;
+  background-clip:text;
+  color:transparent;
+  text-align:center;
+}
+
+.theme-popup-subtitle{
+  font-family:var(--mono);
+  font-size:0.75rem;
+  letter-spacing:0.2em;
+  text-transform:uppercase;
+  color:var(--text-mute);
+  text-align:center;
+  margin-bottom:32px;
+}
+
+.theme-popup-options{
+  display:flex;flex-direction:column;gap:12px;
+}
+
+.theme-popup-option{
+  display:flex;align-items:center;gap:16px;
+  padding:16px 20px;
+  background:rgba(168,85,247,0.05);
+  border:2px solid rgba(168,85,247,0.2);
+  border-radius:12px;
+  cursor:none;
+  transition:all .3s ease;
+  touch-action:manipulation;
+}
+.theme-popup-option:hover{
+  border-color:var(--neon-purple);
+  background:rgba(168,85,247,0.1);
+  transform:translateX(4px);
+  box-shadow:0 4px 20px rgba(168,85,247,0.2);
+}
+.theme-popup-option.active{
+  border-color:var(--neon-purple);
+  background:rgba(168,85,247,0.15);
+  box-shadow:0 0 20px rgba(168,85,247,0.3), inset 0 0 20px rgba(168,85,247,0.05);
+}
+
+.theme-popup-option-icon{
+  width:44px;height:44px;
+  display:flex;align-items:center;justify-content:center;
+  background:rgba(168,85,247,0.1);
+  border:1px solid rgba(168,85,247,0.3);
+  border-radius:10px;
+  font-size:1.2rem;
+  color:var(--neon-purple);
+  flex-shrink:0;
+}
+.theme-popup-option.active .theme-popup-option-icon{
+  background:var(--grad-primary);
+  color:#fff;
+  border-color:transparent;
+  box-shadow:0 0 15px rgba(168,85,247,0.4);
+}
+
+.theme-popup-option-info{flex:1}
+.theme-popup-option-name{
+  font-family:var(--display);
+  font-size:0.95rem;
+  font-weight:700;
+  text-transform:uppercase;
+  letter-spacing:0.05em;
+  color:var(--text);
+  margin-bottom:4px;
+}
+.theme-popup-option.active .theme-popup-option-name{
+  background:var(--grad-primary);
+  -webkit-background-clip:text;
+  background-clip:text;
+  color:transparent;
+}
+.theme-popup-option-desc{
+  font-family:var(--body);
+  font-size:0.8rem;
+  color:var(--text-dim);
+  line-height:1.4;
+}
+
+.theme-popup-option-check{
+  width:24px;height:24px;
+  display:flex;align-items:center;justify-content:center;
+  border:2px solid rgba(168,85,247,0.3);
+  border-radius:50%;
+  color:transparent;
+  font-size:0.7rem;
+  transition:all .3s ease;
+  flex-shrink:0;
+}
+.theme-popup-option.active .theme-popup-option-check{
+  background:var(--grad-primary);
+  border-color:transparent;
+  color:#fff;
+  box-shadow:0 0 10px rgba(168,85,247,0.4);
+}
+
+@media (max-width:500px){
+  .theme-popup{padding:32px 20px}
+  .theme-popup-option{padding:14px 16px;gap:12px}
+  .theme-popup-option-icon{width:40px;height:40px;font-size:1rem}
+  .theme-popup-option-name{font-size:0.85rem}
+  .theme-popup-option-desc{font-size:0.75rem}
+}
+
 .hud-top{
   position:fixed;top:0;left:0;right:0;z-index:100;
   display:grid;grid-template-columns:auto 1fr auto;align-items:center;gap:16px;
@@ -214,6 +377,8 @@ img{max-width:100%;display:block}
 }
 @media (max-width:900px){
   .theme-btn{cursor:pointer}
+  .theme-popup-close{cursor:pointer}
+  .theme-popup-option{cursor:pointer}
 }
 
 nav.side{
@@ -746,7 +911,6 @@ section{
 .ss-hero{
   display:grid;grid-template-columns:1fr;gap:20px;
 }
-/* ✅ FIX: Removed fixed aspect-ratio from CSS, let JS control it dynamically */
 .ss-hero .hero-img{
   width:100%;max-width:300px;margin:0 auto;
   border-radius:28px;
@@ -1142,7 +1306,7 @@ footer{
   .btn, .chip, .card, .card-btn, .modal-close, .contact-card,
   .dossier .links a, .foot-links a, .ss-hero .thumbs .thumb,
   .ss-lightbox .lightbox-close, .ss-lightbox .lightbox-nav,
-  .theme-btn{
+  .theme-btn, .theme-popup-close, .theme-popup-option{
     cursor:pointer;
   }
 }
@@ -1184,6 +1348,8 @@ footer{
   .chip{background:rgba(168,85,247,0.18)}
   .modal-backdrop .modal{background:rgba(3,0,20,0.99)}
   .ss-lightbox{background:rgba(3,0,20,0.97)}
+  .theme-popup{background:rgba(3,0,20,0.99)}
+  .theme-popup-backdrop{background:rgba(3,0,20,0.95)}
 }
 
 @media (prefers-reduced-motion:reduce){
@@ -1199,10 +1365,6 @@ footer{
 [data-low-end] .aurora-bg{animation-play-state:paused;opacity:.35}
 [data-low-end] .dossier-card::before{animation-play-state:paused}
 [data-low-end] .scanlines{opacity:.06}
-
-/* ═══════════════════════════════════════════════════════════
-   DARK THEME
-═══════════════════════════════════════════════════════════ */
 
 [data-theme="dark"]{
   --bg-void:#09090b;
@@ -1883,10 +2045,6 @@ footer{
 }
 [data-theme="dark"] .ss-lightbox .lightbox-hint i{color:#a78bfa}
 
-/* ═══════════════════════════════════════════════════════════
-   LIGHT THEME
-═══════════════════════════════════════════════════════════ */
-
 [data-theme="light"]{
   --bg-void:#ffffff;
   --bg-deep:#f8fafc;
@@ -2467,7 +2625,6 @@ footer{
   color:#0f172a;
   border-bottom-color:#e2e8f0;
 }
-/* ✅ FIX: Corrected the typo from -webkit-clip to -webkit-background-clip */
 [data-theme="light"] .skill-cat h4 i{
   background:none;
   -webkit-background-clip:unset;
@@ -2813,6 +2970,42 @@ footer{
   <div class="lightbox-label" id="lbLabel">Screenshot</div>
 </div>
 
+<!-- Theme Selection Popup -->
+<div class="theme-popup-backdrop" id="themePopupBackdrop"></div>
+<div class="theme-popup" id="themePopup" role="dialog" aria-modal="true" aria-labelledby="themePopupTitle">
+  <button class="theme-popup-close" id="themePopupClose" aria-label="Close theme selector">
+    <i class="fas fa-times" aria-hidden="true"></i>
+  </button>
+  <h2 class="theme-popup-title" id="themePopupTitle">Choose Your View</h2>
+  <p class="theme-popup-subtitle">Select a display mode</p>
+  <div class="theme-popup-options" role="radiogroup" aria-label="Theme options">
+    <div class="theme-popup-option active" data-theme-option="dynamic" role="radio" aria-checked="true" tabindex="0">
+      <div class="theme-popup-option-icon"><i class="fas fa-star" aria-hidden="true"></i></div>
+      <div class="theme-popup-option-info">
+        <div class="theme-popup-option-name">Dynamic Neon</div>
+        <div class="theme-popup-option-desc">Flashy aurora effects, animated starfield, and vibrant gradients</div>
+      </div>
+      <div class="theme-popup-option-check"><i class="fas fa-check" aria-hidden="true"></i></div>
+    </div>
+    <div class="theme-popup-option" data-theme-option="dark" role="radio" aria-checked="false" tabindex="0">
+      <div class="theme-popup-option-icon"><i class="fas fa-moon" aria-hidden="true"></i></div>
+      <div class="theme-popup-option-info">
+        <div class="theme-popup-option-name">Dark Mode</div>
+        <div class="theme-popup-option-desc">Clean, minimal dark theme with subtle accents</div>
+      </div>
+      <div class="theme-popup-option-check"><i class="fas fa-check" aria-hidden="true"></i></div>
+    </div>
+    <div class="theme-popup-option" data-theme-option="light" role="radio" aria-checked="false" tabindex="0">
+      <div class="theme-popup-option-icon"><i class="fas fa-sun" aria-hidden="true"></i></div>
+      <div class="theme-popup-option-info">
+        <div class="theme-popup-option-name">Light Mode</div>
+        <div class="theme-popup-option-desc">Bright, professional light theme for well-lit environments</div>
+      </div>
+      <div class="theme-popup-option-check"><i class="fas fa-check" aria-hidden="true"></i></div>
+    </div>
+  </div>
+</div>
+
 <script>
 (function() {
   'use strict';
@@ -2831,7 +3024,8 @@ footer{
     isLowEndDevice: false,
     isMobile: false,
     animationFrameIds: { draw: null, follow: null, typewriter: null },
-    sessionStartTime: Date.now()
+    sessionStartTime: Date.now(),
+    themePopupShown: false
   };
 
   State.prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
@@ -2871,6 +3065,15 @@ footer{
       btn.classList.toggle('active', isActive);
       btn.setAttribute('aria-pressed', isActive ? 'true' : 'false');
     });
+    
+    // Update popup options if visible
+    const popupOptions = document.querySelectorAll('.theme-popup-option');
+    popupOptions.forEach(opt => {
+      const isActive = opt.getAttribute('data-theme-option') === theme;
+      opt.classList.toggle('active', isActive);
+      opt.setAttribute('aria-checked', isActive ? 'true' : 'false');
+    });
+    
     try { localStorage.setItem('portfolio-theme', theme); } catch (e) {}
     if (theme !== 'dynamic') cancelAllAnimations();
     else if (!State.prefersReducedMotion) startDynamicAnimations();
@@ -2885,7 +3088,6 @@ footer{
       cancelAnimationFrame(State.animationFrameIds.follow); 
       State.animationFrameIds.follow = null; 
     }
-    // ✅ FIX: Also cancel typewriter timeout
     if (State.animationFrameIds.typewriter) {
       clearTimeout(State.animationFrameIds.typewriter);
       State.animationFrameIds.typewriter = null;
@@ -2901,18 +3103,61 @@ footer{
     }
   }
 
-  let savedTheme = localStorage.getItem('portfolio-theme') || 'dynamic';
-  try {
-    savedTheme = localStorage.getItem('portfolio-theme');
-    if (!savedTheme) {
-      if (window.matchMedia('(prefers-color-scheme: dark)').matches) savedTheme = 'dark';
-      else if (window.matchMedia('(prefers-color-scheme: light)').matches) savedTheme = 'light';
-      else savedTheme = 'dynamic';
-    }
-  } catch (e) {}
+  // Always start with dynamic theme
+  const savedTheme = 'dynamic';
 
   document.querySelectorAll('.theme-btn').forEach(btn => {
     btn.addEventListener('click', () => setTheme(btn.getAttribute('data-theme-set')));
+  });
+
+  // Theme popup logic
+  const themePopup = document.getElementById('themePopup');
+  const themePopupBackdrop = document.getElementById('themePopupBackdrop');
+  const themePopupClose = document.getElementById('themePopupClose');
+  const themePopupOptions = document.querySelectorAll('.theme-popup-option');
+
+  function showThemePopup() {
+    if (State.themePopupShown) return;
+    State.themePopupShown = true;
+    themePopup.classList.add('open');
+    themePopupBackdrop.classList.add('open');
+    // Update active state based on current theme
+    themePopupOptions.forEach(opt => {
+      const isActive = opt.getAttribute('data-theme-option') === State.theme;
+      opt.classList.toggle('active', isActive);
+      opt.setAttribute('aria-checked', isActive ? 'true' : 'false');
+    });
+  }
+
+  function hideThemePopup() {
+    themePopup.classList.remove('open');
+    themePopupBackdrop.classList.remove('open');
+  }
+
+  themePopupClose.addEventListener('click', hideThemePopup);
+  themePopupBackdrop.addEventListener('click', hideThemePopup);
+
+  themePopupOptions.forEach(opt => {
+    const handleSelect = () => {
+      const theme = opt.getAttribute('data-theme-option');
+      setTheme(theme);
+      // Don't auto-close, let user dismiss manually
+    };
+    
+    opt.addEventListener('click', handleSelect);
+    opt.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter' || e.key === ' ') {
+        e.preventDefault();
+        handleSelect();
+      }
+    });
+  });
+
+  // Close popup on Escape key
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape' && themePopup.classList.contains('open')) {
+      hideThemePopup();
+    }
   });
 
   const SANITY_PROJECT_ID = 'lieuuha8';
@@ -3100,7 +3345,6 @@ footer{
     ssLightbox.classList.add('open');
     ssLightbox.setAttribute('aria-hidden', 'false');
     document.body.style.overflow = 'hidden';
-    // ✅ FIX: Focus the close button for accessibility
     setTimeout(() => lbClose.focus(), 100);
   }
 
@@ -3127,7 +3371,6 @@ footer{
       vid.src = shot.url;
       vid.controls = true;
       vid.playsInline = true;
-      // ✅ FIX: Added aria-label for accessibility
       vid.setAttribute('aria-label', shot.label || 'Video');
       vid.style.cssText = 'max-width:95vw;max-height:85vh;border-radius:16px;background:#000;';
       ssLightbox.insertBefore(vid, lbImg);
@@ -3137,7 +3380,6 @@ footer{
       iframe.src = shot.url;
       iframe.frameBorder = '0';
       iframe.allowFullscreen = true;
-      // ✅ FIX: Added aria-label for accessibility
       iframe.setAttribute('aria-label', shot.label || 'Video');
       iframe.style.cssText = 'width:90vw;height:80vh;max-width:1200px;border-radius:16px;border:2px solid rgba(168,85,247,0.2);';
       ssLightbox.insertBefore(iframe, lbImg);
@@ -3202,7 +3444,6 @@ footer{
     if (!heroImgWrap) return;
     heroImgWrap.innerHTML = '';
     
-    // ✅ FIX: Use CSS class instead of inline styles for aspect ratio
     if (type === 'video' || type === 'embed') {
       heroImgWrap.classList.add('is-video');
     } else {
@@ -3286,9 +3527,7 @@ footer{
     }
 
     if (heroImgWrap) {
-      // ✅ FIX: Only open lightbox on click if it's an image, not video
       heroImgWrap.addEventListener('click', (e) => {
-        // Don't open lightbox if clicking on video controls
         if (e.target.tagName === 'VIDEO' || e.target.tagName === 'IFRAME') return;
         
         const activeThumb = modalBody.querySelector('#heroThumbs .thumb.active');
@@ -3428,7 +3667,6 @@ footer{
   }
   function drawStarfield() {
     if (!ctx || !canvas) return;
-    // ✅ FIX: Fully stop RAF loop when not in dynamic theme
     if (State.theme !== 'dynamic') { 
       ctx.clearRect(0, 0, canvas.width, canvas.height);
       State.animationFrameIds.draw = null;
@@ -3483,10 +3721,27 @@ footer{
   let pct = 0;
   const loadInt = setInterval(() => {
     pct += Math.random() * 12 + 4;
-    if (pct >= 100) { pct = 100; clearInterval(loadInt); setTimeout(() => { if (loader) loader.classList.add('done'); setTheme(savedTheme); observeReveals(); }, 300); }
+    if (pct >= 100) { 
+      pct = 100; 
+      clearInterval(loadInt); 
+      setTimeout(() => { 
+        if (loader) loader.classList.add('done'); 
+        setTheme(savedTheme); 
+        observeReveals();
+        // Show theme popup after loader completes
+        setTimeout(showThemePopup, 600);
+      }, 300); 
+    }
     if (loadPct) loadPct.textContent = Math.floor(pct);
   }, 120);
-  setTimeout(() => { if (loader && !loader.classList.contains('done')) { loader.classList.add('done'); setTheme(savedTheme); observeReveals(); } }, 8000);
+  setTimeout(() => { 
+    if (loader && !loader.classList.contains('done')) { 
+      loader.classList.add('done'); 
+      setTheme(savedTheme); 
+      observeReveals();
+      setTimeout(showThemePopup, 600);
+    } 
+  }, 8000);
 
   window.addEventListener('error', (e) => console.error('Global error:', e.error));
   window.addEventListener('unhandledrejection', (e) => console.error('Unhandled promise rejection:', e.reason));
